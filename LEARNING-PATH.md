@@ -42,9 +42,12 @@
   - Configured `selfHeal: true` (auto-reverts manual `kubectl` tampering) and `prune: true` (cascade resource deletion).
 - [x] **Automated CI/CD Pipeline (GitHub Actions)** —
   - Pipeline runs `pytest`, builds multi-arch Docker image with Buildx, and pushes to GitHub Container Registry (`ghcr.io`).
-- [x] **Observability with Splunk Enterprise** —
-  - Running Splunk container in Docker with ports `8000` (Web UI) and `8088` (HTTP Event Collector / HEC).
-  - Prepared container stdout logging pipeline for cluster ingestion.
+- [x] **Observability with Splunk Enterprise (Pattern A DaemonSet Shipper)** —
+  - Deployed Splunk Enterprise container with HTTP Event Collector (HEC) on port `8088`.
+  - Added structured JSON inference telemetry (`latency_ms`, `cache_hit`, `input_features`, `predictions`) to `main.py`.
+  - Authored and deployed a production **Fluent Bit DaemonSet** in Helm (`templates/fluent-bit.yaml`) with RBAC and node hostPath volume mounts.
+  - Excluded self-logs to prevent log feedback storms; configured SQLite tracking in writable `/tmp`.
+  - Verified live streaming of all container logs (`ml-serving-capstone`, `redis`, `kafka`) into Splunk with HTTP 200 HEC acknowledgments.
 
 ---
 

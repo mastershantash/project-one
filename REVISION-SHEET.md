@@ -96,10 +96,24 @@ CMD ["uvicorn", "ml_serving_capstone.main:app", "--host", "0.0.0.0", "--port", "
 
 ---
 
-## 6. Real Bugs Logged & Fixed
+## 6. Observability: Pattern A vs. Pattern B
+
+| Evaluation Metric | Pattern A (DaemonSet Forwarder - Fluent Bit) 🏆 | Pattern B (Direct App Telemetry) ❌ |
+|---|---|---|
+| **12-Factor Compliance** | **Factor XI compliant:** App prints to `stdout`/`stderr`. Zero vendor lock-in. | **Coupled:** Application code imports vendor SDKs, tokens, and endpoints. |
+| **Crash & OOM Recovery** | **Survives crashes:** If Python gets `OOMKilled` or segfaults, stdout lines up to the crash are preserved on disk. | **Silent drop:** Unsent in-memory telemetry is wiped immediately when process dies. |
+| **Multi-Service Scope** | **Cluster-wide:** Automatically collects logs from Redis, Kafka, and ML API with zero code. | **Siloed:** Only captures code you manually instrumented; backing infrastructure is dark. |
+| **Latency Impact** | **Zero:** Writes to stdout buffer (sub-microsecond). Shipping and retries happen out-of-band. | **Resource competition:** Background HTTP retry tasks consume Python event loop cycles. |
+
+---
+
+## 7. Real War Stories Logged & Fixed
 
 1. **`async def` without `await`**: An `async def` function that runs synchronous blocking code (like `redis.Redis`) blocks the entire server event loop! Must use `redis.asyncio` with `await`.
 2. **Missing `await` call**: Calling an async function without `await` produces an unexecuted coroutine warning and silently no-ops.
 3. **Docker layer cache failure**: `uv sync` requires `README.md` if declared in `pyproject.toml`. Missing `README.md` breaks build.
 4. **CRD Annotation 256KB Limit**: Applying huge CRDs with `kubectl apply` fails due to `last-applied-configuration`. Fix: `kubectl apply --server-side`.
 5. **ArgoCD Empty Remote Repo**: Applying an ArgoCD application before pushing local commits to GitHub results in `ComparisonError: remote repository is empty`. Push first!
+6. **Fluent Bit Read-Only SQLite Crash**: Mounting `/var/log` as `readOnly: true` caused Fluent Bit's tracking DB (`/var/log/flb_kube.db`) to crash with `cannot open database`. Fix: Point DB to writable container storage at `/tmp/flb_kube.db`.
+7. **The Infinite Log Storm Feedback Loop**: When Fluent Bit tailed its own log file while logging warnings, it sent its own warnings to Splunk, generating new warnings in an endless loop! Fix: Add `Exclude_Path /var/log/pods/*_fluent-bit*/*/*.log`.
+8. **Splunk HEC Raw Endpoint**: Using standard `http` plugin targeting `/services/collector/raw` with `Header Authorization Splunk <token>` ensures 100% compatibility across all Splunk versions.

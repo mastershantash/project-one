@@ -652,10 +652,88 @@
 
     <!-- 08. SPLUNK OBSERVABILITY -->
     <section id="splunk-obs">
-      <h2 class="section-title"><span class="number">08</span> Production Observability & Splunk Integration</h2>
+      <h2 class="section-title"><span class="number">08</span> Production Observability: Pattern A (Fluent Bit DaemonSet)</h2>
       <div class="card">
-        <h3>The Log Transport Pipeline</h3>
-        <p>12-Factor App Factor XI: Applications write structured JSON to <code>stdout</code>. Kubelet writes to <code>/var/log/pods/</code> on the node. A forwarder (Fluent Bit) enriches logs with pod metadata and streams them to Splunk HEC on port <code>8088</code>.</p>
+        <h3>A. The Architectural Decision: Pattern A vs. Pattern B</h3>
+        <p>In Kubernetes, there are two primary approaches to shipping logs to Splunk. In enterprise production, <strong>Pattern A</strong> is strictly preferred:</p>
+
+        <table>
+          <tr>
+            <th>Evaluation Criteria</th>
+            <th>Pattern A (DaemonSet Forwarder - Fluent Bit) 🏆</th>
+            <th>Pattern B (Direct App Telemetry) ❌</th>
+          </tr>
+          <tr>
+            <td><strong>12-Factor Compliance</strong></td>
+            <td><strong>Factor XI Compliant:</strong> App only writes structured JSON to <code>stdout</code>. Zero knowledge of Splunk or tokens.</td>
+            <td><strong>Coupled:</strong> App code imports HTTP clients, manages Splunk tokens, and handles retries.</td>
+          </tr>
+          <tr>
+            <td><strong>Crash & OOM Survivability</strong></td>
+            <td><strong>Survives Crashes:</strong> If Python crashes, segfaults, or is <code>OOMKilled</code>, logs on disk are still shipped to Splunk.</td>
+            <td><strong>Silent Drop:</strong> If process terminates abruptly, pending in-memory telemetry is permanently lost.</td>
+          </tr>
+          <tr>
+            <td><strong>Multi-Service Coverage</strong></td>
+            <td><strong>Cluster-Wide:</strong> Automatically collects logs from Redis, Kafka, and ML API with zero application code.</td>
+            <td><strong>Siloed:</strong> Only captures code manually instrumented. Redis and Kafka remain completely dark.</td>
+          </tr>
+          <tr>
+            <td><strong>Latency Impact</strong></td>
+            <td><strong>Zero:</strong> Writing to stdout buffer is sub-microsecond. Fluent Bit handles batching, disk buffering, and retries.</td>
+            <td><strong>Overhead:</strong> Background HTTP tasks compete for Python event loop cycles during network degradation.</td>
+          </tr>
+        </table>
+
+        <h3>B. How the Log Transport Pipeline Works</h3>
+        <div class="diagram-box">
++----------------------+      +----------------------+      +----------------------+
+| ML API Replicas x2   |      | Redis Cache Pod      |      | Kafka Broker Pod     |
+| (stdout JSON stream) |      | (stdout server logs) |      | (stdout cluster logs)|
++----------------------+      +----------------------+      +----------------------+
+           |                             |                             |
+           +-----------------------------+-----------------------------+
+                                         |
+                                         v
+                      +--------------------------------------+
+                      | Kubelet writes to Node HostPath      |
+                      | /var/log/pods/&lt;namespace&gt;_&lt;pod&gt;/*    |
+                      +--------------------------------------+
+                                         |
+                                         v (inotify tail)
+                      +--------------------------------------+
+                      | Fluent Bit (DaemonSet: 1 per node)   |
+                      | - INPUT: tail /var/log/pods/         |
+                      | - FILTER: kubernetes metadata enrich |
+                      | - OUTPUT: HTTP HEC (/raw endpoint)   |
+                      +--------------------------------------+
+                                         |
+                                         | HTTPS POST (Batch JSON)
+                                         v
+                      +--------------------------------------+
+                      | Splunk Enterprise (HEC Port: 8088)   |
+                      | Token: 2a58141a-232e-41ea-...        |
+                      +--------------------------------------+
+        </div>
+
+        <h3>C. Essential Splunk SPL Queries for ML Operations</h3>
+        <pre><code><span class="comment"># 1. Real-time Inference Latency Percentiles (p50, p95, p99)</span>
+index=* "model_inference"
+| spath
+| stats count, avg(latency_ms) as avg_lat, p95(latency_ms) as p95_lat, p99(latency_ms) as p99_lat by model_version
+
+<span class="comment"># 2. Redis Cache Hit vs. Miss Ratio</span>
+index=* "model_inference"
+| spath
+| stats count by cache_hit
+| eval ratio = count / sum(count) * 100
+
+<span class="comment"># 3. Stream all ML Serving API Container Logs</span>
+index=* "ml-serving-capstone"
+
+<span class="comment"># 4. Detect Backpressure or OOMKilled Pod Evictions</span>
+index=* ("OOMKilled" OR "CrashLoopBackOff" OR "Error")
+| table _time, pod_name, namespace, log</code></pre>
       </div>
     </section>
 
@@ -698,6 +776,27 @@
           <p><strong>Symptom:</strong> ArgoCD application reported <code>ComparisonError: failed to list refs: remote repository is empty</code>.</p>
           <p><strong>Root Cause:</strong> The ArgoCD Application was applied before local Git commits were pushed to the remote GitHub repository.</p>
           <p><strong>The Fix:</strong> Push commits to GitHub first (`git push -u origin main`), then trigger hard refresh: <code>microk8s kubectl annotate app ml-serving-capstone -n argocd argocd.argoproj.io/refresh=hard --overwrite</code>.</p>
+        </details>
+
+        <details>
+          <summary>Bug 6: Fluent Bit SQLite on Read-Only Volume Crash</summary>
+          <p><strong>Symptom:</strong> Fluent Bit pod entered <code>CrashLoopBackOff</code> with <code>[error] [sqldb] cannot open database /var/log/flb_kube.db</code>.</p>
+          <p><strong>Root Cause:</strong> <code>/var/log</code> was mounted into the pod as <code>readOnly: true</code> for security. Fluent Bit tried to write its state tracking database to that read-only path.</p>
+          <p><strong>The Fix:</strong> Point the database to container-writable memory/tmpfs: <code>DB /tmp/flb_kube.db</code>.</p>
+        </details>
+
+        <details>
+          <summary>Bug 7: The Infinite Log Storm Feedback Loop</summary>
+          <p><strong>Symptom:</strong> Fluent Bit log volume spiked exponentially to thousands of log events per second.</p>
+          <p><strong>Root Cause:</strong> Fluent Bit logged a warning to stderr. Because Fluent Bit was deployed in <code>ml-serving</code>, its own log was written to <code>/var/log/pods/</code>, which Fluent Bit read and shipped to Splunk, triggering another log line in an infinite loop.</p>
+          <p><strong>The Fix:</strong> Add an exclusion pattern to the tail input: <code>Exclude_Path /var/log/pods/ml-serving_fluent-bit*/*/*.log</code>.</p>
+        </details>
+
+        <details>
+          <summary>Bug 8: Splunk HEC Plugin Parameter Compatibility</summary>
+          <p><strong>Symptom:</strong> Fluent Bit emitted warnings <code>[warn] [record accessor] translation failed, root key=hec_token</code>.</p>
+          <p><strong>Root Cause:</strong> The generic <code>splunk</code> output plugin in Fluent Bit v3 expected token keys embedded in individual log records when not explicitly formatted.</p>
+          <p><strong>The Fix:</strong> Switch to the universal <code>http</code> output plugin targeting <code>URI /services/collector/raw</code> with header <code>Authorization Splunk &lt;token&gt;</code>.</p>
         </details>
       </div>
     </section>
