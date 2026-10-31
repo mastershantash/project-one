@@ -46,6 +46,7 @@ data:
         Name              tail
         Tag               kube.*
         Path              /var/log/pods/{{ .Release.Namespace }}_*/*/*.log
+        Exclude_Path      /var/log/pods/{{ .Release.Namespace }}_fluent-bit*/*/*.log
         Parser            docker
         DB                /tmp/flb_kube.db
         Mem_Buf_Limit     50MB
@@ -64,14 +65,15 @@ data:
         Keep_Log            On
 
     [OUTPUT]
-        Name            splunk
+        Name            http
         Match           kube.*
         Host            {{ .Values.fluentBit.splunkHost }}
         Port            {{ .Values.fluentBit.splunkPort }}
-        Splunk_Token    {{ .Values.fluentBit.splunkToken }}
-        TLS             On
-        TLS.Verify      Off
-        Splunk_Send_Raw Off
+        URI             /services/collector/raw
+        Header          Authorization Splunk {{ .Values.fluentBit.splunkToken }}
+        Format          json
+        tls             On
+        tls.verify      Off
 
   parsers.conf: |
     [PARSER]
