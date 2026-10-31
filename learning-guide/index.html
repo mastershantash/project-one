@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mastering Production MLOps & GitOps: The Complete Architecture Blueprint</title>
+  <title>Mastering Production AI/ML Apps & GitOps: The Complete Engineering Blueprint</title>
   <style>
     :root {
       --bg: #0b0f19;
@@ -32,54 +32,55 @@
     }
     /* Sidebar */
     sidebar {
-      width: 300px;
+      width: 320px;
       height: 100vh;
       position: sticky;
       top: 0;
       background: var(--sidebar-bg);
       border-right: 1px solid var(--card-border);
-      padding: 28px 16px;
+      padding: 24px 14px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
       overflow-y: auto;
       flex-shrink: 0;
     }
     sidebar h2 {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      margin-bottom: 8px;
-      padding-left: 12px;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      padding-left: 10px;
     }
     sidebar a {
       color: var(--text-muted);
       text-decoration: none;
-      padding: 9px 12px;
-      border-radius: 8px;
-      font-size: 0.88rem;
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
       font-weight: 500;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
       display: block;
     }
     sidebar a:hover, sidebar a.active {
       color: #fff;
       background: var(--card-bg);
       border-left: 3px solid var(--accent);
-      padding-left: 15px;
+      padding-left: 14px;
     }
     /* Main Content */
     main {
       flex: 1;
-      max-width: 1080px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 48px 40px 100px;
+      padding: 44px 44px 100px;
       overflow-x: hidden;
     }
     header {
-      margin-bottom: 50px;
-      padding-bottom: 30px;
+      margin-bottom: 44px;
+      padding-bottom: 24px;
       border-bottom: 1px solid var(--card-border);
     }
     .badge-container {
@@ -102,82 +103,83 @@
     .badge-ml { background: #6b21a8; color: #e9d5ff; }
     .badge-infra { background: #065f46; color: #a7f3d0; }
     .badge-splunk { background: #9a3412; color: #fed7aa; }
+    .badge-java { background: #b45309; color: #fef3c7; }
 
     header h1 {
-      font-size: 2.6rem;
+      font-size: 2.5rem;
       font-weight: 800;
       line-height: 1.2;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     header p {
       color: var(--text-muted);
-      font-size: 1.15rem;
+      font-size: 1.1rem;
     }
 
     section {
-      margin-bottom: 60px;
+      margin-bottom: 56px;
       scroll-margin-top: 30px;
     }
     h2.section-title {
-      font-size: 1.75rem;
+      font-size: 1.7rem;
       font-weight: 700;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       color: #fff;
       display: flex;
       align-items: center;
       gap: 12px;
       border-bottom: 2px solid var(--card-border);
-      padding-bottom: 10px;
+      padding-bottom: 8px;
     }
     .section-title span.number {
       background: var(--accent-glow);
       color: var(--accent);
       padding: 2px 10px;
       border-radius: 6px;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
     }
 
     .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 12px;
-      padding: 28px;
-      margin-bottom: 24px;
+      padding: 26px;
+      margin-bottom: 22px;
       box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
     }
     .card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 14px;
+      font-size: 1.25rem;
+      margin-bottom: 12px;
       color: #fff;
       display: flex;
       align-items: center;
       gap: 8px;
     }
     .card h4 {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       color: var(--accent);
-      margin: 18px 0 8px;
+      margin: 16px 0 6px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    p { margin-bottom: 14px; color: #cbd5e1; font-size: 0.98rem; }
-    ul, ol { margin-left: 24px; margin-bottom: 18px; color: #cbd5e1; }
-    li { margin-bottom: 8px; }
+    p { margin-bottom: 12px; color: #cbd5e1; font-size: 0.98rem; }
+    ul, ol { margin-left: 24px; margin-bottom: 16px; color: #cbd5e1; }
+    li { margin-bottom: 7px; }
 
     /* Code Blocks */
     pre {
       background: var(--code-bg);
       border: 1px solid #1f2937;
       border-radius: 8px;
-      padding: 18px;
+      padding: 16px;
       overflow-x: auto;
       font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: #e2e8f0;
-      margin: 14px 0 20px;
+      margin: 12px 0 18px;
       line-height: 1.5;
     }
     code {
@@ -202,9 +204,9 @@
     .callout {
       border-left: 4px solid var(--accent);
       background: var(--accent-glow);
-      padding: 18px 22px;
+      padding: 16px 20px;
       border-radius: 0 10px 10px 0;
-      margin: 20px 0;
+      margin: 18px 0;
     }
     .callout.warning {
       border-left-color: var(--yellow);
@@ -218,9 +220,9 @@
       border-left-color: var(--purple);
       background: rgba(168, 85, 247, 0.1);
     }
-    .callout h4 {
-      margin-top: 0;
-      color: inherit;
+    .callout.java {
+      border-left-color: var(--yellow);
+      background: rgba(180, 83, 9, 0.12);
     }
 
     /* Diagram Styles */
@@ -229,7 +231,7 @@
       background: #030712;
       border: 1px solid var(--card-border);
       border-radius: 10px;
-      margin: 20px 0;
+      margin: 18px 0;
       display: block;
     }
 
@@ -237,12 +239,12 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 20px 0;
-      font-size: 0.92rem;
+      margin: 18px 0;
+      font-size: 0.91rem;
     }
     th, td {
       border: 1px solid var(--card-border);
-      padding: 12px 16px;
+      padding: 10px 14px;
       text-align: left;
     }
     th {
@@ -258,8 +260,8 @@
       background: #080d1a;
       border: 1px solid var(--card-border);
       border-radius: 8px;
-      padding: 14px 18px;
-      margin-bottom: 14px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
       transition: all 0.2s;
     }
     details[open] {
@@ -276,40 +278,112 @@
       user-select: none;
     }
     summary:hover { color: var(--accent); }
-    details p { margin-top: 14px; }
+    details p { margin-top: 12px; }
   </style>
 </head>
 <body>
 
   <sidebar>
     <h2>Curriculum Sitemap</h2>
-    <a href="#topology">1. End-to-End Topology</a>
-    <a href="#app-tier">2. Core ML App & Dual-Path Design</a>
-    <a href="#caching">3. Caching & Resilience Pattern</a>
-    <a href="#k8s-runtime">4. Kubernetes Runtime Architecture</a>
-    <a href="#helm-deepdive">5. Helm Packaging & Templates</a>
-    <a href="#gitops-engine">6. GitOps with ArgoCD Engine</a>
-    <a href="#ci-cd-pipeline">7. Automated CI/CD Pipeline</a>
-    <a href="#splunk-obs">8. Splunk Observability & HEC</a>
-    <a href="#runbook">9. Production Operations Runbook</a>
-    <a href="#interview-qa">10. Revision & Interview Q&A</a>
+    <a href="#java-bridge">00. Java ↔ Python Rosetta Stone</a>
+    <a href="#topology">01. End-to-End System Topology</a>
+    <a href="#app-tier">02. Core ML App & Dual-Path Design</a>
+    <a href="#caching">03. Caching & Resilience Pattern</a>
+    <a href="#k8s-runtime">04. Kubernetes Runtime Architecture</a>
+    <a href="#helm-deepdive">05. Helm Packaging & Templates</a>
+    <a href="#gitops-engine">06. GitOps with ArgoCD Engine</a>
+    <a href="#ci-cd-pipeline">07. Automated CI/CD Pipeline</a>
+    <a href="#splunk-obs">08. Splunk Observability & HEC</a>
+    <a href="#war-stories">09. Real War Stories & Bugs Fixed</a>
+    <a href="#runbook">10. Operations Cheat Sheet</a>
+    <a href="#interview-qa">11. Senior Revision Q&A</a>
   </sidebar>
 
   <main>
     <header>
       <div class="badge-container">
-        <span class="badge badge-gitops">ArgoCD GitOps</span>
+        <span class="badge badge-java">Java to Python Fast-Track</span>
+        <span class="badge badge-ml">ML Serving Core</span>
         <span class="badge badge-k8s">Kubernetes v1.30</span>
         <span class="badge badge-helm">Helm 3</span>
-        <span class="badge badge-ml">FastAPI + Scikit-Learn</span>
-        <span class="badge badge-infra">Kafka KRaft + Redis</span>
+        <span class="badge badge-gitops">ArgoCD GitOps</span>
         <span class="badge badge-splunk">Splunk HEC</span>
       </div>
-      <h1>Production MLOps & GitOps Architecture</h1>
-      <p>An enterprise-grade system design reference manual detailing the architecture, design choices, infrastructure tiers, and operations of the <code>ml-serving-capstone</code> platform.</p>
+      <h1>Production AI/ML Apps & GitOps Architecture</h1>
+      <p>A complete engineering guide tailored for senior distributed systems & Java backend engineers mastering Python AI/ML serving, cloud-native Kubernetes, and automated GitOps CI/CD.</p>
     </header>
 
-    <!-- 1. TOPOLOGY -->
+    <!-- 00. JAVA TO PYTHON ROSETTA STONE -->
+    <section id="java-bridge">
+      <h2 class="section-title"><span class="number">00</span> The Java ↔ Python Mental Rosetta Stone</h2>
+      <div class="card">
+        <div class="callout java">
+          <h4>Your Foundation: Senior Java Backend & Distributed Systems</h4>
+          You already know high-throughput microservices, concurrency, Kafka brokers, Redis caching, and AWS/Kubernetes. The goal is <strong>not</strong> to start from zero—it is mapping what you already master in Java directly to the Python AI/ML ecosystem.
+        </div>
+
+        <h3>Language & Ecosystem Rosetta Stone</h3>
+        <table>
+          <tr>
+            <th>Java / Spring Ecosystem</th>
+            <th>Python / MLOps Ecosystem</th>
+            <th>Senior Architectural Insight</th>
+          </tr>
+          <tr>
+            <td><strong>Spring Boot (<code>@RestController</code>)</strong></td>
+            <td><strong>FastAPI</strong></td>
+            <td>Both provide declarative route handlers and dependency injection. FastAPI generates OpenAPI/Swagger documentation automatically from Python type hints.</td>
+          </tr>
+          <tr>
+            <td><strong>Tomcat / Netty</strong></td>
+            <td><strong>Uvicorn (ASGI)</strong></td>
+            <td>FastAPI does not handle raw HTTP sockets directly; Uvicorn is the high-performance ASGI web server running uvloop (libuv) underneath.</td>
+          </tr>
+          <tr>
+            <td><strong><code>@RequestBody</code> DTO + <code>@Valid</code></strong></td>
+            <td><strong>Pydantic v2 (<code>BaseModel</code>)</strong></td>
+            <td>Validates types, converts types, and enforces constraints. Rejects invalid requests with HTTP <code>422 Unprocessable Entity</code> <em>before</em> the handler executes.</td>
+          </tr>
+          <tr>
+            <td><strong><code>@ConfigurationProperties</code></strong></td>
+            <td><strong><code>pydantic-settings</code></strong></td>
+            <td>Loads typed, validated configurations from environment variables (e.g. <code>REDIS_HOST</code>, <code>KAFKA_BOOTSTRAP_SERVERS</code>).</td>
+          </tr>
+          <tr>
+            <td><strong>Maven / Gradle (<code>pom.xml</code>)</strong></td>
+            <td><strong><code>uv</code> (<code>pyproject.toml</code>)</strong></td>
+            <td><code>uv</code> (written in Rust) replaces pip and poetry. It manages virtual environments and locks the entire transitive dependency tree in <code>uv.lock</code>.</td>
+          </tr>
+          <tr>
+            <td><strong>JUnit 5</strong></td>
+            <td><strong><code>pytest</code></strong></td>
+            <td>Convention-over-configuration: tests live in <code>tests/test_*.py</code>, functions named <code>test_*()</code>, using native <code>assert</code> statements.</td>
+          </tr>
+          <tr>
+            <td><strong>Checkstyle / Spotless</strong></td>
+            <td><strong><code>ruff</code></strong></td>
+            <td>Blazing fast Rust linter & formatter that auto-fixes 90% of code-style violations.</td>
+          </tr>
+          <tr>
+            <td><strong>Java Compiler Type Checks</strong></td>
+            <td><strong><code>mypy</code></strong></td>
+            <td>Static type analyzer enforcing type contracts at build time before code reaches runtime.</td>
+          </tr>
+          <tr>
+            <td><strong><code>try-with-resources</code></strong></td>
+            <td><strong><code>with ... as f:</code> (Context Manager)</strong></td>
+            <td>Guarantees resource release (closing sockets, DB connections, locks) even if unhandled exceptions occur mid-block.</td>
+          </tr>
+          <tr>
+            <td><strong><code>CompletableFuture</code> / Virtual Threads</strong></td>
+            <td><strong><code>async def</code> / <code>await</code> (AsyncIO)</strong></td>
+            <td>Cooperative multitasking on a single-threaded event loop. Non-blocking I/O requires explicit <code>await</code>; blocking calls stall the entire server loop!</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- 01. TOPOLOGY -->
     <section id="topology">
       <h2 class="section-title"><span class="number">01</span> End-to-End System Topology</h2>
       <div class="card">
@@ -317,7 +391,6 @@
 
         <!-- SVG Architecture Diagram -->
         <svg class="diagram-svg" viewBox="0 0 950 480" xmlns="http://www.w3.org/2000/svg">
-          <!-- Background Grid & Containers -->
           <rect x="20" y="20" width="220" height="440" rx="10" fill="#090d16" stroke="#1f2937" stroke-width="2"/>
           <text x="35" y="50" fill="#38bdf8" font-weight="700" font-size="14">DEVELOPER & GIT LAYER</text>
           
@@ -333,24 +406,19 @@
           <text x="55" y="315" fill="#94a3b8" font-size="11">pytest -> uv build</text>
           <text x="55" y="335" fill="#38bdf8" font-size="11">Push to GHCR (ghcr.io)</text>
 
-          <!-- Kubernetes Cluster Box -->
           <rect x="270" y="20" width="660" height="440" rx="10" fill="#090d16" stroke="#0284c7" stroke-width="2"/>
           <text x="290" y="50" fill="#38bdf8" font-weight="700" font-size="14">KUBERNETES CLUSTER (MicroK8s v1.30)</text>
 
-          <!-- ArgoCD Box -->
           <rect x="290" y="70" width="280" height="70" rx="8" fill="#1e293b" stroke="#38bdf8"/>
           <text x="310" y="100" fill="#f8fafc" font-weight="700" font-size="13">ArgoCD GitOps Controller</text>
           <text x="310" y="122" fill="#38bdf8" font-size="11">Reconciles cluster state every 3m (Self-Heal)</text>
 
-          <!-- ML Serving Namespace -->
           <rect x="290" y="160" width="620" height="280" rx="8" fill="#0f172a" stroke="#334155"/>
           <text x="310" y="185" fill="#a855f7" font-weight="700" font-size="13">NAMESPACE: ml-serving</text>
 
-          <!-- Service -->
           <rect x="310" y="205" width="130" height="50" rx="6" fill="#1e293b" stroke="#38bdf8"/>
           <text x="320" y="235" fill="#fff" font-size="12">Service (Port 80)</text>
 
-          <!-- Pods -->
           <rect x="470" y="200" width="170" height="60" rx="6" fill="#1e293b" stroke="#22c55e"/>
           <text x="480" y="225" fill="#fff" font-size="12">API Pod 1 (FastAPI)</text>
           <text x="480" y="245" fill="#94a3b8" font-size="11">Non-root UID 1000</text>
@@ -359,7 +427,6 @@
           <text x="480" y="295" fill="#fff" font-size="12">API Pod 2 (FastAPI)</text>
           <text x="480" y="315" fill="#94a3b8" font-size="11">Non-root UID 1000</text>
 
-          <!-- Backing Services -->
           <rect x="670" y="200" width="220" height="60" rx="6" fill="#1e293b" stroke="#f59e0b"/>
           <text x="685" y="225" fill="#fff" font-size="12">Redis (redis-service:6379)</text>
           <text x="685" y="245" fill="#f59e0b" font-size="11">Sub-millisecond LRU Cache</text>
@@ -368,13 +435,12 @@
           <text x="685" y="295" fill="#fff" font-size="12">Kafka (kafka-service:9092)</text>
           <text x="685" y="315" fill="#a855f7" font-size="11">Apache Kafka KRaft Mode</text>
 
-          <!-- Worker Pod -->
           <rect x="470" y="350" width="420" height="70" rx="6" fill="#1e293b" stroke="#0ea5e9"/>
           <text x="485" y="375" fill="#fff" font-size="12">Async Streaming Worker (kafka_worker.py)</text>
           <text x="485" y="398" fill="#94a3b8" font-size="11">Consumes 'inference-requests' -> Produces to 'inference-results'</text>
 
           <!-- Connecting Arrows -->
-          <path d="M 130 140 L 130 160" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+          <path d="M 130 140 L 130 160" stroke="#38bdf8" stroke-width="2"/>
           <path d="M 130 240 L 130 260" stroke="#38bdf8" stroke-width="2"/>
           <path d="M 220 200 L 290 105" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4"/>
           <path d="M 440 140 L 440 230" stroke="#38bdf8" stroke-width="2"/>
@@ -388,7 +454,7 @@
       </div>
     </section>
 
-    <!-- 2. CORE ML APP -->
+    <!-- 02. CORE ML APP -->
     <section id="app-tier">
       <h2 class="section-title"><span class="number">02</span> Core Application Tier: Dual-Path ML Serving</h2>
       <div class="card">
@@ -424,9 +490,6 @@
     model = LinearRegression()
     model.fit(X, y)
     <span class="keyword">return</span> model</code></pre>
-        <div class="callout purple">
-          <strong>Production Scalability Tip:</strong> While this model fits in memory instantly, in deep learning systems (e.g. PyTorch LLMs, Vision transformers), model weights take seconds or minutes to load from disk. That is why <strong>Readiness Probes</strong> are critical—they prevent Kubernetes from sending queries to an uninitialized model!
-        </div>
 
         <h4>B. The HTTP API Layer (<code>main.py</code>)</h4>
         <p>Built with FastAPI and Pydantic v2 for automatic schema validation and serialization:</p>
@@ -441,7 +504,7 @@
       </div>
     </section>
 
-    <!-- 3. CACHING & RESILIENCE -->
+    <!-- 03. CACHING & RESILIENCE -->
     <section id="caching">
       <h2 class="section-title"><span class="number">03</span> Caching Strategy & Graceful Degradation</h2>
       <div class="card">
@@ -477,7 +540,7 @@
       </div>
     </section>
 
-    <!-- 4. K8S RUNTIME -->
+    <!-- 04. K8S RUNTIME -->
     <section id="k8s-runtime">
       <h2 class="section-title"><span class="number">04</span> Kubernetes Runtime & Hardening</h2>
       <div class="card">
@@ -490,10 +553,6 @@
   limits:
     cpu: 500m      # Hard throttle ceiling if pod spikes
     memory: 512Mi  # Kernel sends SIGKILL (OOMKilled) if exceeded</code></pre>
-        <ul>
-          <li><strong>Requests</strong> are used by the Kubernetes Scheduler to decide which physical node has enough capacity to host the pod.</li>
-          <li><strong>Limits</strong> are enforced by Linux kernel <code>cgroups</code> to prevent any single container from starving adjacent pods of CPU or memory (Noisy Neighbor problem).</li>
-        </ul>
 
         <h3>B. Pod Security Standards (CIS Benchmark Compliance)</h3>
         <p>In our Dockerfile and Helm templates, we enforce unprivileged execution:</p>
@@ -505,25 +564,21 @@
   capabilities:
     drop:
       - ALL</code></pre>
-        <p>If an attacker discovers a remote code execution exploit in an open-source Python library, they are trapped in a sandbox with zero root privileges and no Linux kernel capabilities.</p>
 
         <h3>C. Apache Kafka in KRaft Mode (No ZooKeeper)</h3>
-        <p>Historically, Kafka required an entire auxiliary Apache ZooKeeper cluster to maintain metadata, leading to split-brain bugs, complex maintenance, and high memory footprints. Our setup deploys <strong>KRaft (Kafka Raft Metadata Mode)</strong>:</p>
+        <p>Historically, Kafka required an auxiliary Apache ZooKeeper cluster. Our setup deploys modern <strong>KRaft mode</strong>:</p>
         <ul>
-          <li>Kafka brokers use an internal Raft consensus algorithm directly.</li>
-          <li>Startup time dropped from minutes to under 5 seconds.</li>
-          <li>Zero external ZooKeeper dependency!</li>
+          <li>Consensus handled natively inside Kafka using internal Raft leader voting.</li>
+          <li>Zero external ZooKeeper JVM processes; faster cluster failover (&lt; 3 seconds).</li>
         </ul>
       </div>
     </section>
 
-    <!-- 5. HELM DEEP DIVE -->
+    <!-- 05. HELM DEEP DIVE -->
     <section id="helm-deepdive">
       <h2 class="section-title"><span class="number">05</span> Helm Packaging & Templating Mastery</h2>
       <div class="card">
-        <p>Helm acts as both a <strong>package manager</strong> and a <strong>parameterization engine</strong>. It allows maintaining a single set of declarative YAML templates while deploying to Development, Staging, and Production with different parameters.</p>
-
-        <h3>Chart Anatomy</h3>
+        <h3>Chart Structure</h3>
         <pre><code>helm/ml-serving-capstone/
 ├── Chart.yaml                  # Metadata, semantic version (SemVer), API version
 ├── values.yaml                 # Base configuration contract
@@ -535,71 +590,31 @@
     ├── redis.yaml              # In-cluster Redis deployment & service
     ├── kafka.yaml              # In-cluster KRaft Kafka broker & service
     └── hpa.yaml                # Horizontal Pod Autoscaler rule</code></pre>
-
-        <h3>Standard Kubernetes Labels (<code>_helpers.tpl</code>)</h3>
-        <p>Notice how our Helm templates use the standard Kubernetes labels defined in <code>_helpers.tpl</code>:</p>
-        <pre><code>app.kubernetes.io/name: ml-serving-capstone
-app.kubernetes.io/instance: ml-serving-capstone
-app.kubernetes.io/version: "0.1.0"
-app.kubernetes.io/managed-by: Helm</code></pre>
-        <p>These labels allow service meshes (Istio/Linkerd), metrics collectors (Prometheus), and log aggregators (Splunk/Fluent Bit) to query and index pods effortlessly.</p>
       </div>
     </section>
 
-    <!-- 6. GITOPS ENGINE -->
+    <!-- 06. GITOPS ENGINE -->
     <section id="gitops-engine">
       <h2 class="section-title"><span class="number">06</span> GitOps with ArgoCD Engine</h2>
       <div class="card">
-        <h3>How ArgoCD Reconciles Desired vs. Live State</h3>
-        <p>ArgoCD operates on a continuous feedback loop:</p>
+        <h3>Continuous Reconciliation Loop</h3>
         <ol>
           <li><strong>Target State (Git):</strong> Reads the Helm templates and <code>values.yaml</code> in GitHub.</li>
           <li><strong>Live State (Cluster):</strong> Queries the Kubernetes API server for active Deployments and Services.</li>
-          <li><strong>Reconciliation Loop:</strong> Calculates a diff between Git and Cluster. If a difference exists, the status changes to <code>OutOfSync</code>.</li>
+          <li><strong>Reconciliation Loop:</strong> Automatically triggers rolling update or repairs drift.</li>
         </ol>
 
         <div class="callout success">
-          <h4>What is Self-Healing (<code>selfHeal: true</code>)?</h4>
-          Try this in your terminal right now: run <code>microk8s kubectl delete deployment ml-serving-capstone -n ml-serving</code>.<br>
-          Within <strong>3 seconds</strong>, ArgoCD detects that the live cluster violates the contract committed to Git, and automatically recreates the entire deployment! Manual human errors or unauthorized modifications are immediately corrected.
+          <h4>Self-Healing in Action</h4>
+          If a cluster operator manually modifies or deletes a pod or deployment via <code>kubectl</code>, ArgoCD flags the drift and instantly recreates the resource to match the Git repository.
         </div>
-
-        <h3>The Declarative ArgoCD CRD (<code>argocd/application.yaml</code>)</h3>
-        <pre><code>apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: ml-serving-capstone
-  namespace: argocd
-  finalizers:
-    # Cascading deletion: deleting the ArgoCD app also cleans up all child resources
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    repoURL: 'https://github.com/mastershantash/project-one.git'
-    targetRevision: main
-    path: ml-serving-capstone/helm/ml-serving-capstone
-    helm:
-      valueFiles:
-        - values.yaml
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: ml-serving
-  syncPolicy:
-    automated:
-      prune: true     # Deletes objects from K8s when removed from Git
-      selfHeal: true  # Reverts manual kubectl tampering
-    syncOptions:
-      - CreateNamespace=true</code></pre>
       </div>
     </section>
 
-    <!-- 7. CI/CD PIPELINE -->
+    <!-- 07. CI/CD PIPELINE -->
     <section id="ci-cd-pipeline">
       <h2 class="section-title"><span class="number">07</span> Automated CI/CD Pipeline (GitHub Actions)</h2>
       <div class="card">
-        <p>Our automation workflow at <code>.github/workflows/ci.yaml</code> implements a true continuous integration pipeline:</p>
-
         <table>
           <tr>
             <th>Stage</th>
@@ -611,13 +626,13 @@ spec:
             <td><strong>1. Test & Validate</strong></td>
             <td>Push / PR</td>
             <td><code>uv</code>, <code>pytest</code></td>
-            <td>Ensures mathematical model and endpoints pass all unit tests.</td>
+            <td>Runs all 5 unit tests verifying model mathematics and API contracts.</td>
           </tr>
           <tr>
             <td><strong>2. Container Build</strong></td>
             <td>Push to <code>main</code></td>
             <td>Docker Buildx, OCI layers</td>
-            <td>Builds hardened image using UID 1000 and layer caching.</td>
+            <td>Builds hardened image using non-root UID 1000 and layer caching.</td>
           </tr>
           <tr>
             <td><strong>3. Registry Publish</strong></td>
@@ -635,112 +650,96 @@ spec:
       </div>
     </section>
 
-    <!-- 8. SPLUNK OBSERVABILITY -->
+    <!-- 08. SPLUNK OBSERVABILITY -->
     <section id="splunk-obs">
       <h2 class="section-title"><span class="number">08</span> Production Observability & Splunk Integration</h2>
       <div class="card">
         <h3>The Log Transport Pipeline</h3>
-        <p>In distributed cloud environments, logging into a local file (e.g. <code>app.log</code>) is an anti-pattern because containers are ephemeral. If a pod crashes, its local disk is wiped!</p>
-        <p>Instead, the <strong>12-Factor App methodology (Factor XI: Logs)</strong> mandates writing all events as structured JSON directly to <code>stdout</code> and <code>stderr</code>.</p>
-
-        <div class="diagram-box">
-+----------------------+      +----------------------+
-| FastAPI App Pod      |      | Kafka Worker Pod     |
-| (Writes to stdout)   |      | (Writes to stdout)   |
-+----------------------+      +----------------------+
-           |                             |
-           +--------------+--------------+
-                          v
-         +----------------------------------+
-         | Kubelet writes to Host Node Path |
-         | /var/log/pods/*/*.log            |
-         +----------------------------------+
-                          |
-                          v
-         +----------------------------------+
-         | Fluent Bit (DaemonSet Agent)     |
-         | - Enriches logs with K8s Pod Name|
-         | - Appends Namespace & Labels     |
-         +----------------------------------+
-                          |
-                          | HTTP POST (JSON Events)
-                          v
-         +----------------------------------+
-         | Splunk HTTP Event Collector (HEC)|
-         | Port: 8088 / Index: ml_workloads |
-         +----------------------------------+
-        </div>
-
-        <h3>Essential Splunk Queries for MLOps</h3>
-        <pre><code># 1. Track API Latency Percentiles (p50, p95, p99)
-index=ml_workloads sourcetype=fastapi
-| stats avg(duration_ms) as avg_lat, p95(duration_ms) as p95_lat, p99(duration_ms) as p99_lat by endpoint
-
-# 2. Monitor Redis Cache Hit vs. Miss Ratio
-index=ml_workloads "cache"
-| stats count by status
-| eval hit_rate = (hit / (hit + miss)) * 100
-
-# 3. Detect Out-of-Memory (OOM) or Pod Restarts
-index=kube_events reason="OOMKilled" OR reason="BackOff"
-| table _time, pod_name, namespace, reason, message</code></pre>
+        <p>12-Factor App Factor XI: Applications write structured JSON to <code>stdout</code>. Kubelet writes to <code>/var/log/pods/</code> on the node. A forwarder (Fluent Bit) enriches logs with pod metadata and streams them to Splunk HEC on port <code>8088</code>.</p>
       </div>
     </section>
 
-    <!-- 9. OPERATIONS RUNBOOK -->
-    <section id="runbook">
-      <h2 class="section-title"><span class="number">09</span> Production Operations Runbook & Cheat Sheet</h2>
+    <!-- 09. REAL WAR STORIES & BUGS FIXED -->
+    <section id="war-stories">
+      <h2 class="section-title"><span class="number">09</span> Real War Stories: Bugs Hit & How We Fixed Them</h2>
       <div class="card">
-        <h3>Everyday Triage Commands</h3>
-        <pre><code># 1. Check health across all ML serving components
-microk8s kubectl get pods,svc,endpoints -n ml-serving
+        <p>These are real bugs encountered during this build—the kind of edge cases you only learn from hands-on production engineering:</p>
 
-# 2. Tail live logs across all replica pods matching our label
-microk8s kubectl logs -n ml-serving -l app.kubernetes.io/name=ml-serving-capstone -f --max-log-requests 10
-
-# 3. View live CPU and Memory consumption across pods
-microk8s kubectl top pods -n ml-serving
-
-# 4. Describe a pod to diagnose events (e.g. CrashLoopBackOff, ImagePullBackOff)
-microk8s kubectl describe pod &lt;pod-name&gt; -n ml-serving
-
-# 5. Access Redis CLI inside the running cluster
-microk8s kubectl exec -it -n ml-serving deployment/redis -- redis-cli
-
-# 6. Force immediate ArgoCD synchronization via CLI
-microk8s kubectl annotate app ml-serving-capstone -n argocd argocd.argoproj.io/refresh=hard --overwrite</code></pre>
-      </div>
-    </section>
-
-    <!-- 10. INTERVIEW Q&A -->
-    <section id="interview-qa">
-      <h2 class="section-title"><span class="number">10</span> Senior MLOps & DevOps Revision Q&A</h2>
-      <div class="card">
-        <p>Use these scenario-based interview questions to test your conceptual mastery of this stack:</p>
+        <details open>
+          <summary>Bug 1: The `async def` without `await` Trap</summary>
+          <p><strong>Symptom:</strong> High concurrency latency spikes even though the handler was declared <code>async def</code>.</p>
+          <p><strong>Root Cause:</strong> Declaring a function <code>async def</code> does <em>not</em> make code non-blocking! Using a synchronous client (e.g. standard <code>redis.Redis</code>) without <code>await</code> blocks Python's entire single-threaded event loop for every concurrent user request.</p>
+          <p><strong>The Fix:</strong> Use <code>redis.asyncio</code> and ensure every I/O call is explicitly awaited: <code>await redis_client.get(key)</code>.</p>
+        </details>
 
         <details>
-          <summary>Q1: Why is GitOps (Pull model) considered strictly superior to traditional CI/CD (Push model) for Kubernetes security?</summary>
-          <p><strong>Answer:</strong> In the traditional push model, your CI server (e.g. Jenkins or GitHub Actions runner) must possess permanent administrative <code>KUBECONFIG</code> credentials to the production cluster. If your CI system or any third-party build action is compromised, attackers gain full root control of your Kubernetes cluster. In the GitOps pull model, the cluster never accepts inbound connections; ArgoCD runs inside the cluster behind firewalls and pulls manifests unidirectionally from Git.</p>
+          <summary>Bug 2: Calling `async` Function Without `await` Silently No-ops</summary>
+          <p><strong>Symptom:</strong> Cache writes never appeared in Redis, but no exception was thrown.</p>
+          <p><strong>Root Cause:</strong> In Python, calling an <code>async def</code> function without <code>await</code> does not execute the function body; it returns an unexecuted coroutine object. Python emits a warning, but execution continues.</p>
+          <p><strong>The Fix:</strong> Always write <code>await cache_prediction(...)</code> at the call site.</p>
+        </details>
+
+        <details>
+          <summary>Bug 3: Docker Layer Cache Broken by `uv-build`</summary>
+          <p><strong>Symptom:</strong> <code>RUN uv sync --frozen --no-dev --no-install-project</code> failed with <code>cause: failed to open file /app/README.md</code>.</p>
+          <p><strong>Root Cause:</strong> <code>pyproject.toml</code> specified <code>readme = "README.md"</code>. When building the package, the build backend validated the presence of the readme file, which was missing from the layer.</p>
+          <p><strong>The Fix:</strong> Copy <code>README.md</code> alongside <code>pyproject.toml</code> and <code>uv.lock</code> before running <code>uv sync</code>.</p>
+        </details>
+
+        <details>
+          <summary>Bug 4: Kubernetes CRD Annotation 256KB Exceeded</summary>
+          <p><strong>Symptom:</strong> <code>kubectl apply -f install.yaml</code> for ArgoCD failed with <code>metadata.annotations: Too long: must have at most 262144 bytes</code>.</p>
+          <p><strong>Root Cause:</strong> Client-side <code>kubectl apply</code> stores the entire previous manifest inside <code>kubectl.kubernetes.io/last-applied-configuration</code>, exceeding the 256KB annotation limit for massive CRDs.</p>
+          <p><strong>The Fix:</strong> Use Kubernetes Server-Side Apply: <code>microk8s kubectl apply --server-side -f install.yaml</code>.</p>
+        </details>
+
+        <details>
+          <summary>Bug 5: ArgoCD "Remote Repository is Empty" Error</summary>
+          <p><strong>Symptom:</strong> ArgoCD application reported <code>ComparisonError: failed to list refs: remote repository is empty</code>.</p>
+          <p><strong>Root Cause:</strong> The ArgoCD Application was applied before local Git commits were pushed to the remote GitHub repository.</p>
+          <p><strong>The Fix:</strong> Push commits to GitHub first (`git push -u origin main`), then trigger hard refresh: <code>microk8s kubectl annotate app ml-serving-capstone -n argocd argocd.argoproj.io/refresh=hard --overwrite</code>.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- 10. RUNBOOK -->
+    <section id="runbook">
+      <h2 class="section-title"><span class="number">10</span> Production Operations Runbook & Cheat Sheet</h2>
+      <div class="card">
+        <pre><code># Check all workloads in ml-serving namespace
+microk8s kubectl get pods,svc,endpoints -n ml-serving
+
+# Stream logs across all API replicas
+microk8s kubectl logs -n ml-serving -l app.kubernetes.io/name=ml-serving-capstone -f
+
+# Verify ArgoCD controller status
+microk8s kubectl get pods -n argocd
+
+# Trigger immediate GitOps sync via CLI
+microk8s kubectl annotate app ml-serving-capstone -n argocd argocd.argoproj.io/refresh=hard --overwrite
+
+# Port forward API to host for testing
+microk8s kubectl port-forward -n ml-serving svc/ml-serving-capstone 8001:80 --address 0.0.0.0</code></pre>
+      </div>
+    </section>
+
+    <!-- 11. INTERVIEW Q&A -->
+    <section id="interview-qa">
+      <h2 class="section-title"><span class="number">11</span> Senior Revision Q&A</h2>
+      <div class="card">
+        <details>
+          <summary>Q1: Why is GitOps (Pull model) considered strictly superior to traditional CI/CD (Push model)?</summary>
+          <p><strong>Answer:</strong> In the traditional push model, your CI server possesses permanent administrative cluster credentials. If CI is breached, attackers gain full cluster root access. In the GitOps pull model, the cluster never accepts inbound connections; ArgoCD runs inside the cluster behind firewalls and pulls manifests unidirectionally from Git.</p>
         </details>
 
         <details>
           <summary>Q2: What is the exact difference between a Liveness Probe and a Readiness Probe?</summary>
-          <p><strong>Answer:</strong> A <strong>Liveness Probe</strong> detects whether the process is deadlocked or frozen; if it fails, Kubernetes terminates and restarts the container. A <strong>Readiness Probe</strong> detects whether the container is ready to accept user requests (e.g. heavy model weights loaded into memory); if it fails, Kubernetes does NOT kill the pod, but temporarily removes it from the Service endpoints so users never receive 502/503 errors.</p>
+          <p><strong>Answer:</strong> A <strong>Liveness Probe</strong> detects whether the process is deadlocked or frozen; if it fails, Kubernetes terminates and restarts the container. A <strong>Readiness Probe</strong> detects whether the container is ready to accept user requests (e.g. model loaded in RAM); if it fails, Kubernetes does NOT kill the pod, but temporarily removes it from Service endpoints.</p>
         </details>
 
         <details>
           <summary>Q3: Why did we use Apache Kafka in KRaft mode instead of with ZooKeeper?</summary>
-          <p><strong>Answer:</strong> KRaft (Kafka Raft Metadata mode) integrates consensus directly into Kafka brokers. It eliminates the separate ZooKeeper JVM processes, drastically reduces RAM usage, prevents metadata synchronization discrepancies, and accelerates cluster recovery from minutes to seconds.</p>
-        </details>
-
-        <details>
-          <summary>Q4: How does our Dockerfile utilize layer caching with `uv`?</summary>
-          <p><strong>Answer:</strong> We first copy only <code>pyproject.toml</code>, <code>uv.lock</code>, and <code>README.md</code>, running <code>uv sync --frozen --no-dev --no-install-project</code>. This downloads and caches all external third-party Python wheels in an isolated Docker layer. We only copy <code>src/</code> in a later step. When developers change application code, Docker skips downloading wheels and rebuilds in less than 2 seconds.</p>
-        </details>
-
-        <details>
-          <summary>Q5: Why did we implement non-root user execution (`UID 1000`)?</summary>
-          <p><strong>Answer:</strong> Running containers as root is a violation of Kubernetes PodSecurityStandards. If an application dependency has an escape vulnerability, a root container process can compromise the underlying Linux host kernel. Running as unprivileged user 1000 prevents privilege escalation.</p>
+          <p><strong>Answer:</strong> KRaft integrates consensus directly into Kafka brokers. It eliminates separate ZooKeeper JVM processes, reduces memory usage, prevents metadata synchronization discrepancies, and accelerates cluster recovery from minutes to seconds.</p>
         </details>
       </div>
     </section>
@@ -748,7 +747,6 @@ microk8s kubectl annotate app ml-serving-capstone -n argocd argocd.argoproj.io/r
   </main>
 
   <script>
-    // Smooth scrolling & active navigation highlight
     const links = document.querySelectorAll('sidebar a');
     window.addEventListener('scroll', () => {
       let current = '';
