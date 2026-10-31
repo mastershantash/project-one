@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Production MLOps & GitOps Architecture Guide</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --success: #4ade80;
+      --warning: #fbbf24;
+      --danger: #f87171;
+      --code-bg: #090d16;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      display: flex;
+    }
+    /* Sidebar */
+    sidebar {
+      width: 280px;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      background: #090d16;
+      border-right: 1px solid var(--card-border);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+    }
+    sidebar h2 {
+      font-size: 1.1rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    sidebar a {
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      display: block;
+    }
+    sidebar a:hover, sidebar a.active {
+      color: #fff;
+      background: var(--card-bg);
+      border-left: 3px solid var(--accent);
+    }
+    /* Main Content */
+    main {
+      flex: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 32px 80px;
+    }
+    header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    header h1 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-right: 6px;
+    }
+    .badge-gitops { background: #3b82f6; color: #fff; }
+    .badge-k8s { background: #326ce5; color: #fff; }
+    .badge-helm { background: #0f1689; color: #fff; }
+    .badge-splunk { background: #ea580c; color: #fff; }
+
+    section {
+      margin-bottom: 48px;
+      scroll-margin-top: 30px;
+    }
+    h2.section-title {
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+    p { margin-bottom: 12px; color: #cbd5e1; }
+    ul { margin-left: 20px; margin-bottom: 16px; color: #cbd5e1; }
+    li { margin-bottom: 6px; }
+
+    /* Code Blocks */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      margin: 12px 0 16px;
+      position: relative;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.88em;
+      color: #38bdf8;
+    }
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+    .callout {
+      border-left: 4px solid var(--accent);
+      background: var(--accent-glow);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+    }
+    .callout.warning {
+      border-left-color: var(--warning);
+      background: rgba(251, 191, 36, 0.1);
+    }
+    .diagram-box {
+      background: #020617;
+      border: 1px dashed var(--card-border);
+      border-radius: 8px;
+      padding: 20px;
+      font-family: monospace;
+      white-space: pre;
+      line-height: 1.4;
+      color: #38bdf8;
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    th, td {
+      border: 1px solid var(--card-border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    th {
+      background: #090d16;
+      color: var(--accent);
+    }
+    tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+  </style>
+</head>
+<body>
+
+  <sidebar>
+    <h2>Table of Contents</h2>
+    <a href="#overview">1. System Architecture</a>
+    <a href="#12factor">2. 12-Factor App & Probes</a>
+    <a href="#docker">3. Docker Hardening</a>
+    <a href="#helm">4. Helm Packaging</a>
+    <a href="#gitops">5. GitOps & ArgoCD</a>
+    <a href="#splunk">6. Splunk Logging</a>
+    <a href="#cheatsheet">7. Ops Cheat Sheet</a>
+    <a href="#quiz">8. Self-Quiz & Review</a>
+  </sidebar>
+
+  <main>
+    <header>
+      <div>
+        <span class="badge badge-gitops">GitOps</span>
+        <span class="badge badge-k8s">Kubernetes</span>
+        <span class="badge badge-helm">Helm 3</span>
+        <span class="badge badge-splunk">Splunk</span>
+      </div>
+      <h1>Production MLOps & GitOps Architecture</h1>
+      <p>Interactive study reference for building, packaging, deploying, and observing ML workloads in Kubernetes.</p>
+    </header>
+
+    <!-- SECTION 1 -->
+    <section id="overview">
+      <h2 class="section-title">1. System Architecture Overview</h2>
+      <div class="card">
+        <p>The system is built on modern GitOps principles where Git is the <strong>single source of truth</strong>. The Kubernetes cluster never exposes inbound deployment ports; instead, ArgoCD continuously reconciles cluster state against Git.</p>
+        
+        <div class="diagram-box">
++-----------------------------------------------------------------------------------+
+|                                GIT REPOSITORY (GitOps)                            |
+|    - App Code (FastAPI, scikit-learn, Kafka Worker)                              |
+|    - Helm Chart (Deployments, Services, ConfigMaps, HPA)                          |
+|    - ArgoCD Application Manifest                                                 |
++-----------------------------------------------------------------------------------+
+                                         |
+                                         | Pull via HTTPS / SSH
+                                         v
++-----------------------------------------------------------------------------------+
+|                        KUBERNETES CLUSTER (MicroK8s)                              |
+|                                                                                   |
+|  +--------------------+                                                           |
+|  |   ArgoCD Engine    | <--- Reconciles state & fixes manual drift                |
+|  +--------------------+                                                           |
+|            |                                                                      |
+|            v                                                                      |
+|  +-----------------------------------------------------------------------------+  |
+|  | Namespace: 'ml-serving'                                                     |  |
+|  |                                                                             |  |
+|  |   [FastAPI Pod 1] <----+                                                    |  |
+|  |   [FastAPI Pod 2] <----+---> [Service: redis-service:6379] (Cache)         |  |
+|  |        ^               |                                                    |  |
+|  |   (HPA Autoscaling)    +---> [Service: kafka-service:9092] (Streaming)      |  |
+|  |                                      ^                                      |  |
+|  |   [Kafka Worker Pod] ----------------+                                      |  |
+|  +-----------------------------------------------------------------------------+  |
+|            |                                                                      |
+|            | Pod Stdout/Stderr logs                                               |
+|            v                                                                      |
+|  +--------------------+               +----------------------------------------+  |
+|  |  Fluent Bit Agent  | ------------> | Splunk Enterprise (Container Port 8088)|  |
+|  +--------------------+   (HEC Event) +----------------------------------------+  |
++-----------------------------------------------------------------------------------+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section id="12factor">
+      <h2 class="section-title">2. The 12-Factor App & Kubernetes Probes</h2>
+      <div class="card">
+        <h3>A. Decoupled Configuration (12-Factor Factor III)</h3>
+        <p>Never hardcode hostnames like <code>localhost:6379</code>. In Kubernetes, services get internal cluster DNS names injected via environment variables.</p>
+        <pre><code># In redis_cache.py
+REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))</code></pre>
+
+        <h3>B. Graceful Degradation Pattern</h3>
+        <p>A cache miss or cache downtime should <strong>never</strong> crash an API endpoint with HTTP 500. We wrapped Redis calls in try/except blocks:</p>
+        <div class="callout">
+          <strong>Key Insight:</strong> If Redis crashes, our API simply logs a warning and performs inference directly. High availability over brittle dependencies!
+        </div>
+
+        <h3>C. Kubernetes Health Probes</h3>
+        <table>
+          <tr>
+            <th>Probe</th>
+            <th>Endpoint</th>
+            <th>Question it Answers</th>
+            <th>Action on Failure</th>
+          </tr>
+          <tr>
+            <td><strong>Liveness Probe</strong></td>
+            <td><code>/healthz</code></td>
+            <td>Is the Python process alive or deadlocked?</td>
+            <td>Kubelet kills and restarts the container.</td>
+          </tr>
+          <tr>
+            <td><strong>Readiness Probe</strong></td>
+            <td><code>/readyz</code></td>
+            <td>Is the ML model loaded into memory?</td>
+            <td>Stops routing traffic to this pod until ready.</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section id="docker">
+      <h2 class="section-title">3. Production Docker Hardening</h2>
+      <div class="card">
+        <h3>A. Non-Root Execution (Security Standard)</h3>
+        <p>By default, Docker containers run as <code>root</code> (UID 0). In production Kubernetes, running as root is a major security vulnerability (PodSecurityStandards violation). We explicitly configure an unprivileged user:</p>
+        <pre><code>RUN groupadd -g 1000 appgroup && useradd -u 1000 -g appgroup -s /bin/bash -m appuser
+USER appuser</code></pre>
+
+        <h3>B. Docker Layer Caching with <code>uv</code></h3>
+        <p>Dependencies change much less frequently than application code. We install external wheels first without the project code, taking full advantage of layer caching:</p>
+        <pre><code># Step 1: Copy lockfiles & install dependencies (Cached layer)
+COPY pyproject.toml uv.lock README.md ./
+RUN uv sync --frozen --no-dev --no-install-project
+
+# Step 2: Copy source code and perform fast local install
+COPY --chown=appuser:appgroup src/ ./src/
+RUN uv sync --frozen --no-dev</code></pre>
+      </div>
+    </section>
+
+    <!-- SECTION 4 -->
+    <section id="helm">
+      <h2 class="section-title">4. Helm Packaging & Templating</h2>
+      <div class="card">
+        <h3>Why Helm?</h3>
+        <p>Helm provides variable templating, versioning, and environment-specific overrides (<code>values-dev.yaml</code> vs <code>values-prod.yaml</code>).</p>
+        
+        <h3>Chart Structure</h3>
+        <pre><code>helm/ml-serving-capstone/
+├── Chart.yaml              # Chart metadata (name, version)
+├── values.yaml             # Defaults: replicas: 2, image: v0.1.0, resources
+└── templates/
+    ├── deployment.yaml     # Pod template with probes and securityContext
+    ├── service.yaml        # ClusterIP routing
+    ├── configmap.yaml      # Dynamic environment variables
+    ├── redis.yaml          # In-cluster Redis deployment
+    ├── kafka.yaml          # In-cluster Kafka broker (KRaft mode)
+    └── hpa.yaml            # Horizontal Pod Autoscaler</code></pre>
+
+        <h3>Testing & Validating Helm Charts</h3>
+        <pre><code># Check for syntax errors and best practices
+microk8s helm3 lint helm/ml-serving-capstone
+
+# Dry-run render the exact Kubernetes YAML output
+microk8s helm3 template test-release helm/ml-serving-capstone</code></pre>
+      </div>
+    </section>
+
+    <!-- SECTION 5 -->
+    <section id="gitops">
+      <h2 class="section-title">5. GitOps & ArgoCD in Depth</h2>
+      <div class="card">
+        <h3>Push vs. Pull (GitOps) Model</h3>
+        <table>
+          <tr>
+            <th>Feature</th>
+            <th>Traditional Push (Jenkins/GitHub Actions)</th>
+            <th>GitOps Pull (ArgoCD)</th>
+          </tr>
+          <tr>
+            <td><strong>Cluster Credentials</strong></td>
+            <td>CI holds admin kubeconfig (High Risk)</td>
+            <td>CI never touches cluster; ArgoCD lives inside (Zero Trust)</td>
+          </tr>
+          <tr>
+            <td><strong>Config Drift</strong></td>
+            <td>Manual changes with <code>kubectl</code> stay forever</td>
+            <td><strong>Self-Healing:</strong> Reverts manual tampering within seconds</td>
+          </tr>
+          <tr>
+            <td><strong>Rollbacks</strong></td>
+            <td>Re-running complex deployment pipelines</td>
+            <td>Single <code>git revert</code> commit in Git</td>
+          </tr>
+        </table>
+
+        <h3>The Declarative ArgoCD Manifest (<code>argocd/application.yaml</code>)</h3>
+        <pre><code>apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ml-serving-capstone
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io # Cascading deletion
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/mastershantash/project-one.git'
+    targetRevision: main
+    path: ml-serving-capstone/helm/ml-serving-capstone
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: ml-serving
+  syncPolicy:
+    automated:
+      prune: true     # Deletes pods if deleted from Git
+      selfHeal: true  # Corrects unauthorized manual kubectl edits
+    syncOptions:
+      - CreateNamespace=true</code></pre>
+      </div>
+    </section>
+
+    <!-- SECTION 6 -->
+    <section id="splunk">
+      <h2 class="section-title">6. Production Logging with Splunk</h2>
+      <div class="card">
+        <h3>How Kubernetes Ships Logs to Splunk</h3>
+        <p>In Kubernetes, applications write structured JSON to <code>stdout</code>. The container engine writes these to <code>/var/log/pods/</code> on the host node.</p>
+        <p>A log forwarder (like <strong>Fluent Bit</strong>) runs as a <code>DaemonSet</code> (one pod per node), tails those log files, attaches Kubernetes metadata (namespace, pod name, container name), and posts them via HTTP Event Collector (HEC) to Splunk on port <code>8088</code>.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 7 -->
+    <section id="cheatsheet">
+      <h2 class="section-title">7. Production Operations Cheat Sheet</h2>
+      <div class="card">
+        <h3>Kubernetes Commands</h3>
+        <pre><code># Check all pods in your workload namespace
+microk8s kubectl get pods -n ml-serving
+
+# Stream logs from the ML API pods
+microk8s kubectl logs -n ml-serving -l app.kubernetes.io/name=ml-serving-capstone -f
+
+# Check ArgoCD pod status
+microk8s kubectl get pods -n argocd</code></pre>
+
+        <h3>ArgoCD Access</h3>
+        <pre><code># ArgoCD Web UI: https://localhost:30781
+# Username: admin
+# Retrieve admin password:
+microk8s kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d</code></pre>
+
+        <h3>Splunk Access</h3>
+        <pre><code># Splunk Web UI: http://localhost:8000
+# Username: admin
+# Password: SplunkAdmin123!</code></pre>
+      </div>
+    </section>
+
+    <!-- SECTION 8 -->
+    <section id="quiz">
+      <h2 class="section-title">8. Self-Quiz & Review Checkpoints</h2>
+      <div class="card">
+        <h3>Quick Test Your Knowledge:</h3>
+        <ol>
+          <li><strong>Why do we separate Liveness and Readiness probes?</strong><br>
+            <em>Answer:</em> If a model takes 30 seconds to load, a liveness probe might prematurely kill the pod thinking it's deadlocked. A readiness probe simply isolates the pod from traffic until it finishes loading.
+          </li>
+          <li style="margin-top: 12px;"><strong>What happens when someone manually deletes a deployment with <code>kubectl delete</code> when ArgoCD <code>selfHeal: true</code> is active?</strong><br>
+            <em>Answer:</em> ArgoCD detects that the live cluster state deviates from the Git repository and instantly recreates the deployment to match Git.
+          </li>
+          <li style="margin-top: 12px;"><strong>Why do we run containers as UID 1000 instead of root?</strong><br>
+            <em>Answer:</em> If an attacker exploits a vulnerability in the application (like a remote code execution in a Python library), they are trapped as an unprivileged user and cannot compromise the host kernel.
+          </li>
+        </ol>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Smooth scrolling & active navigation highlight
+    const links = document.querySelectorAll('sidebar a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      document.querySelectorAll('section').forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (pageYOffset >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+      links.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
