@@ -69,3 +69,10 @@ redis:
 kafka:
   enabled: true
   image: apache/kafka:latest
+
+# Log Shipper (DaemonSet Pattern) for Splunk Observability
+fluentBit:
+  enabled: true
+  splunkHost: "192.168.29.122"
+  splunkPort: 8088
+  splunkToken: "2a58141a-232e-41ea-9b7c-5ee487970abe"
