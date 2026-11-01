@@ -5,7 +5,7 @@ replicaCount: 2
 image:
   repository: ghcr.io/mastershantash/project-one/ml-serving-capstone
   pullPolicy: Always
-  tag: "latest"
+  tag: "sha-c0a5d5d"
 
 service:
   type: ClusterIP
