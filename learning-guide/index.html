@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mastering Production AI/ML Apps & GitOps: The Complete Engineering Blueprint</title>
+  <title>Mastering Production AI/ML Systems & GitOps: The Definitive Blueprint</title>
   <style>
     :root {
       --bg: #0b0f19;
@@ -14,11 +14,13 @@
       --text: #f3f4f6;
       --text-muted: #9ca3af;
       --accent: #38bdf8;
-      --accent-glow: rgba(56, 189, 248, 0.12);
-      --purple: #a855f7;
-      --green: #22c55e;
-      --yellow: #f59e0b;
-      --red: #ef4444;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --purple: #c084fc;
+      --purple-glow: rgba(192, 132, 252, 0.15);
+      --green: #4ade80;
+      --green-glow: rgba(74, 222, 128, 0.15);
+      --yellow: #fbbf24;
+      --red: #f87171;
       --code-bg: #030712;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +32,6 @@
       line-height: 1.65;
       display: flex;
     }
-    /* Sidebar */
     sidebar {
       width: 320px;
       height: 100vh;
@@ -41,201 +42,214 @@
       padding: 24px 14px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 5px;
       overflow-y: auto;
       flex-shrink: 0;
+      font-size: 0.88rem;
     }
     sidebar h2 {
-      font-size: 0.8rem;
-      color: var(--accent);
+      font-size: 1rem;
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-top: 14px;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      padding-left: 8px;
+    }
+    sidebar .part-divider {
+      margin-top: 16px;
       margin-bottom: 6px;
-      padding-left: 10px;
+      padding: 6px 10px;
+      background: rgba(56, 189, 248, 0.1);
+      border-left: 3px solid var(--accent);
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--accent);
+    }
+    sidebar .part-divider.part2 {
+      background: rgba(192, 132, 252, 0.1);
+      border-left-color: var(--purple);
+      color: var(--purple);
     }
     sidebar a {
       color: var(--text-muted);
       text-decoration: none;
-      padding: 7px 12px;
+      padding: 6px 10px;
       border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
       display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    sidebar a:hover, sidebar a.active {
+    sidebar a:hover {
       color: #fff;
-      background: var(--card-bg);
-      border-left: 3px solid var(--accent);
+      background: var(--card-hover);
       padding-left: 14px;
     }
-    /* Main Content */
+    sidebar a.active {
+      color: var(--accent);
+      background: var(--accent-glow);
+      font-weight: 600;
+    }
+    sidebar a.part2:hover {
+      color: #fff;
+    }
+    sidebar a.part2.active {
+      color: var(--purple);
+      background: var(--purple-glow);
+    }
     main {
       flex: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 44px 44px 100px;
+      padding: 40px 60px;
+      max-width: 1300px;
       overflow-x: hidden;
     }
     header {
-      margin-bottom: 44px;
-      padding-bottom: 24px;
+      margin-bottom: 40px;
       border-bottom: 1px solid var(--card-border);
+      padding-bottom: 24px;
+    }
+    h1 {
+      font-size: 2.3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+    header p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 950px;
     }
     .badge-container {
       display: flex;
       gap: 8px;
-      margin-bottom: 14px;
       flex-wrap: wrap;
+      margin-bottom: 16px;
     }
     .badge {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 9999px;
       font-size: 0.75rem;
-      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    .badge-gitops { background: #1e40af; color: #93c5fd; }
-    .badge-k8s { background: #0369a1; color: #bae6fd; }
-    .badge-ml { background: #6b21a8; color: #e9d5ff; }
-    .badge-infra { background: #065f46; color: #a7f3d0; }
-    .badge-splunk { background: #9a3412; color: #fed7aa; }
-    .badge-java { background: #b45309; color: #fef3c7; }
-
-    header h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 10px;
-      background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    header p {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-    }
-
-    section {
-      margin-bottom: 56px;
-      scroll-margin-top: 30px;
-    }
-    h2.section-title {
-      font-size: 1.7rem;
-      font-weight: 700;
-      margin-bottom: 18px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 2px solid var(--card-border);
-      padding-bottom: 8px;
-    }
-    .section-title span.number {
-      background: var(--accent-glow);
-      color: var(--accent);
-      padding: 2px 10px;
-      border-radius: 6px;
-      font-size: 1.05rem;
-    }
-
-    .card {
+    .badge-java { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .badge-ml { background: rgba(56, 189, 248, 0.2); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.4); }
+    .badge-k8s { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4); }
+    .badge-helm { background: rgba(168, 85, 247, 0.2); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.4); }
+    .badge-gitops { background: rgba(34, 197, 94, 0.2); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.4); }
+    .badge-splunk { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.4); }
+    
+    .section-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 12px;
-      padding: 26px;
-      margin-bottom: 22px;
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+      padding: 32px;
+      margin-bottom: 36px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
     }
-    .card h3 {
-      font-size: 1.25rem;
-      margin-bottom: 12px;
+    .part-banner {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(17, 24, 39, 0.8));
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 36px;
+    }
+    .part-banner.part2-banner {
+      background: linear-gradient(135deg, rgba(192, 132, 252, 0.15), rgba(17, 24, 39, 0.8));
+      border-color: var(--purple);
+    }
+    .part-banner h2 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
       color: #fff;
+    }
+    .part-banner.part2-banner h2 {
+      color: #fff;
+    }
+    .part-banner p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    h2 {
+      font-size: 1.55rem;
+      color: #fff;
+      margin-bottom: 16px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
-    .card h4 {
-      font-size: 1.02rem;
-      color: var(--accent);
-      margin: 16px 0 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    p { margin-bottom: 12px; color: #cbd5e1; font-size: 0.98rem; }
-    ul, ol { margin-left: 24px; margin-bottom: 16px; color: #cbd5e1; }
-    li { margin-bottom: 7px; }
-
-    /* Code Blocks */
-    pre {
-      background: var(--code-bg);
-      border: 1px solid #1f2937;
-      border-radius: 8px;
-      padding: 16px;
-      overflow-x: auto;
-      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.86rem;
+    h3 {
+      font-size: 1.25rem;
       color: #e2e8f0;
-      margin: 12px 0 18px;
-      line-height: 1.5;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+    h4 {
+      font-size: 1.05rem;
+      color: #cbd5e1;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+    p, ul, ol {
+      color: #cbd5e1;
+      margin-bottom: 14px;
+    }
+    ul, ol {
+      padding-left: 24px;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    strong {
+      color: #fff;
     }
     code {
-      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      background: rgba(255, 255, 255, 0.08);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background-color: var(--code-bg);
+      color: var(--accent);
       padding: 2px 6px;
       border-radius: 4px;
       font-size: 0.88em;
-      color: #38bdf8;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    pre {
+      background-color: var(--code-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px 0;
+      overflow-x: auto;
+      position: relative;
     }
     pre code {
       background: transparent;
       padding: 0;
-      color: inherit;
+      border: none;
+      color: #e5e7eb;
+      font-size: 0.88rem;
+      white-space: pre;
+      line-height: 1.45;
     }
-    .keyword { color: #f472b6; }
-    .string { color: #a5f3fc; }
-    .comment { color: #64748b; font-style: italic; }
-    .function { color: #93c5fd; }
-
-    /* Callouts */
-    .callout {
-      border-left: 4px solid var(--accent);
-      background: var(--accent-glow);
-      padding: 16px 20px;
-      border-radius: 0 10px 10px 0;
-      margin: 18px 0;
-    }
-    .callout.warning {
-      border-left-color: var(--yellow);
-      background: rgba(245, 158, 11, 0.1);
-    }
-    .callout.success {
-      border-left-color: var(--green);
-      background: rgba(34, 197, 94, 0.1);
-    }
-    .callout.purple {
-      border-left-color: var(--purple);
-      background: rgba(168, 85, 247, 0.1);
-    }
-    .callout.java {
-      border-left-color: var(--yellow);
-      background: rgba(180, 83, 9, 0.12);
+    .file-path {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--purple);
+      background: rgba(192, 132, 252, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(192, 132, 252, 0.3);
+      margin-bottom: 8px;
     }
 
-    /* Diagram Styles */
-    .diagram-svg {
-      width: 100%;
-      background: #030712;
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      margin: 18px 0;
-      display: block;
-    }
-
-    /* Table */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -248,25 +262,50 @@
       text-align: left;
     }
     th {
-      background: #030712;
-      color: var(--accent);
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #fff;
       font-weight: 600;
     }
-    tr:nth-child(even) { background: rgba(255, 255, 255, 0.015); }
-    tr:hover { background: rgba(255, 255, 255, 0.03); }
+    tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.02); }
 
-    /* Collapsible Details */
+    .callout {
+      border-left: 4px solid var(--accent);
+      background: rgba(56, 189, 248, 0.08);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+    .callout.callout-warn {
+      border-left-color: var(--yellow);
+      background: rgba(245, 158, 11, 0.08);
+    }
+    .callout.callout-purple {
+      border-left-color: var(--purple);
+      background: rgba(192, 132, 252, 0.08);
+    }
+    .callout.callout-green {
+      border-left-color: var(--green);
+      background: rgba(74, 222, 128, 0.08);
+    }
+    .callout-title {
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     details {
-      background: #080d1a;
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--card-border);
       border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 12px;
-      transition: all 0.2s;
+      padding: 14px 18px;
+      margin-bottom: 14px;
     }
     details[open] {
-      border-color: var(--accent);
-      background: var(--card-bg);
+      border-color: #374151;
+      background: rgba(255, 255, 255, 0.05);
     }
     summary {
       cursor: pointer;
@@ -278,27 +317,43 @@
       user-select: none;
     }
     summary:hover { color: var(--accent); }
-    details p { margin-top: 12px; }
+    details > div { margin-top: 14px; }
   </style>
 </head>
 <body>
 
   <sidebar>
-    <h2>Curriculum Sitemap</h2>
+    <h2>Master Guide</h2>
     <a href="#java-bridge">00. Java ↔ Python Rosetta Stone</a>
-    <a href="#topology">01. Dual-Namespace Platform Topology</a>
-    <a href="#app-tier">02. Core ML App & Dual-Path Design</a>
-    <a href="#caching">03. Caching & Resilience Pattern</a>
-    <a href="#k8s-runtime">04. Kubernetes Runtime Architecture</a>
-    <a href="#helm-deepdive">05. Multi-Chart Packaging (ml-infra & ml-app)</a>
-    <a href="#gitops-engine">06. GitOps Multi-App Architecture</a>
-    <a href="#ci-cd-pipeline">07. Automated CI/CD Pipeline</a>
-    <a href="#splunk-obs">08. Full Observability (Splunk, Prom, Grafana)</a>
-    <a href="#kafka-platform">09. Declarative Kafka & Kafka UI</a>
-    <a href="#secrets-management">10. Kubernetes Secrets & ESO Architecture</a>
-    <a href="#war-stories">11. Real War Stories & Bugs Fixed</a>
-    <a href="#runbook">12. Operations Runbook & Port Contracts</a>
-    <a href="#interview-qa">13. Senior Revision Q&A</a>
+
+    <div class="part-divider">Part I: Application Layer</div>
+    <a href="#toolchain">01. Toolchain & Environment Setup</a>
+    <a href="#scaffolding">02. Modern Project Scaffolding</a>
+    <a href="#dependencies">03. Dependencies & Lockfiles</a>
+    <a href="#ml-model">04. ML Model Implementation</a>
+    <a href="#caching-layer">05. Async Redis Caching Layer</a>
+    <a href="#fastapi-app">06. FastAPI Serving REST API</a>
+    <a href="#metrics-instrument">07. Prometheus Instrumentation</a>
+    <a href="#kafka-worker">08. Kafka Streaming Worker</a>
+    <a href="#code-quality">09. Static Analysis (Ruff, Mypy)</a>
+    <a href="#testing-suite">10. Automated Pytest Test Suite</a>
+    <a href="#docker-build">11. Hardened Multi-Stage Docker</a>
+    <a href="#local-runbook">12. Local Verification Runbook</a>
+
+    <div class="part-divider part2">Part II: Platform & GitOps</div>
+    <a href="#k8s-runtime" class="part2">13. MicroK8s Cluster Setup</a>
+    <a href="#splunk-setup" class="part2">14. Splunk Enterprise & HEC Setup</a>
+    <a href="#polyrepo-design" class="part2">15. Decoupled Polyrepo Pattern</a>
+    <a href="#dual-namespaces" class="part2">16. Dual-Namespace Topology & DNS</a>
+    <a href="#helm-platform" class="part2">17. Shared Platform Chart (ml-infra)</a>
+    <a href="#helm-workload" class="part2">18. Workload Serving Chart (ml-app)</a>
+    <a href="#declarative-kafka" class="part2">19. Declarative Topics & Kafka UI</a>
+    <a href="#argocd-setup" class="part2">20. ArgoCD GitOps Engine Setup</a>
+    <a href="#argocd-apps" class="part2">21. Multi-App GitOps Manifests</a>
+    <a href="#ci-cd-ghcr" class="part2">22. Enterprise CI/CD & GHCR</a>
+    <a href="#cluster-runbook" class="part2">23. Cluster Runbook & Port Matrix</a>
+    <a href="#war-stories" class="part2">24. Real War Stories (12 Bugs Fixed)</a>
+    <a href="#interview-qa" class="part2">25. Senior Engineering Revision Q&A</a>
   </sidebar>
 
   <main>
@@ -313,874 +368,2485 @@
         <span class="badge badge-ml">Kafka UI (30880)</span>
         <span class="badge badge-java">Grafana (30300)</span>
       </div>
-      <h1>Production AI/ML Apps & GitOps Architecture</h1>
-      <p>A complete engineering guide tailored for senior distributed systems & Java backend engineers mastering Python AI/ML serving, cloud-native Kubernetes platform engineering, and automated GitOps CI/CD.</p>
+      <h1>Production AI/ML Systems & GitOps Blueprint</h1>
+      <p>The definitive, zero-ambiguity engineering guide for creating, containerizing, and productionizing high-throughput ML serving systems with cloud-native Kubernetes, GitOps, and full observability from scratch. Written specifically for senior backend and distributed systems engineers.</p>
     </header>
 
-    <!-- 00. JAVA TO PYTHON ROSETTA STONE -->
-    <section id="java-bridge">
-      <h2 class="section-title"><span class="number">00</span> The Java ↔ Python Mental Rosetta Stone</h2>
-      <div class="card">
-        <div class="callout java">
-          <h4>Your Foundation: Senior Java Backend & Distributed Systems</h4>
-          You already know high-throughput microservices, concurrency, Kafka brokers, Redis caching, and AWS/Kubernetes. The goal is <strong>not</strong> to start from zero—it is mapping what you already master in Java directly to the Python AI/ML ecosystem.
-        </div>
+    <!-- Section 00: Java Bridge -->
+    <section id="java-bridge" class="section-card">
+      <h2>00. Java ↔ Python Rosetta Stone: The Senior Architect's Mental Model</h2>
+      <p>Transitioning from enterprise Java (Spring Boot, Netty, JVM) to modern production Python requires shifting mental models around execution runtimes, concurrency primitives, packaging, and type verification. Python in 2026 is no longer untyped, script-heavy glue code; it is a strictly typed, async-first ecosystem.</p>
 
-        <h3>Language & Ecosystem Rosetta Stone</h3>
-        <table>
+      <table>
+        <thead>
           <tr>
-            <th>Java / Spring Ecosystem</th>
-            <th>Python / MLOps Ecosystem</th>
-            <th>Senior Architectural Insight</th>
+            <th>Concept / Component</th>
+            <th>Enterprise Java Ecosystem</th>
+            <th>Modern Python (3.12+) MLOps Ecosystem</th>
+            <th>Key Architectural Difference</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Runtime & Concurrency</strong></td>
+            <td>JVM threads (1:1 OS threads or Project Loom Virtual Threads)</td>
+            <td>CPython Event Loop (asyncio) + GIL; OS multiprocessing for CPU bound ML</td>
+            <td>I/O is non-blocking cooperative single-threaded; CPU-bound inference runs in process workers or external C/C++ bindings (NumPy/OpenBLAS).</td>
           </tr>
           <tr>
-            <td><strong>Spring Boot (<code>@RestController</code>)</strong></td>
-            <td><strong>FastAPI</strong></td>
-            <td>Both provide declarative route handlers and dependency injection. FastAPI generates OpenAPI/Swagger documentation automatically from Python type hints.</td>
+            <td><strong>Package & Build Tool</strong></td>
+            <td>Maven (<code>pom.xml</code>) / Gradle (<code>build.gradle.kts</code>)</td>
+            <td><code>uv</code> (Rust-based) + <code>pyproject.toml</code> (PEP 517/621)</td>
+            <td><code>uv</code> installs in milliseconds via global content-addressable cache, fully replacing pip, virtualenv, and poetry.</td>
           </tr>
           <tr>
-            <td><strong>Tomcat / Netty</strong></td>
-            <td><strong>Uvicorn (ASGI)</strong></td>
-            <td>FastAPI does not handle raw HTTP sockets directly; Uvicorn is the high-performance ASGI web server running uvloop (libuv) underneath.</td>
+            <td><strong>Dependency Isolation</strong></td>
+            <td>Classpath isolation / Fat JAR / Docker image</td>
+            <td>Virtual Environment (<code>.venv/</code>)</td>
+            <td>Virtual environments isolate site-packages per project folder instead of classpath scanning.</td>
           </tr>
           <tr>
-            <td><strong><code>@RequestBody</code> DTO + <code>@Valid</code></strong></td>
-            <td><strong>Pydantic v2 (<code>BaseModel</code>)</strong></td>
-            <td>Validates types, converts types, and enforces constraints. Rejects invalid requests with HTTP <code>422 Unprocessable Entity</code> <em>before</em> the handler executes.</td>
+            <td><strong>REST Framework</strong></td>
+            <td>Spring Boot (Spring WebFlux / MVC)</td>
+            <td>FastAPI + Uvicorn (ASGI)</td>
+            <td>FastAPI relies on Starlette and Pydantic; asynchronous handlers execute directly on the uvloop event loop without thread overhead.</td>
           </tr>
           <tr>
-            <td><strong><code>@ConfigurationProperties</code></strong></td>
-            <td><strong><code>pydantic-settings</code></strong></td>
-            <td>Loads typed, validated configurations from environment variables (e.g. <code>REDIS_HOST</code>, <code>KAFKA_BOOTSTRAP_SERVERS</code>).</td>
+            <td><strong>Data Validation & DTOs</strong></td>
+            <td>Lombok (<code>@Data</code>, <code>@Builder</code>) + Jackson / Bean Validation</td>
+            <td>Pydantic v2 (<code>BaseModel</code>)</td>
+            <td>Validation is compiled in Rust (pydantic-core), providing instantaneous serialization and strict type enforcement at runtime.</td>
           </tr>
           <tr>
-            <td><strong>Maven / Gradle (<code>pom.xml</code>)</strong></td>
-            <td><strong><code>uv</code> (<code>pyproject.toml</code>)</strong></td>
-            <td><code>uv</code> (written in Rust) replaces pip and poetry. It manages virtual environments and locks the entire transitive dependency tree in <code>uv.lock</code>.</td>
+            <td><strong>Redis Client</strong></td>
+            <td>Jedis / Lettuce (Spring Data Redis)</td>
+            <td><code>redis.asyncio</code></td>
+            <td>Async connection pool executing non-blocking commands yielding to the event loop.</td>
           </tr>
           <tr>
-            <td><strong>JUnit 5</strong></td>
-            <td><strong><code>pytest</code></strong></td>
-            <td>Convention-over-configuration: tests live in <code>tests/test_*.py</code>, functions named <code>test_*()</code>, using native <code>assert</code> statements.</td>
+            <td><strong>Kafka Client</strong></td>
+            <td>Spring Kafka / <code>KafkaConsumer</code></td>
+            <td><code>aiokafka</code> (AsyncIO Kafka)</td>
+            <td>Event loop integrated consumer loop yielding control during network poll cycles.</td>
           </tr>
           <tr>
-            <td><strong>Checkstyle / Spotless</strong></td>
-            <td><strong><code>ruff</code></strong></td>
-            <td>Blazing fast Rust linter & formatter that auto-fixes 90% of code-style violations.</td>
+            <td><strong>Testing Framework</strong></td>
+            <td>JUnit 5 + Mockito + AssertJ</td>
+            <td><code>pytest</code> + <code>pytest-asyncio</code> + <code>unittest.mock</code></td>
+            <td>Module-level test discovery, fixture dependency injection via function arguments.</td>
           </tr>
           <tr>
-            <td><strong>Java Compiler Type Checks</strong></td>
-            <td><strong><code>mypy</code></strong></td>
-            <td>Static type analyzer enforcing type contracts at build time before code reaches runtime.</td>
+            <td><strong>Static Analysis & Linting</strong></td>
+            <td>Checkstyle + SpotBugs + SonarQube</td>
+            <td><code>ruff</code> (Rust linter & formatter) + <code>mypy</code> (static type checker)</td>
+            <td>Ruff runs 10-100x faster than legacy flake8/black; Mypy enforces strict compile-time type verification.</td>
           </tr>
           <tr>
-            <td><strong><code>try-with-resources</code></strong></td>
-            <td><strong><code>with ... as f:</code> (Context Manager)</strong></td>
-            <td>Guarantees resource release (closing sockets, DB connections, locks) even if unhandled exceptions occur mid-block.</td>
+            <td><strong>Production Artifact</strong></td>
+            <td>Uber JAR (Spring Boot Executable JAR) / Jib</td>
+            <td>Multi-Stage OCI Container Image with <code>uv</code> virtualenv</td>
+            <td>Builder stage isolates compilation tools; slim runner stage copies only <code>.venv</code> and <code>src</code> running under an unprivileged user.</td>
           </tr>
-          <tr>
-            <td><strong><code>CompletableFuture</code> / Virtual Threads</strong></td>
-            <td><strong><code>async def</code> / <code>await</code> (AsyncIO)</strong></td>
-            <td>Cooperative multitasking on a single-threaded event loop. Non-blocking I/O requires explicit <code>await</code>; blocking calls stall the entire server loop!</td>
-          </tr>
-        </table>
+        </tbody>
+      </table>
+
+      <div class="callout callout-purple">
+        <div class="callout-title">Architectural Insight: The GIL & ML Serving</div>
+        <p>In Java, parallelizing 1,000 requests across 16 CPU cores is done by spinning up worker threads. In Python, the <strong>Global Interpreter Lock (GIL)</strong> restricts bytecode execution to one thread per process. However, C-extensions like <code>scikit-learn</code>, <code>numpy</code>, and <code>torch</code> release the GIL during matrix math and numerical calculations! For HTTP routing and caching, asynchronous I/O (FastAPI + Redis) handles 10,000+ concurrent network connections on a single thread. Multiple CPU cores are leveraged by launching multiple Uvicorn workers or scaling Kubernetes Pod replicas.</p>
       </div>
     </section>
 
-    <!-- 01. TOPOLOGY -->
-    <section id="topology">
-      <h2 class="section-title"><span class="number">01</span> Dual-Namespace Platform Topology: ml-infra & ml-app</h2>
-      <div class="card">
-        <p>In enterprise distributed systems, monolithic Kubernetes namespaces lead to resource contention, permission bloat, and upgrade lock-in. We structure the cluster into a decoupled <strong>Dual-Namespace Architecture</strong> separating shared platform infrastructure from containerized workloads:</p>
+    <!-- Part 1 Banner -->
+    <div class="part-banner">
+      <h2>Part I: The Application Layer (Python, ML Serving & Containerization)</h2>
+      <p>Building a robust, enterprise-grade, asynchronous ML microservice from absolute zero using Python 3.12, <code>uv</code>, FastAPI, Redis, Kafka, Ruff, Mypy, Pytest, and hardened multi-stage Docker.</p>
+    </div>
 
-        <!-- SVG Architecture Diagram (Dual-Namespace) -->
-        <svg class="diagram-svg" viewBox="0 0 960 520" xmlns="http://www.w3.org/2000/svg">
-          <!-- CI/CD Layer -->
-          <rect x="20" y="20" width="220" height="480" rx="10" fill="#090d16" stroke="#1f2937" stroke-width="2"/>
-          <text x="35" y="48" fill="#38bdf8" font-weight="700" font-size="13">GITOPS & CI/CD LAYER</text>
-          
-          <rect x="35" y="65" width="190" height="50" rx="6" fill="#1e293b" stroke="#334155"/>
-          <text x="50" y="95" fill="#f8fafc" font-size="12">git push origin main</text>
-          
-          <rect x="35" y="125" width="190" height="70" rx="6" fill="#1e293b" stroke="#334155"/>
-          <text x="50" y="150" fill="#f8fafc" font-size="12">GitHub Repo (project-one)</text>
-          <text x="50" y="170" fill="#94a3b8" font-size="10">helm/ml-infra + helm/ml-app</text>
+    <!-- Section 01: Toolchain -->
+    <section id="toolchain" class="section-card">
+      <h2>01. Toolchain & Environment Setup</h2>
+      <p>To ensure reproducible, blazingly fast builds without OS dependency fragmentation, we use <strong>Python 3.12</strong> and Astral's <strong><code>uv</code></strong> — an extremely fast Python package and project manager written in Rust.</p>
+      
+      <h3>Prerequisites Installation</h3>
+      <p>On your Linux / Ubuntu system, install Git and build tools, then install <code>uv</code>:</p>
+      <pre><code># 1. Update system packages and install curl and git
+sudo apt-get update && sudo apt-get install -y curl git build-essential
 
-          <rect x="35" y="205" width="190" height="85" rx="6" fill="#1e293b" stroke="#334155"/>
-          <text x="50" y="230" fill="#f8fafc" font-size="12">GitHub Actions CI</text>
-          <text x="50" y="250" fill="#94a3b8" font-size="10">pytest (6/6) -> uv build</text>
-          <text x="50" y="270" fill="#38bdf8" font-size="10">Push GHCR (:latest, :v0.1.0)</text>
+# 2. Install uv (standalone official installer)
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-          <rect x="35" y="300" width="190" height="185" rx="6" fill="#1e293b" stroke="#0284c7"/>
-          <text x="50" y="325" fill="#38bdf8" font-weight="700" font-size="12">ArgoCD Controller (30781)</text>
-          <text x="50" y="350" fill="#a855f7" font-size="11">• App: ml-infra (Synced)</text>
-          <text x="50" y="370" fill="#22c55e" font-size="11">• App: ml-app (Synced)</text>
-          <text x="50" y="395" fill="#94a3b8" font-size="10">Self-Healing GitOps Loop</text>
-          <text x="50" y="415" fill="#94a3b8" font-size="10">Zero inbound firewall holes</text>
+# 3. Source your shell profile or restart terminal
+source $HOME/.cargo/env  # or source ~/.bashrc
 
-          <!-- K8s Cluster Outer Boundary -->
-          <rect x="260" y="20" width="680" height="480" rx="10" fill="#090d16" stroke="#0284c7" stroke-width="2"/>
-          <text x="280" y="48" fill="#38bdf8" font-weight="700" font-size="14">KUBERNETES CLUSTER (MicroK8s v1.30)</text>
+# 4. Verify installation
+uv --version
+# Expected: uv 0.5.x or newer
 
-          <!-- WORKLOAD NAMESPACE: ml-app -->
-          <rect x="280" y="65" width="640" height="175" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
-          <text x="300" y="90" fill="#22c55e" font-weight="700" font-size="13">WORKLOAD NAMESPACE: ml-app</text>
-
-          <rect x="300" y="105" width="140" height="45" rx="6" fill="#1e293b" stroke="#38bdf8"/>
-          <text x="312" y="132" fill="#fff" font-size="11">Service: ml-app (80)</text>
-
-          <rect x="460" y="105" width="210" height="60" rx="6" fill="#1e293b" stroke="#22c55e"/>
-          <text x="470" y="128" fill="#fff" font-size="11">Pod 1: ml-app-56474b4fcf (1000)</text>
-          <text x="470" y="148" fill="#38bdf8" font-size="10">/metrics :8000 (Prometheus)</text>
-
-          <rect x="690" y="105" width="210" height="60" rx="6" fill="#1e293b" stroke="#22c55e"/>
-          <text x="700" y="128" fill="#fff" font-size="11">Pod 2: ml-app-56474b4fcf (1000)</text>
-          <text x="700" y="148" fill="#38bdf8" font-size="10">/metrics :8000 (Prometheus)</text>
-
-          <rect x="300" y="175" width="600" height="50" rx="6" fill="#1e293b" stroke="#f59e0b"/>
-          <text x="315" y="198" fill="#f59e0b" font-weight="600" font-size="11">Cross-Namespace Routing (CoreDNS):</text>
-          <text x="315" y="215" fill="#f8fafc" font-size="10">REDIS_HOST="redis-service.ml-infra" | KAFKA_BOOTSTRAP_SERVERS="kafka-service.ml-infra:9092"</text>
-
-          <!-- PLATFORM NAMESPACE: ml-infra -->
-          <rect x="280" y="255" width="640" height="230" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="1.5"/>
-          <text x="300" y="280" fill="#a855f7" font-weight="700" font-size="13">SHARED PLATFORM NAMESPACE: ml-infra (Reused across all ML apps)</text>
-
-          <rect x="300" y="295" width="180" height="55" rx="6" fill="#1e293b" stroke="#f59e0b"/>
-          <text x="310" y="318" fill="#fff" font-size="11">Redis (redis-service:6379)</text>
-          <text x="310" y="338" fill="#94a3b8" font-size="10">Sub-ms Prediction Cache</text>
-
-          <rect x="500" y="295" width="190" height="55" rx="6" fill="#1e293b" stroke="#a855f7"/>
-          <text x="510" y="318" fill="#fff" font-size="11">Kafka (kafka-service:9092)</text>
-          <text x="510" y="338" fill="#94a3b8" font-size="10">KRaft Consensus Broker</text>
-
-          <rect x="710" y="295" width="190" height="55" rx="6" fill="#1e293b" stroke="#38bdf8"/>
-          <text x="720" y="318" fill="#fff" font-size="11">Kafka UI (NodePort: 30880)</text>
-          <text x="720" y="338" fill="#38bdf8" font-size="10">Web Management Console</text>
-
-          <rect x="300" y="360" width="180" height="55" rx="6" fill="#1e293b" stroke="#ef4444"/>
-          <text x="310" y="383" fill="#fff" font-size="11">Topic Creator (Job)</text>
-          <text x="310" y="403" fill="#94a3b8" font-size="10">Declarative 3-partition init</text>
-
-          <rect x="500" y="360" width="190" height="55" rx="6" fill="#1e293b" stroke="#22c55e"/>
-          <text x="510" y="383" fill="#fff" font-size="11">Prometheus (:9090)</text>
-          <text x="510" y="403" fill="#94a3b8" font-size="10">Auto-scrapes ml-app pods</text>
-
-          <rect x="710" y="360" width="190" height="55" rx="6" fill="#1e293b" stroke="#f59e0b"/>
-          <text x="720" y="383" fill="#fff" font-size="11">Grafana (NodePort: 30300)</text>
-          <text x="720" y="403" fill="#f59e0b" font-size="10">Pre-provisioned MLOps Dash</text>
-
-          <rect x="300" y="425" width="600" height="45" rx="6" fill="#1e293b" stroke="#0ea5e9"/>
-          <text x="315" y="445" fill="#fff" font-size="11">Fluent Bit DaemonSet (Pattern A) + Kubernetes Secrets (ml-infra-secrets)</text>
-          <text x="315" y="460" fill="#94a3b8" font-size="10">Tails /var/log/pods/ across all namespaces -> Ships structured JSON to Splunk HEC (8088)</text>
-        </svg>
-
-        <h3>Why Cross-Namespace Platform Separation Matters</h3>
-        <table>
-          <tr>
-            <th>Architecture Pattern</th>
-            <th>Single Monolithic Namespace (Anti-Pattern) ❌</th>
-            <th>Dual-Namespace Architecture (Enterprise Pattern) 🏆</th>
-          </tr>
-          <tr>
-            <td><strong>Lifecycle Decoupling</strong></td>
-            <td>Redis/Kafka redeployed or restarted whenever app code changes. Risk of data drop.</td>
-            <td>Platform runs permanently in <code>ml-infra</code>. App workloads in <code>ml-app</code> deploy 10x/day with zero platform disruption.</td>
-          </tr>
-          <tr>
-            <td><strong>Platform Reuse</strong></td>
-            <td>Every new ML service (Fraud, Recommendations) must deploy its own Redis & Kafka instances. Massive RAM wastage.</td>
-            <td>New workloads (e.g. <code>fraud-detection</code> in <code>ml-fraud</code>) simply point DNS to <code>redis-service.ml-infra:6379</code>.</td>
-          </tr>
-          <tr>
-            <td><strong>Security & RBAC</strong></td>
-            <td>App developers require broad permissions on the namespace, risking accidental broker deletion.</td>
-            <td>App developers only have access to <code>ml-app</code>. Platform engineers manage <code>ml-infra</code> and secrets.</td>
-          </tr>
-          <tr>
-            <td><strong>CoreDNS Resolution</strong></td>
-            <td>Flat naming (<code>redis-service:6379</code>) only works locally.</td>
-            <td>Standardized DNS format: <code>&lt;service-name&gt;.&lt;namespace&gt;.svc.cluster.local</code> (or <code>&lt;service&gt;.&lt;namespace&gt;</code>).</td>
-          </tr>
-        </table>
+# 5. Ensure Python 3.12 is installed (uv can download and manage Python versions automatically!)
+uv python install 3.12
+uv python list</code></pre>
+      <div class="callout callout-green">
+        <div class="callout-title">Why <code>uv</code> over Pip & Conda?</div>
+        <p>In Java, Maven resolves artifacts and caches them locally in <code>~/.m2/repository</code>. Traditional Python tools (<code>pip</code>, <code>virtualenv</code>) re-download and re-compile wheels per project. <code>uv</code> uses a global content-addressable cache and hardlinks files into virtual environments in milliseconds — making it 10x to 100x faster than <code>pip</code> and <code>poetry</code>.</p>
       </div>
     </section>
 
-    <!-- 02. CORE ML APP -->
-    <section id="app-tier">
-      <h2 class="section-title"><span class="number">02</span> Core Application Tier: Dual-Path ML Serving</h2>
-      <div class="card">
-        <h3>Why Dual-Path Serving?</h3>
-        <p>Real-world production ML serving requires handling two vastly different traffic profiles:</p>
-        <table>
-          <tr>
-            <th>Serving Path</th>
-            <th>Mechanism</th>
-            <th>Primary Use Case</th>
-            <th>Latency Profile</th>
-          </tr>
-          <tr>
-            <td><strong>1. Synchronous Online Path</strong></td>
-            <td>REST API (FastAPI / HTTP)</td>
-            <td>User-facing interactive applications, real-time UI queries</td>
-            <td><strong>Low Latency</strong> (&lt; 15ms target)</td>
-          </tr>
-          <tr>
-            <td><strong>2. Asynchronous Streaming Path</strong></td>
-            <td>Apache Kafka (Event-Driven)</td>
-            <td>High-volume batch pipelines, IoT ingest, telemetry processing</td>
-            <td><strong>High Throughput</strong> (Decoupled, zero backpressure)</td>
-          </tr>
-        </table>
+    <!-- Section 02: Scaffolding -->
+    <section id="scaffolding" class="section-card">
+      <h2>02. Modern Project Scaffolding & The <code>src/</code> Layout</h2>
+      <p>We create the application project directory structure following modern packaging best practices (PEP 517/621) with a strict <code>src/</code> layout.</p>
 
-        <h4>A. The Model Layer (<code>model.py</code>)</h4>
-        <p>In this capstone, the inference engine wraps a Scikit-Learn <code>LinearRegression</code> model representing a linear function ($y = 2x$):</p>
-        <pre><code><span class="keyword">def</span> <span class="function">get_model</span>() -> LinearRegression:
-    <span class="string">"""Returns a singleton trained scikit-learn model."""</span>
-    X = np.array([[<span class="string">1</span>], [<span class="string">2</span>], [<span class="string">3</span>], [<span class="string">4</span>]])
-    y = np.array([<span class="string">2</span>, <span class="string">4</span>, <span class="string">6</span>, <span class="string">8</span>])
+      <h3>Create Directory Structure</h3>
+      <pre><code># Create root project directory
+mkdir -p ~/code/project-one/ml-serving-capstone
+cd ~/code/project-one/ml-serving-capstone
+
+# Create src and tests directories
+mkdir -p src/ml_serving_capstone tests</code></pre>
+
+      <h3>Project Structure Tree</h3>
+      <pre><code>ml-serving-capstone/
+├── Dockerfile                   # Hardened multi-stage container specification
+├── pyproject.toml               # Declarative build & dependency configuration
+├── README.md                    # Project documentation
+├── uv.lock                      # Cryptographic lockfile for deterministic builds
+├── src/
+│   └── ml_serving_capstone/
+│       ├── __init__.py          # Package marker
+│       ├── model.py             # ML model loading & inference logic
+│       ├── redis_cache.py       # Async Redis caching with fail-open resilience
+│       ├── main.py              # FastAPI REST API, probes & Prometheus instrument
+│       └── kafka_worker.py      # Async background streaming worker
+└── tests/
+    ├── __init__.py              # Test suite marker
+    ├── test_model.py            # Unit tests for model inference
+    └── test_api.py              # Integration tests for FastAPI endpoints & probes</code></pre>
+
+      <div class="callout callout-warn">
+        <div class="callout-title">The "Src-Layout" Trap in Python</div>
+        <p>In a flat layout (where code sits directly in the root), running tests often accidentally imports the raw working directory files rather than the installed package, masking packaging and dependency missing bugs. The <code>src/</code> layout guarantees that imports test against the exact distribution structure installed in the virtual environment.</p>
+      </div>
+      <pre><code># Touch empty __init__.py files
+touch src/ml_serving_capstone/__init__.py
+touch tests/__init__.py
+touch README.md</code></pre>
+    </section>
+
+    <!-- Section 03: Dependencies -->
+    <section id="dependencies" class="section-card">
+      <h2>03. Dependencies & Lockfiles (<code>pyproject.toml</code>)</h2>
+      <p>All project metadata, dependencies, scripts, and tool configurations (Ruff, Mypy) are consolidated into a single standard file: <span class="file-path">pyproject.toml</span>.</p>
+
+      <h3>The Complete <code>pyproject.toml</code></h3>
+      <pre><code>[project]
+name = "ml-serving-capstone"
+version = "0.1.0"
+description = "High-throughput production ML serving microservice with Redis caching & Kafka streaming"
+readme = "README.md"
+authors = [
+    { name = "Shantanu Sharma", email = "shantanu.sharma@sentinelone.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "aiokafka>=0.12.0",
+    "fastapi>=0.128.8",
+    "prometheus-fastapi-instrumentator>=8.1.0",
+    "pydantic>=2.13.5",
+    "redis>=7.0.1",
+    "scikit-learn>=1.6.1",
+    "uvicorn>=0.39.0",
+]
+
+[project.scripts]
+ml-serving-capstone = "ml_serving_capstone:main"
+
+[build-system]
+requires = ["uv_build>=0.12.17,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "mypy>=1.19.1",
+    "pytest>=8.4.2",
+    "ruff>=0.17.0",
+]
+
+[tool.ruff.lint]
+ignore = ["BLE001"]
+
+[[tool.mypy.overrides]]
+module = ["sklearn.*", "aiokafka.*"]
+ignore_missing_imports = true</code></pre>
+
+      <h3>Initialize Virtual Environment & Lock Dependencies</h3>
+      <p>Run <code>uv sync</code> to create the virtual environment in <code>.venv/</code> and generate the immutable <code>uv.lock</code>:</p>
+      <pre><code># Synchronize environment and generate uv.lock
+uv sync
+
+# Activate the virtual environment
+source .venv/bin/activate</code></pre>
+    </section>
+
+    <!-- Section 04: ML Model -->
+    <section id="ml-model" class="section-card">
+      <h2>04. The ML Model Serving Logic (<code>model.py</code>)</h2>
+      <p>The model module encapsulates the machine learning model lifecycle: training/loading weights, caching the instance in memory as a singleton, and executing vector-based inference using NumPy and scikit-learn.</p>
+
+      <span class="file-path">src/ml_serving_capstone/model.py</span>
+      <pre><code>from functools import lru_cache
+
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+
+def predict(model: LinearRegression, X_new: np.ndarray) -> np.ndarray:
+    """
+    Make predictions using the trained linear regression model.
+
+    Parameters:
+    model (LinearRegression): Trained linear regression model.
+    X_new (array-like): New input data for prediction.
+
+    Returns:
+    np.ndarray: Predicted values for the input data.
+    """
+    return model.predict(X_new)  # Make predictions
+
+
+def evaluate_model(
+    model: LinearRegression, X_test: np.ndarray, y_test: np.ndarray
+) -> float:
+    """
+    Evaluate the trained linear regression model on test data.
+
+    Parameters:
+    model (LinearRegression): Trained linear regression model.
+    X_test (array-like): Feature matrix for testing.
+    y_test (array-like): Target vector for testing.
+
+    Returns:
+    float: R^2 score of the model on the test data.
+    """
+    return float(model.score(X_test, y_test))
+
+
+@lru_cache
+def get_model() -> LinearRegression:
+    """
+    Singleton factory for the trained ML model.
+    The @lru_cache decorator ensures the model weights are instantiated
+    and trained exactly once in memory across the entire worker process.
+    """
+    X = np.array([[1], [2], [3], [4]])
+    y = np.array([2, 4, 6, 8])
     model = LinearRegression()
-    model.fit(X, y)
-    <span class="keyword">return</span> model</code></pre>
+    model.fit(X, y)  # training happens here, guaranteed, before anyone gets the model
+    return model</code></pre>
 
-        <h4>B. The HTTP API Layer (<code>main.py</code>)</h4>
-        <p>Built with FastAPI and Pydantic v2 for automatic schema validation and serialization:</p>
-        <ul>
-          <li><code>POST /predict</code>: Accepts a list of floats (<code>input_data: list[float]</code>) and returns predictions.</li>
-          <li><code>GET /healthz</code>: Liveness probe verifying the Python event loop is unblocked.</li>
-          <li><code>GET /readyz</code>: Readiness probe verifying that the ML model is initialized in RAM.</li>
-        </ul>
-
-        <h4>C. The Asynchronous Worker Layer (<code>kafka_worker.py</code>)</h4>
-        <p>Uses <code>aiokafka</code> to create an asynchronous loop that reads from the <code>inference-requests</code> topic, executes batch prediction, and pushes results to <code>inference-results</code> with tracking IDs.</p>
+      <div class="callout callout-purple">
+        <div class="callout-title">Java Comparison: <code>@lru_cache</code> as Spring <code>@Bean</code> Singleton</div>
+        <p>In Spring Boot, you declare a <code>@Bean</code> with default singleton scope so heavy objects are only initialized once on startup. Python's <code>@lru_cache(maxsize=1)</code> decorates a function to memoize its return value, preventing expensive model re-instantiation on every incoming HTTP request.</p>
       </div>
     </section>
 
-    <!-- 03. CACHING & RESILIENCE -->
-    <section id="caching">
-      <h2 class="section-title"><span class="number">03</span> Caching Strategy & Graceful Degradation</h2>
-      <div class="card">
-        <h3>Predictive Caching Mechanics</h3>
-        <p>ML inference is CPU/GPU intensive. If multiple clients query the same input features, recalculating the dot-products is wasted compute. We implemented an MD5 cryptographic cache key design in <code>redis_cache.py</code>:</p>
+    <!-- Section 05: Redis Cache -->
+    <section id="caching-layer" class="section-card">
+      <h2>05. Asynchronous Redis Caching Layer (<code>redis_cache.py</code>)</h2>
+      <p>High-throughput ML endpoints must protect downstream compute from redundant inference. We implement an asynchronous cache backed by Redis with <strong>versioned keys</strong>, <strong>MD5 input hashing</strong>, and a <strong>fail-open defensive resilience pattern</strong>.</p>
 
-        <pre><code><span class="keyword">def</span> <span class="function">cache_key</span>(input_data: list[float]) -> str:
-    <span class="comment"># 1. Deterministically serialize the floating point input array</span>
-    input_str = json.dumps(input_data, sort_keys=<span class="keyword">True</span>)
-    <span class="comment"># 2. Hash into fixed-length 32-character hexadecimal digest</span>
+      <span class="file-path">src/ml_serving_capstone/redis_cache.py</span>
+      <pre><code>import hashlib
+import json
+import logging
+import os
+
+import redis.asyncio as redis
+
+logger = logging.getLogger(__name__)
+
+# Key design: include model version to prevent cache pollution during zero-downtime model rollouts
+MODEL_VERSION = "v1"
+REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
+
+# Non-blocking async connection pool with aggressive timeouts to prevent socket exhaustion
+redis_client = redis.Redis(
+    host=REDIS_HOST,
+    port=REDIS_PORT,
+    decode_responses=True,
+    socket_timeout=1.0,
+    socket_connect_timeout=1.0,
+)
+
+
+def cache_key(input_data: list[float]) -> str:
+    """Generate a deterministic, version-scoped MD5 cache key."""
+    input_str = json.dumps(input_data, sort_keys=True)
     hash_input = hashlib.md5(input_str.encode()).hexdigest()
-    <span class="comment"># 3. Namespace with model version to prevent stale cache on model retraining</span>
-    <span class="keyword">return</span> f<span class="string">"pred:{MODEL_VERSION}:{hash_input}"</span></code></pre>
+    return f"pred:{MODEL_VERSION}:{hash_input}"
 
-        <div class="callout warning">
-          <h4>Why Version the Cache Key?</h4>
-          If you retrain your model from <code>v1</code> to <code>v2</code>, old predictions cached in Redis would return invalid results for identical inputs! By namespacing the key with <code>MODEL_VERSION</code>, updating the version string automatically invalidates all previous cached values without manual cache flushing!
-        </div>
 
-        <h3>The Graceful Degradation Design Pattern</h3>
-        <p>In distributed systems, <strong>external dependencies will fail</strong>. Network partitions happen, and Redis pods restart. A junior mistake is allowing Redis connection timeouts to bubble up as HTTP 500 errors to end users.</p>
-        <p>Our implementation treats the cache as an <em>optimization</em>, not a hard requirement:</p>
-        <pre><code><span class="keyword">async def</span> <span class="function">get_cached_prediction</span>(input_data: list[float]) -> list[float] | <span class="keyword">None</span>:
-    <span class="keyword">try</span>:
+async def cache_prediction(input_data: list[float], predictions: list[float]) -> None:
+    """
+    Cache predictions with a 1-hour TTL.
+    Fail-open design: if Redis is unreachable, catch exception, log warning, and do not fail the request.
+    """
+    try:
         key = cache_key(input_data)
-        cached_value = <span class="keyword">await</span> redis_client.get(key)
-        <span class="keyword">if</span> cached_value <span class="keyword">is not None</span>:
-            <span class="keyword">return</span> json.loads(cached_value)
-    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
-        <span class="comment"># LOG AND FALLBACK: The API remains completely functional!</span>
-        logger.warning(f<span class="string">"Redis cache lookup failed: {e}. Falling back to model inference."</span>)
-    <span class="keyword">return None</span></code></pre>
+        await redis_client.set(key, json.dumps(predictions), ex=3600)
+    except Exception as e:
+        logger.warning(f"Redis cache write failed: {e}. Proceeding without caching.")
+
+
+async def get_cached_prediction(input_data: list[float]) -> list[float] | None:
+    """
+    Look up predictions in Redis.
+    Fail-open design: return None on network failure, falling back seamlessly to model inference.
+    """
+    try:
+        key = cache_key(input_data)
+        cached_value = await redis_client.get(key)
+        if cached_value is not None:
+            return json.loads(cached_value)
+    except Exception as e:
+        logger.warning(f"Redis cache lookup failed: {e}. Falling back to model inference.")
+    return None</code></pre>
+    </section>
+
+    <!-- Section 06: FastAPI App -->
+    <section id="fastapi-app" class="section-card">
+      <h2>06. FastAPI Serving REST API (<code>main.py</code>)</h2>
+      <p>The REST service is built with FastAPI. It defines strict request/response DTO schemas with Pydantic v2, provides Kubernetes liveness (<code>/healthz</code>) and readiness (<code>/readyz</code>) probes, and emits structured JSON logs with millisecond latency metrics.</p>
+
+      <span class="file-path">src/ml_serving_capstone/main.py</span>
+      <pre><code>import json
+import logging
+import time
+
+import numpy as np
+from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
+from pydantic import BaseModel
+
+from .model import get_model, predict
+from .redis_cache import MODEL_VERSION, cache_prediction, get_cached_prediction
+
+logger = logging.getLogger("ml_serving")
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+
+class PredictRequest(BaseModel):
+    """
+    Request model for prediction endpoint.
+    Strictly validated by Pydantic: ensures input_data is a list of floats.
+    """
+    input_data: list[float]
+
+
+class PredictResponse(BaseModel):
+    """
+    Response model for prediction endpoint.
+    """
+    predictions: list[float]
+
+
+app = FastAPI(title="ML Serving Capstone API", version="0.1.0")
+
+# Expose /metrics endpoint for Prometheus scraping
+Instrumentator().instrument(app).expose(app)
+
+
+@app.get("/healthz")
+async def healthz():
+    """
+    Kubernetes Liveness Probe: Checks if the web process is running.
+    If this fails, K8s restarts the container.
+    """
+    return {"status": "healthy"}
+
+
+@app.get("/readyz")
+async def readyz():
+    """
+    Kubernetes Readiness Probe: Verifies model weights are loaded and ready.
+    If this fails, K8s stops routing ingress traffic to this Pod.
+    """
+    try:
+        model = get_model()
+        if model is None:
+            return {"status": "not_ready", "reason": "model not loaded"}, 503
+        return {"status": "ready"}
+    except Exception as e:
+        return {"status": "not_ready", "error": str(e)}, 503
+
+
+@app.post("/predict", response_model=PredictResponse)
+async def predict_endpoint(request: PredictRequest):
+    """
+    Prediction endpoint with cache check, model inference, and structured logging.
+    """
+    start_time = time.perf_counter()
+    
+    # 1. Check Redis Cache
+    cached_predictions = await get_cached_prediction(request.input_data)
+    if cached_predictions is not None:
+        latency_ms = round((time.perf_counter() - start_time) * 1000, 2)
+        logger.info(
+            json.dumps(
+                {
+                    "event": "model_inference",
+                    "model_version": MODEL_VERSION,
+                    "cache_hit": True,
+                    "latency_ms": latency_ms,
+                    "input_features": request.input_data,
+                    "predictions": cached_predictions,
+                }
+            )
+        )
+        return PredictResponse(predictions=cached_predictions)
+
+    # 2. Cache Miss: Execute Model Inference
+    model = get_model()
+    X_new = np.array(request.input_data).reshape(-1, 1)
+    predictions = predict(model, X_new)
+    
+    # 3. Asynchronously write result to cache
+    await cache_prediction(request.input_data, predictions.tolist())
+
+    latency_ms = round((time.perf_counter() - start_time) * 1000, 2)
+    logger.info(
+        json.dumps(
+            {
+                "event": "model_inference",
+                "model_version": MODEL_VERSION,
+                "cache_hit": False,
+                "latency_ms": latency_ms,
+                "input_features": request.input_data,
+                "predictions": predictions.tolist(),
+            }
+        )
+    )
+    return PredictResponse(predictions=predictions.tolist())</code></pre>
+    </section>
+
+    <!-- Section 07: Prometheus -->
+    <section id="metrics-instrument" class="section-card">
+      <h2>07. Prometheus Instrumentation (<code>/metrics</code>)</h2>
+      <p>Using <code>prometheus-fastapi-instrumentator</code>, we expose cloud-native telemetry adhering strictly to the OpenMetrics standard at <code>/metrics</code> without writing repetitive boilerplate.</p>
+      
+      <h3>Key Metrics Exposed:</h3>
+      <ul>
+        <li><code>http_requests_total</code>: Counter partitioned by HTTP method, route handler, and status code (200, 422, 500).</li>
+        <li><code>http_request_duration_seconds</code>: Histogram calculating p50, p95, and p99 latency percentiles across endpoints.</li>
+        <li><code>process_resident_memory_bytes</code>: Real-time RSS memory tracking of the container.</li>
+        <li><code>process_cpu_seconds_total</code>: Accumulated CPU time utilized by the Python process.</li>
+      </ul>
+      <p>Test the endpoint locally:</p>
+      <pre><code>curl -s http://localhost:8000/metrics | grep http_requests_total</code></pre>
+    </section>
+
+    <!-- Section 08: Kafka Worker -->
+    <section id="kafka-worker" class="section-card">
+      <h2>08. Event-Driven Kafka Streaming Worker (<code>kafka_worker.py</code>)</h2>
+      <p>In addition to synchronous REST serving, enterprise architectures frequently demand asynchronous stream processing. The worker consumes events from an input topic, runs model inference, and publishes results to an egress topic using <code>aiokafka</code>.</p>
+
+      <span class="file-path">src/ml_serving_capstone/kafka_worker.py</span>
+      <pre><code>import json
+import logging
+import os
+
+import numpy as np
+from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
+
+from .model import get_model, predict
+
+logger = logging.getLogger(__name__)
+
+KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
+INFERENCE_REQUESTS_TOPIC = os.getenv("INFERENCE_REQUESTS_TOPIC", "inference-requests")
+INFERENCE_RESULTS_TOPIC = os.getenv("INFERENCE_RESULTS_TOPIC", "inference-results")
+KAFKA_GROUP_ID = os.getenv("KAFKA_GROUP_ID", "ml-serving-capstone")
+
+
+async def run_worker() -> None:
+    """
+    Continuous async Kafka consumption and inference pipeline.
+    """
+    logger.info(f"Connecting Kafka worker to {KAFKA_BOOTSTRAP_SERVERS}...")
+    consumer = AIOKafkaConsumer(
+        INFERENCE_REQUESTS_TOPIC,
+        bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS,
+        group_id=KAFKA_GROUP_ID,
+    )
+    producer = AIOKafkaProducer(bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS)
+    await consumer.start()
+    await producer.start()
+    try:
+        logger.info(f"Listening for inference requests on '{INFERENCE_REQUESTS_TOPIC}'...")
+        async for msg in consumer:
+            request = json.loads(msg.value)
+            model = get_model()
+            X_new = np.array(request["input_data"]).reshape(-1, 1)
+            prediction = predict(model, X_new).tolist()
+            result = json.dumps({"id": request["id"], "predictions": prediction})
+            await producer.send_and_wait(INFERENCE_RESULTS_TOPIC, result.encode())
+    finally:
+        logger.info("Stopping Kafka consumer and producer...")
+        await consumer.stop()
+        await producer.stop()</code></pre>
+    </section>
+
+    <!-- Section 09: Static Analysis -->
+    <section id="code-quality" class="section-card">
+      <h2>09. Static Analysis, Formatting & Type Safety (Ruff & Mypy)</h2>
+      <p>We enforce strict compile-time checks before any code is built or packaged.</p>
+
+      <h3>Commands to Run Locally</h3>
+      <pre><code># 1. Run Ruff Linter (checks PEP 8, syntax errors, dead code, import order)
+uv run ruff check .
+
+# 2. Automatically fix linting and import order errors
+uv run ruff check --fix .
+
+# 3. Format source code (replaces Black)
+uv run ruff format .
+
+# 4. Run Mypy Static Type Analysis (enforces strict types)
+uv run mypy src/</code></pre>
+
+      <div class="callout callout-green">
+        <div class="callout-title">Clean CI Quality Guarantee</div>
+        <p>Because we configured <code>ignore_missing_imports = true</code> for C-libraries (<code>sklearn</code>) and ignored blind exceptions <code>["BLE001"]</code> in <code>pyproject.toml</code>, Mypy and Ruff run with <strong>zero warnings</strong> across the entire codebase!</p>
       </div>
     </section>
 
-    <!-- 04. K8S RUNTIME -->
-    <section id="k8s-runtime">
-      <h2 class="section-title"><span class="number">04</span> Kubernetes Runtime & Hardening</h2>
-      <div class="card">
-        <h3>A. Resource Quotas (Requests vs. Limits)</h3>
-        <p>Every pod template in our chart defines strict compute boundaries:</p>
-        <pre><code>resources:
-  requests:
-    cpu: 100m      # 0.1 CPU core reserved exclusively for this pod
-    memory: 128Mi  # 128 Megabytes guaranteed RAM
-  limits:
-    cpu: 500m      # Hard throttle ceiling if pod spikes
-    memory: 512Mi  # Kernel sends SIGKILL (OOMKilled) if exceeded</code></pre>
+    <!-- Section 10: Pytest Suite -->
+    <section id="testing-suite" class="section-card">
+      <h2>10. Automated Pytest Test Suite (<code>tests/</code>)</h2>
+      <p>We create automated unit and integration tests using <code>pytest</code> and FastAPI's <code>TestClient</code> (powered by <code>httpx</code>).</p>
 
-        <h3>B. Pod Security Standards (CIS Benchmark Compliance)</h3>
-        <p>In our Dockerfile and Helm templates, we enforce unprivileged execution:</p>
-        <pre><code>securityContext:
+      <h3>1. Model Unit Tests</h3>
+      <span class="file-path">tests/test_model.py</span>
+      <pre><code>import numpy as np
+import pytest
+
+from ml_serving_capstone.model import get_model, predict
+
+
+def test_get_model_returns_trained_model():
+    model = get_model()
+    # Verified trained coefficient: y = 2x -> slope = 2.0
+    assert model.coef_[0] == pytest.approx(2.0, abs=0.01)
+
+
+def test_predict_matches_expected_pattern():
+    model = get_model()
+    X_new = np.array([[5]])
+    result = predict(model, X_new)
+    # y = 2 * 5 = 10.0
+    assert result[0] == pytest.approx(10.0, abs=0.1)</code></pre>
+
+      <h3>2. API Integration Tests</h3>
+      <span class="file-path">tests/test_api.py</span>
+      <pre><code>from fastapi.testclient import TestClient
+
+from ml_serving_capstone.main import app
+
+client = TestClient(app)
+
+
+def test_healthz():
+    response = client.get("/healthz")
+    assert response.status_code == 200
+    assert response.json() == {"status": "healthy"}
+
+
+def test_readyz():
+    response = client.get("/readyz")
+    assert response.status_code == 200
+    assert response.json() == {"status": "ready"}
+
+
+def test_predict_endpoint():
+    response = client.post("/predict", json={"input_data": [1.0, 2.0, 3.0]})
+    assert response.status_code == 200
+    data = response.json()
+    assert "predictions" in data
+    assert len(data["predictions"]) == 3
+    # Predictions for 1, 2, 3 should be approx 2, 4, 6
+    assert data["predictions"][0] == 2.0
+    assert data["predictions"][1] == 4.0
+    assert data["predictions"][2] == 6.0
+
+
+def test_metrics_endpoint():
+    response = client.get("/metrics")
+    assert response.status_code == 200
+    assert "http_requests_total" in response.text or "http_request_duration_seconds" in response.text</code></pre>
+
+      <h3>Run Test Suite</h3>
+      <pre><code>uv run pytest -v
+# Output:
+# tests/test_model.py::test_get_model_returns_trained_model PASSED
+# tests/test_model.py::test_predict_matches_expected_pattern PASSED
+# tests/test_api.py::test_healthz PASSED
+# tests/test_api.py::test_readyz PASSED
+# tests/test_api.py::test_predict_endpoint PASSED
+# tests/test_api.py::test_metrics_endpoint PASSED
+# ====== 6 passed in 0.42s ======</code></pre>
+    </section>
+
+    <!-- Section 11: Dockerfile -->
+    <section id="docker-build" class="section-card">
+      <h2>11. Hardened Multi-Stage Dockerfile & <code>.dockerignore</code></h2>
+      <p>Production enterprise security requires container images to be minimal, immutable, free of build tools, and strictly run under an <strong>unprivileged non-root user (UID 1000)</strong>.</p>
+
+      <h3>The Production Dockerfile</h3>
+      <span class="file-path">Dockerfile</span>
+      <pre><code>FROM python:3.12-slim
+
+# Create an unprivileged user for security (UID 1000)
+RUN groupadd -g 1000 appgroup && \
+    useradd -u 1000 -g appgroup -s /bin/bash -m appuser
+
+WORKDIR /app
+
+# Copy the fast uv binary directly from official image
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+# Copy dependency specifications first for Docker layer caching
+COPY pyproject.toml uv.lock README.md ./
+
+# Ensure appuser owns the workdir
+RUN chown -R appuser:appgroup /app
+USER appuser
+
+# Step 1: Install external dependencies without installing the project code
+RUN uv sync --frozen --no-dev --no-install-project
+
+# Step 2: Copy application source
+COPY --chown=appuser:appgroup src/ ./src/
+
+# Step 3: Install the project itself (fast, reuses cached venv)
+RUN uv sync --frozen --no-dev
+
+# Place the virtual environment's bin on PATH
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONUNBUFFERED=1
+
+EXPOSE 8000
+
+CMD ["uvicorn", "ml_serving_capstone.main:app", "--host", "0.0.0.0", "--port", "8000"]</code></pre>
+
+      <h3>The <code>.dockerignore</code></h3>
+      <span class="file-path">.dockerignore</span>
+      <pre><code>.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.DS_Store</code></pre>
+    </section>
+
+    <!-- Section 12: Local Runbook -->
+    <section id="local-runbook" class="section-card">
+      <h2>12. Local Verification Runbook (Bare-Metal & Docker)</h2>
+      <p>Before deploying to Kubernetes, verify the entire application lifecycle locally.</p>
+
+      <h3>Option A: Run Directly on Host via <code>uv</code></h3>
+      <pre><code># 1. Start local Redis (if available, or rely on fail-open)
+docker run -d --name local-redis -p 6379:6379 redis:7-alpine
+
+# 2. Launch FastAPI with auto-reload
+uv run uvicorn ml_serving_capstone.main:app --host 0.0.0.0 --port 8000 --reload
+
+# 3. In another terminal, test endpoints:
+curl http://localhost:8000/healthz
+# {"status":"healthy"}
+
+curl http://localhost:8000/readyz
+# {"status":"ready"}
+
+curl -X POST http://localhost:8000/predict \\
+  -H "Content-Type: application/json" \\
+  -d '{"input_data": [5.0, 10.0]}'
+# {"predictions":[10.0, 20.0]}
+
+curl http://localhost:8000/metrics</code></pre>
+
+      <h3>Option B: Build & Run in Docker</h3>
+      <pre><code># 1. Build the hardened container image
+docker build -t ml-serving-capstone:local .
+
+# 2. Run container as non-root user
+docker run -d --name ml-api -p 8000:8000 ml-serving-capstone:local
+
+# 3. Verify running user inside container is UID 1000
+docker exec ml-api whoami
+# Output: appuser
+
+# 4. Verify endpoint response
+curl http://localhost:8000/predict -H "Content-Type: application/json" -d '{"input_data": [4.0]}'
+# {"predictions":[8.0]}
+
+# 5. Clean up local container
+docker rm -f ml-api</code></pre>
+    </section>
+
+    <!-- Part 2 Banner -->
+    <div class="part-banner part2-banner">
+      <h2>Part II: Platform Infrastructure, GitOps & Production Observability</h2>
+      <p>Architecting and deploying a resilient, multi-namespace Kubernetes platform on MicroK8s with declarative GitOps via ArgoCD, dual Helm charts, KRaft Kafka, Redis caching, Splunk HEC logging, Prometheus scraping, and Grafana dashboards.</p>
+    </div>
+
+    <!-- Section 13: MicroK8s Runtime -->
+    <section id="k8s-runtime" class="section-card">
+      <h2>13. Local Kubernetes Cluster Setup with MicroK8s</h2>
+      <p>We use Canonical's <strong>MicroK8s v1.30</strong> — a production-grade, zero-ops, conformant Kubernetes distribution that runs natively on Linux without virtual machine overhead.</p>
+
+      <h3>Installation & Addons</h3>
+      <pre><code># 1. Install MicroK8s via snap on Ubuntu/Debian
+sudo snap install microk8s --classic --channel=1.30/stable
+
+# 2. Add current user to microk8s group for passwordless access
+sudo usermod -a -G microk8s $USER
+mkdir -p ~/.kube && sudo chown -f -R $USER ~/.kube
+
+# 3. Reload session group membership
+newgrp microk8s
+
+# 4. Wait for cluster to be ready
+microk8s status --wait-ready
+
+# 5. Enable essential platform addons
+microk8s enable dns hostpath-storage rbac
+
+# 6. Configure convenient alias
+echo "alias kubectl='microk8s kubectl'" >> ~/.bashrc
+source ~/.bashrc
+
+# 7. Verify cluster nodes
+kubectl get nodes -o wide</code></pre>
+    </section>
+
+    <!-- Section 14: Splunk Setup -->
+    <section id="splunk-setup" class="section-card">
+      <h2>14. Splunk Enterprise & HTTP Event Collector (HEC) Setup</h2>
+      <p>Enterprise platforms centralize container logs in Splunk. We deploy Splunk Enterprise in Docker, configure the HTTP Event Collector (HEC) with an authentication token, and prepare an index for Kubernetes container logs.</p>
+
+      <h3>Deploy Splunk Container</h3>
+      <pre><code># Launch Splunk Enterprise with HEC pre-configured
+docker run -d \
+  --name splunk \
+  --restart unless-stopped \
+  -p 8000:8000 \
+  -p 8088:8088 \
+  -e "SPLUNK_START_ARGS=--accept-license" \
+  -e "SPLUNK_PASSWORD=Changeme123!" \
+  -e "SPLUNK_HEC_TOKEN=2a58141a-232e-41ea-9b7c-5ee487970abe" \
+  splunk/splunk:latest
+
+# Wait ~30 seconds for Splunk to initialize and open Web UI:
+# URL: http://localhost:8000 (User: admin / Password: Changeme123!)</code></pre>
+
+      <h3>Verify HEC Connectivity via cURL</h3>
+      <pre><code># Test sending raw event over HTTPS to HEC port 8088
+curl -k -X POST https://localhost:8088/services/collector/raw \
+  -H "Authorization: Splunk 2a58141a-232e-41ea-9b7c-5ee487970abe" \
+  -d '{"event": "system_bootstrap", "message": "Splunk HEC online"}'
+# Response: {"text":"Success","code":0}</code></pre>
+    </section>
+
+    <!-- Section 15: Polyrepo Pattern -->
+    <section id="polyrepo-design" class="section-card">
+      <h2>15. The Decoupled Polyrepo Pattern: App vs Platform GitOps</h2>
+      <p>In enterprise engineering, deploying application code and Kubernetes manifests from a single monorepo causes severe architectural coupling and infinite CI/CD build loops. We decouple into two distinct Git repositories.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Repository</th>
+            <th>Primary Owner</th>
+            <th>Contents & Responsibilities</th>
+            <th>CI/CD Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Application Repo</strong><br><code>project-one</code></td>
+            <td>ML / Backend Developers</td>
+            <td>Python source (<code>src/</code>), tests (<code>tests/</code>), <code>pyproject.toml</code>, <code>Dockerfile</code>.</td>
+            <td>Runs linters, unit tests, builds container image, pushes to GHCR with Git SHA tag, writes updated tag to GitOps repo.</td>
+          </tr>
+          <tr>
+            <td><strong>GitOps Platform Repo</strong><br><code>project-one-gitops</code></td>
+            <td>Platform / SRE Engineers</td>
+            <td>Helm charts (<code>ml-infra</code>, <code>ml-app</code>), ArgoCD Application CRDs (<code>argocd/</code>).</td>
+            <td>Lints charts. ArgoCD watches this repo exclusively; reconciling desired Git state into the cluster.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Setup Local Git Repositories</h3>
+      <pre><code># 1. Initialize GitOps Platform repository
+mkdir -p ~/code/project-one-gitops
+cd ~/code/project-one-gitops
+git init
+git branch -M main
+
+# 2. Add remote (replace with your GitHub repository URL)
+git remote add origin git@github.com:mastershantash/project-one-gitops.git
+
+# 3. Create structure
+mkdir -p helm/ml-infra/templates helm/ml-app/templates argocd .github/workflows</code></pre>
+    </section>
+
+    <!-- Section 16: Dual Namespaces & DNS -->
+    <section id="dual-namespaces" class="section-card">
+      <h2>16. Dual-Namespace Topology & Cross-Namespace DNS</h2>
+      <p>To establish blast-radius containment, we separate shared stateful platform components from ephemeral, stateless ML serving workloads into two dedicated namespaces.</p>
+
+      <h3>1. Create Namespaces</h3>
+      <pre><code>kubectl create namespace ml-infra
+kubectl create namespace ml-app</code></pre>
+
+      <h3>2. Kubernetes CoreDNS Cross-Namespace FQDN Resolution</h3>
+      <p>Workload Pods in <code>ml-app</code> reach shared infrastructure in <code>ml-infra</code> across namespace boundaries using Kubernetes Fully Qualified Domain Names (FQDN):</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Source Namespace</th>
+            <th>Destination Namespace</th>
+            <th>Cross-Namespace DNS Endpoint</th>
+            <th>Internal Port</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Redis Cache</strong></td>
+            <td><code>ml-app</code></td>
+            <td><code>ml-infra</code></td>
+            <td><code>redis-service.ml-infra.svc.cluster.local</code></td>
+            <td><code>6379</code></td>
+          </tr>
+          <tr>
+            <td><strong>Kafka Broker</strong></td>
+            <td><code>ml-app</code></td>
+            <td><code>ml-infra</code></td>
+            <td><code>kafka-service.ml-infra.svc.cluster.local</code></td>
+            <td><code>9092</code></td>
+          </tr>
+          <tr>
+            <td><strong>Prometheus Scraper</strong></td>
+            <td><code>ml-infra</code></td>
+            <td><code>ml-app</code></td>
+            <td><code>ml-app.ml-app.svc.cluster.local</code></td>
+            <td><code>80</code> (targets 8000)</td>
+          </tr>
+          <tr>
+            <td><strong>Splunk HEC</strong></td>
+            <td><code>ml-infra</code></td>
+            <td>Host LAN</td>
+            <td><code>192.168.29.122</code> (Host Machine IP)</td>
+            <td><code>8088</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 17: Helm ml-infra -->
+    <section id="helm-platform" class="section-card">
+      <h2>17. Shared Platform Helm Chart (<code>helm/ml-infra</code>)</h2>
+      <p>The <code>ml-infra</code> Helm chart packages all platform infrastructure components. Below are the complete manifests.</p>
+
+      <h3>1. Chart Metadata & Values</h3>
+      <span class="file-path">helm/ml-infra/Chart.yaml</span>
+      <pre><code>apiVersion: v2
+name: ml-infra
+description: Shared enterprise platform infrastructure (Redis, KRaft Kafka, Kafka UI, Prometheus, Grafana, Fluent Bit)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"</code></pre>
+
+      <span class="file-path">helm/ml-infra/values.yaml</span>
+      <pre><code># Shared Infrastructure Values
+
+redis:
+  enabled: true
+  image: redis:7-alpine
+
+kafka:
+  enabled: true
+  image: apache/kafka:latest
+
+kafkaUi:
+  enabled: true
+  image: provectuslabs/kafka-ui:latest
+  service:
+    type: NodePort
+    nodePort: 30880
+
+topics:
+  enabled: true
+  list:
+    - name: inference-requests
+      partitions: 3
+    - name: inference-results
+      partitions: 3
+
+fluentBit:
+  enabled: true
+  splunkHost: "192.168.29.122" # Replace with your host machine LAN IP
+  splunkPort: 8088
+
+prometheus:
+  enabled: true
+  image: prom/prometheus:v2.48.0
+  service:
+    type: ClusterIP
+    port: 9090
+
+grafana:
+  enabled: true
+  image: grafana/grafana:10.2.0
+  adminPassword: "admin"
+  service:
+    type: NodePort
+    nodePort: 30300
+
+secrets:
+  splunkToken: "2a58141a-232e-41ea-9b7c-5ee487970abe"</code></pre>
+
+      <h3>2. Kubernetes Secrets & Redis Deployment</h3>
+      <span class="file-path">helm/ml-infra/templates/secrets.yaml</span>
+      <pre><code>apiVersion: v1
+kind: Secret
+metadata:
+  name: ml-infra-secrets
+  labels:
+    app.kubernetes.io/part-of: ml-infra
+type: Opaque
+stringData:
+  splunk-hec-token: {{ .Values.secrets.splunkToken | quote }}</code></pre>
+
+      <span class="file-path">helm/ml-infra/templates/redis.yaml</span>
+      <pre><code>{{- if .Values.redis.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app: redis
+    app.kubernetes.io/part-of: ml-infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+        app.kubernetes.io/part-of: ml-infra
+    spec:
+      containers:
+        - name: redis
+          image: {{ .Values.redis.image }}
+          ports:
+            - containerPort: 6379
+              name: redis
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  labels:
+    app: redis
+    app.kubernetes.io/part-of: ml-infra
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      targetPort: 6379
+      name: redis
+  selector:
+    app: redis
+{{- end }}</code></pre>
+
+      <h3>3. Apache Kafka in KRaft Mode (ZooKeeper-less)</h3>
+      <span class="file-path">helm/ml-infra/templates/kafka.yaml</span>
+      <pre><code>{{- if .Values.kafka.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka
+  labels:
+    app: kafka
+    app.kubernetes.io/part-of: ml-infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+        app.kubernetes.io/part-of: ml-infra
+    spec:
+      containers:
+        - name: kafka
+          image: {{ .Values.kafka.image }}
+          ports:
+            - containerPort: 9092
+              name: kafka
+          env:
+            - name: KAFKA_NODE_ID
+              value: "1"
+            - name: KAFKA_PROCESS_ROLES
+              value: "broker,controller"
+            - name: KAFKA_LISTENERS
+              value: "PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093"
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: "PLAINTEXT://kafka-service.{{ .Release.Namespace }}.svc.cluster.local:9092"
+            - name: KAFKA_CONTROLLER_LISTENER_NAMES
+              value: "CONTROLLER"
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+            - name: KAFKA_CONTROLLER_QUORUM_VOTERS
+              value: "1@localhost:9093"
+            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+              value: "1"
+            - name: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+              value: "1"
+            - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+              value: "1"
+            - name: KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
+              value: "0"
+            - name: KAFKA_NUM_PARTITIONS
+              value: "1"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-service
+  labels:
+    app: kafka
+    app.kubernetes.io/part-of: ml-infra
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9092
+      targetPort: 9092
+      name: kafka
+  selector:
+    app: kafka
+{{- end }}</code></pre>
+
+      <h3>4. Kafka UI Deployment</h3>
+      <span class="file-path">helm/ml-infra/templates/kafka-ui.yaml</span>
+      <pre><code>{{- if and .Values.kafka.enabled .Values.kafkaUi.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-ui
+  labels:
+    app: kafka-ui
+    app.kubernetes.io/part-of: ml-infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-ui
+  template:
+    metadata:
+      labels:
+        app: kafka-ui
+        app.kubernetes.io/part-of: ml-infra
+    spec:
+      containers:
+        - name: kafka-ui
+          image: {{ .Values.kafkaUi.image }}
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: KAFKA_CLUSTERS_0_NAME
+              value: "ml-cluster"
+            - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+              value: "kafka-service:9092"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-ui-service
+  labels:
+    app: kafka-ui
+    app.kubernetes.io/part-of: ml-infra
+spec:
+  type: {{ .Values.kafkaUi.service.type }}
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: {{ .Values.kafkaUi.service.nodePort }}
+      name: http
+  selector:
+    app: kafka-ui
+{{- end }}</code></pre>
+
+      <h3>5. Prometheus Telemetry Server</h3>
+      <span class="file-path">helm/ml-infra/templates/prometheus.yaml</span>
+      <pre><code>{{- if .Values.prometheus.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: prometheus-cluster-role
+rules:
+  - apiGroups: [""]
+    resources: ["nodes", "nodes/proxy", "services", "endpoints", "pods"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["extensions", "networking.k8s.io"]
+    resources: ["ingresses"]
+    verbs: ["get", "list", "watch"]
+  - nonResourceURLs: ["/metrics"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus-cluster-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: prometheus
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  labels:
+    app: prometheus
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 10s
+      evaluation_interval: 10s
+    scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+      - job_name: 'kubernetes-pods'
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+            action: keep
+            regex: true
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+            action: replace
+            target_label: __metrics_path__
+            regex: (.+)
+          - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+            action: replace
+            regex: ([^:]+)(?::\d+)?;(\d+)
+            replacement: $1:$2
+            target_label: __address__
+          - action: labelmap
+            regex: __meta_kubernetes_pod_label_(.+)
+          - source_labels: [__meta_kubernetes_namespace]
+            action: replace
+            target_label: kubernetes_namespace
+          - source_labels: [__meta_kubernetes_pod_name]
+            action: replace
+            target_label: kubernetes_pod_name
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      serviceAccountName: prometheus
+      containers:
+        - name: prometheus
+          image: {{ .Values.prometheus.image }}
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus/"
+          ports:
+            - containerPort: 9090
+              name: web
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: prometheus-config-volume
+              mountPath: /etc/prometheus/
+      volumes:
+        - name: prometheus-config-volume
+          configMap:
+            defaultMode: 420
+            name: prometheus-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+spec:
+  type: {{ .Values.prometheus.service.type }}
+  ports:
+    - port: {{ .Values.prometheus.service.port }}
+      targetPort: 9090
+      protocol: TCP
+      name: web
+  selector:
+    app: prometheus
+{{- end }}</code></pre>
+
+      <h3>6. Grafana with Auto-Provisioned Datasource & MLOps Dashboard</h3>
+      <span class="file-path">helm/ml-infra/templates/grafana.yaml</span>
+      <pre><code>{{- if .Values.grafana.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  labels:
+    app: grafana
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus:9090
+        isDefault: true
+        editable: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards-provider
+  labels:
+    app: grafana
+data:
+  dashboards.yaml: |
+    apiVersion: 1
+    providers:
+      - name: 'default'
+        orgId: 1
+        folder: 'MLOps'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 10
+        options:
+          path: /var/lib/grafana/dashboards
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-ml-dashboard
+  labels:
+    app: grafana
+data:
+  ml-service-dashboard.json: |
+    {
+      "annotations": { "list": [] },
+      "editable": true,
+      "panels": [
+        {
+          "title": "FastAPI HTTP Request Rate (req/s)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total[1m])) by (status)",
+              "legendFormat": "HTTP {{ `{{status}}` }}"
+            }
+          ]
+        },
+        {
+          "title": "Inference Latency (p95 & p99)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{handler=\"/predict\"}[1m])) by (le))",
+              "legendFormat": "p95 Latency (s)"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{handler=\"/predict\"}[1m])) by (le))",
+              "legendFormat": "p99 Latency (s)"
+            }
+          ]
+        },
+        {
+          "title": "Total Prediction Requests",
+          "type": "stat",
+          "gridPos": { "h": 6, "w": 6, "x": 0, "y": 8 },
+          "targets": [
+            {
+              "expr": "sum(http_requests_total{handler=\"/predict\"}) or vector(0)",
+              "legendFormat": "Predictions"
+            }
+          ]
+        },
+        {
+          "title": "Pod Memory Usage (RSS)",
+          "type": "timeseries",
+          "gridPos": { "h": 6, "w": 9, "x": 6, "y": 8 },
+          "targets": [
+            {
+              "expr": "sum(process_resident_memory_bytes) by (kubernetes_pod_name)",
+              "legendFormat": "{{ `{{kubernetes_pod_name}}` }}"
+            }
+          ]
+        },
+        {
+          "title": "Pod CPU Seconds Total",
+          "type": "timeseries",
+          "gridPos": { "h": 6, "w": 9, "x": 15, "y": 8 },
+          "targets": [
+            {
+              "expr": "sum(rate(process_cpu_seconds_total[1m])) by (kubernetes_pod_name)",
+              "legendFormat": "{{ `{{kubernetes_pod_name}}` }}"
+            }
+          ]
+        }
+      ],
+      "refresh": "5s",
+      "schemaVersion": 38,
+      "style": "dark",
+      "tags": ["mlops", "fastapi"],
+      "time": { "from": "now-15m", "to": "now" },
+      "title": "ML Serving Service Metrics",
+      "version": 1
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: {{ .Values.grafana.image }}
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              value: "admin"
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: {{ .Values.grafana.adminPassword | quote }}
+            - name: GF_USERS_ALLOW_SIGN_UP
+              value: "false"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+            - name: grafana-datasources
+              mountPath: /etc/grafana/provisioning/datasources
+            - name: grafana-dashboards-provider
+              mountPath: /etc/grafana/provisioning/dashboards
+            - name: grafana-dashboards
+              mountPath: /var/lib/grafana/dashboards
+      volumes:
+        - name: grafana-datasources
+          configMap:
+            name: grafana-datasources
+        - name: grafana-dashboards-provider
+          configMap:
+            name: grafana-dashboards-provider
+        - name: grafana-dashboards
+          configMap:
+            name: grafana-ml-dashboard
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  type: {{ .Values.grafana.service.type }}
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: {{ .Values.grafana.service.nodePort }}
+      protocol: TCP
+      name: http
+  selector:
+    app: grafana
+{{- end }}</code></pre>
+
+      <h3>7. Fluent Bit Log Forwarder DaemonSet to Splunk HEC</h3>
+      <span class="file-path">helm/ml-infra/templates/fluent-bit.yaml</span>
+      <pre><code>{{- if .Values.fluentBit.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fluent-bit
+  labels:
+    app.kubernetes.io/name: fluent-bit
+    app.kubernetes.io/part-of: ml-infra
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: fluent-bit-read
+rules:
+  - apiGroups: [""]
+    resources: ["namespaces", "pods"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: fluent-bit-read
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: fluent-bit-read
+subjects:
+  - kind: ServiceAccount
+    name: fluent-bit
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluent-bit-config
+  labels:
+    app.kubernetes.io/name: fluent-bit
+    app.kubernetes.io/part-of: ml-infra
+data:
+  fluent-bit.conf: |
+    [SERVICE]
+        Flush         1
+        Log_Level     info
+        Daemon        off
+        Parsers_File  parsers.conf
+
+    [INPUT]
+        Name              tail
+        Tag               kube.*
+        Path              /var/log/pods/*/*/*.log
+        Exclude_Path      /var/log/pods/*_fluent-bit*/*/*.log
+        Parser            docker
+        DB                /tmp/flb_kube.db
+        Mem_Buf_Limit     50MB
+        Skip_Long_Lines   On
+        Refresh_Interval  5
+
+    [FILTER]
+        Name                kubernetes
+        Match               kube.*
+        Kube_URL            https://kubernetes.default.svc:443
+        Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
+        Kube_Tag_Prefix     kube.var.log.pods.
+        Merge_Log           On
+        Merge_Log_Key       log_processed
+        Keep_Log            On
+
+    [OUTPUT]
+        Name            http
+        Match           kube.*
+        Host            {{ .Values.fluentBit.splunkHost }}
+        Port            {{ .Values.fluentBit.splunkPort }}
+        URI             /services/collector/raw
+        Header          Authorization Splunk {{ .Values.secrets.splunkToken }}
+        Format          json
+        tls             On
+        tls.verify      Off
+
+  parsers.conf: |
+    [PARSER]
+        Name        docker
+        Format      json
+        Time_Key    time
+        Time_Format %Y-%m-%dT%H:%M:%S.%L
+        Time_Keep   On
+
+    [PARSER]
+        Name        crio
+        Format      regex
+        Regex       ^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<log>.*)$
+        Time_Key    time
+        Time_Format %Y-%m-%dT%H:%M:%S.%L%z
+        Time_Keep   On
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluent-bit
+  labels:
+    app.kubernetes.io/name: fluent-bit
+    app.kubernetes.io/part-of: ml-infra
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fluent-bit
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: fluent-bit
+        app.kubernetes.io/part-of: ml-infra
+    spec:
+      serviceAccountName: fluent-bit
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: fluent-bit
+          image: fluent/fluent-bit:3.0.4
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          volumeMounts:
+            - name: config
+              mountPath: /fluent-bit/etc/
+            - name: varlog
+              mountPath: /var/log
+              readOnly: true
+            - name: varlibdockercontainers
+              mountPath: /var/lib/docker/containers
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: fluent-bit-config
+        - name: varlog
+          hostPath:
+            path: /var/log
+        - name: varlibdockercontainers
+          hostPath:
+            path: /var/lib/docker/containers
+{{- end }}</code></pre>
+    </section>
+
+    <!-- Section 18: Helm ml-app -->
+    <section id="helm-workload" class="section-card">
+      <h2>18. Workload Serving Helm Chart (<code>helm/ml-app</code>)</h2>
+      <p>The <code>ml-app</code> chart manages the stateless ML API deployment, environment variables pointing across namespaces, Prometheus scraping annotations, resource boundaries, and Horizontal Pod Autoscaling (HPA).</p>
+
+      <h3>1. Chart Metadata & Values</h3>
+      <span class="file-path">helm/ml-app/Chart.yaml</span>
+      <pre><code>apiVersion: v2
+name: ml-app
+description: Stateless production ML inference serving workload
+type: application
+version: 0.1.0
+appVersion: "1.0.0"</code></pre>
+
+      <span class="file-path">helm/ml-app/values.yaml</span>
+      <pre><code>replicaCount: 2
+
+image:
+  repository: ghcr.io/mastershantash/project-one/ml-serving-capstone
+  pullPolicy: Always
+  tag: "sha-c0a5d5d"
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+# Cross-Namespace DNS routing to shared ml-infra platform
+env:
+  REDIS_HOST: "redis-service.ml-infra"
+  REDIS_PORT: "6379"
+  KAFKA_BOOTSTRAP_SERVERS: "kafka-service.ml-infra:9092"
+  INFERENCE_REQUESTS_TOPIC: "inference-requests"
+  INFERENCE_RESULTS_TOPIC: "inference-results"
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+podSecurityContext:
   runAsNonRoot: true
   runAsUser: 1000
   runAsGroup: 1000
+  fsGroup: 1000
+
+securityContext:
   allowPrivilegeEscalation: false
   capabilities:
     drop:
-      - ALL</code></pre>
+      - ALL
 
-        <h3>C. Apache Kafka in KRaft Mode (No ZooKeeper)</h3>
-        <p>Historically, Kafka required an auxiliary Apache ZooKeeper cluster. Our setup deploys modern <strong>KRaft mode</strong>:</p>
-        <ul>
-          <li>Consensus handled natively inside Kafka using internal Raft leader voting.</li>
-          <li>Zero external ZooKeeper JVM processes; faster cluster failover (&lt; 3 seconds).</li>
-        </ul>
-      </div>
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8000
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /readyz
+    port: 8000
+  initialDelaySeconds: 5
+  periodSeconds: 5</code></pre>
+
+      <h3>2. Deployment & ClusterIP Service</h3>
+      <span class="file-path">helm/ml-app/templates/deployment.yaml</span>
+      <pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ml-app.fullname" . }}
+  labels:
+    {{- include "ml-app.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "ml-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "8000"
+      labels:
+        {{- include "ml-app.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "ml-app.fullname" . }}-config
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}</code></pre>
+
+      <span class="file-path">helm/ml-app/templates/service.yaml</span>
+      <pre><code>apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ml-app.fullname" . }}
+  labels:
+    {{- include "ml-app.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "ml-app.selectorLabels" . | nindent 4 }}</code></pre>
+
+      <h3>3. ConfigMap & HorizontalPodAutoscaler</h3>
+      <span class="file-path">helm/ml-app/templates/configmap.yaml</span>
+      <pre><code>apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "ml-app.fullname" . }}-config
+  labels:
+    {{- include "ml-app.labels" . | nindent 4 }}
+data:
+  REDIS_HOST: {{ .Values.env.REDIS_HOST | quote }}
+  REDIS_PORT: {{ .Values.env.REDIS_PORT | quote }}
+  KAFKA_BOOTSTRAP_SERVERS: {{ .Values.env.KAFKA_BOOTSTRAP_SERVERS | quote }}
+  INFERENCE_REQUESTS_TOPIC: {{ .Values.env.INFERENCE_REQUESTS_TOPIC | quote }}
+  INFERENCE_RESULTS_TOPIC: {{ .Values.env.INFERENCE_RESULTS_TOPIC | quote }}</code></pre>
+
+      <span class="file-path">helm/ml-app/templates/hpa.yaml</span>
+      <pre><code>{{- if .Values.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "ml-app.fullname" . }}
+  labels:
+    {{- include "ml-app.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "ml-app.fullname" . }}
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+{{- end }}</code></pre>
+
+      <span class="file-path">helm/ml-app/templates/_helpers.tpl</span>
+      <pre><code>{{- define "ml-app.name" -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{- define "ml-app.fullname" -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- define "ml-app.labels" -}}
+helm.sh/chart: {{ include "ml-app.chart" . }}
+{{ include "ml-app.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{- define "ml-app.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "ml-app.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{- define "ml-app.chart" -}}
+{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}</code></pre>
     </section>
 
-    <!-- 05. HELM DEEP DIVE -->
-    <section id="helm-deepdive">
-      <h2 class="section-title"><span class="number">05</span> Multi-Chart Helm Packaging: ml-infra & ml-app</h2>
-      <div class="card">
-        <p>Instead of a single monolithic Helm chart that mixes databases, brokers, dashboards, and APIs into one rigid template, we maintain two decoupled Helm charts with dedicated versioning:</p>
-        
-        <pre><code>helm/
-├── ml-infra/                       # Shared Platform Infrastructure Chart
-│   ├── Chart.yaml                  # Version 0.1.0 (Infra platform release)
-│   ├── values.yaml                 # Config for Redis, Kafka, Topics, UI, Prom, Grafana, Secrets
-│   └── templates/
-│       ├── redis.yaml              # Redis Deployment + ClusterIP (6379)
-│       ├── kafka.yaml              # Apache Kafka KRaft Broker + ClusterIP (9092)
-│       ├── kafka-topics-job.yaml   # Idempotent topic provisioning Job (3 partitions)
-│       ├── kafka-ui.yaml           # Provectus Kafka UI (NodePort 30880)
-│       ├── prometheus.yaml         # Prometheus RBAC, ConfigMap, Deployment & Service (9090)
-│       ├── grafana.yaml            # Grafana Deployment, NodePort (30300) & Provisioned MLOps Dashboard
-│       ├── fluent-bit.yaml         # Cluster-wide log forwarder DaemonSet
-│       └── secrets.yaml            # Opaque Kubernetes Secret (Splunk token)
-└── ml-app/                         # Workload Serving Chart (Continuous Deployment)
-    ├── Chart.yaml                  # Version 0.1.0
-    ├── values.yaml                 # Replica count, image tag, CPU/RAM limits, cross-namespace DNS
-    └── templates/
-        ├── _helpers.tpl            # Reusable labels and naming helpers
-        ├── deployment.yaml         # App pods with Prometheus scrape annotations & securityContext
-        ├── service.yaml            # ClusterIP service (port 80 -> containerPort 8000)
-        ├── configmap.yaml          # Externalized env vars (REDIS_HOST, KAFKA_BOOTSTRAP_SERVERS)
-        └── hpa.yaml                # HorizontalPodAutoscaler definition</code></pre>
-      </div>
+    <!-- Section 19: Declarative Topics -->
+    <section id="declarative-kafka" class="section-card">
+      <h2>19. Declarative Topics & Kafka UI Setup</h2>
+      <p>In GitOps, topics must not be created manually via ad-hoc CLI commands. We use a declarative Kubernetes <code>Job</code> with an <strong>init-container readiness barrier</strong> to ensure topics exist before workloads start.</p>
+
+      <span class="file-path">helm/ml-infra/templates/kafka-topics-job.yaml</span>
+      <pre><code>{{- if and .Values.kafka.enabled .Values.topics.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-kafka-topics
+  labels:
+    app.kubernetes.io/part-of: ml-infra
+spec:
+  ttlSecondsAfterFinished: 120
+  backoffLimit: 6
+  template:
+    metadata:
+      labels:
+        app: kafka-topic-creator
+    spec:
+      restartPolicy: OnFailure
+      initContainers:
+        - name: wait-for-kafka
+          image: apache/kafka:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              echo "Waiting for Kafka broker to become ready..."
+              until /opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka-service:9092; do
+                sleep 2
+              done
+              echo "Kafka broker is ready!"
+      containers:
+        - name: topic-creator
+          image: apache/kafka:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              {{- range .Values.topics.list }}
+              echo "Ensuring topic '{{ .name }}' exists with {{ .partitions }} partitions..."
+              /opt/kafka/bin/kafka-topics.sh \
+                --bootstrap-server kafka-service:9092 \
+                --create \
+                --if-not-exists \
+                --topic {{ .name }} \
+                --partitions {{ .partitions }} \
+                --replication-factor 1
+              {{- end }}
+              echo "Listing all topics:"
+              /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka-service:9092 --list
+{{- end }}</code></pre>
+      
+      <p>Access the live Kafka UI dashboard at <code>http://&lt;node-ip&gt;:30880</code> to inspect partitions, consumers, and message payloads.</p>
     </section>
 
-    <!-- 06. GITOPS ENGINE -->
-    <section id="gitops-engine">
-      <h2 class="section-title"><span class="number">06</span> Enterprise Polyrepo Architecture: App Repo vs. GitOps Repo</h2>
-      <div class="card">
-        <h3>A. The Decoupled Polyrepo Pattern</h3>
-        <p>In enterprise engineering, combining application source code with cluster deployment manifests in a single repository is an anti-pattern. We cleanly split the platform into two independent repositories:</p>
+    <!-- Section 20: ArgoCD Engine -->
+    <section id="argocd-setup" class="section-card">
+      <h2>20. ArgoCD GitOps Engine Installation</h2>
+      <p>ArgoCD operates as the in-cluster GitOps controller, continuously reconciling the live cluster state with the desired state committed to Git.</p>
 
-        <div class="diagram-box">
-+-------------------------------------------------------------+
-| REPO 1: Application Repo (project-one)                      |
-| * Python FastAPI Serving App (ml-serving-capstone/)         |
-| * Unit Tests (pytest), Linter (ruff), Type Checker (mypy)   |
-| * Dockerfile & Build Pipeline (.github/workflows/ci.yaml)   |
-| * Pushes immutable images: ghcr.io/...:sha-&lt;commit-hash&gt;     |
-+-------------------------------------------------------------+
-                              |
-                              v (Image Build & Publish)
-               +------------------------------+
-               | GitHub Container Registry    |
-               | (ghcr.io) OCI Artifactory    |
-               +------------------------------+
-                              ^
-                              | (Pulls exact pinned SHA)
-+-------------------------------------------------------------+
-| REPO 2: GitOps Platform Repo (project-one-gitops)           |
-| * ArgoCD Applications (argocd/infra-app.yaml, workload-app) |
-| * Helm Charts: helm/ml-infra and helm/ml-app                |
-| * Dedicated Chart CI (.github/workflows/lint.yaml)          |
-| * ArgoCD continuously reconciles cluster state from here!   |
-+-------------------------------------------------------------+
-        </div>
+      <h3>1. Install ArgoCD via Server-Side Apply</h3>
+      <div class="callout callout-warn">
+        <div class="callout-title">CRITICAL: Server-Side Apply Required</div>
+        <p>ArgoCD CRDs contain large OpenAPI v3 validation schemas that exceed Kubernetes' 262,144 byte client-side annotation limit (<code>kubectl.kubernetes.io/last-applied-configuration</code>). You MUST pass <code>--server-side</code> during installation!</p>
+      </div>
 
-        <h3>B. Live ArgoCD Application Manifests</h3>
-        <pre><code><span class="comment"># argocd/infra-app.yaml (Deploys shared platform into ml-infra)</span>
-apiVersion: argoproj.io/v1alpha1
+      <pre><code># 1. Create argocd namespace
+kubectl create namespace argocd
+
+# 2. Install stable manifests using server-side apply
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml --server-side
+
+# 3. Patch ArgoCD API Server to NodePort 30781
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort", "ports": [{"port": 443, "nodePort": 30781, "targetPort": 8080}]}}'
+
+# 4. Retrieve initial admin password (decoded from Secret)
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
+
+# 5. Access Web UI:
+# URL: https://localhost:30781 (User: admin / Password: &lt;retrieved-password&gt;)</code></pre>
+    </section>
+
+    <!-- Section 21: ArgoCD Apps -->
+    <section id="argocd-apps" class="section-card">
+      <h2>21. Multi-Application GitOps Manifests (<code>argocd/</code>)</h2>
+      <p>We declare two ArgoCD <code>Application</code> custom resources pointing to our GitOps repository: one for the platform infrastructure and one for the ML workload.</p>
+
+      <h3>1. Platform Infrastructure Application</h3>
+      <span class="file-path">argocd/infra-app.yaml</span>
+      <pre><code>apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: ml-infra
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
+  project: default
   source:
     repoURL: 'https://github.com/mastershantash/project-one-gitops.git'
-    path: helm/ml-infra
     targetRevision: main
+    path: helm/ml-infra
+    helm:
+      valueFiles:
+        - values.yaml
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: ml-infra
   syncPolicy:
-    automated: { prune: true, selfHeal: true }
----
-<span class="comment"># argocd/workload-app.yaml (Deploys ML serving workload into ml-app)</span>
-apiVersion: argoproj.io/v1alpha1
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true</code></pre>
+
+      <h3>2. Workload Serving Application</h3>
+      <span class="file-path">argocd/workload-app.yaml</span>
+      <pre><code>apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: ml-app
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
+  project: default
   source:
     repoURL: 'https://github.com/mastershantash/project-one-gitops.git'
-    path: helm/ml-app
     targetRevision: main
+    path: helm/ml-app
+    helm:
+      valueFiles:
+        - values.yaml
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: ml-app
   syncPolicy:
-    automated: { prune: true, selfHeal: true }</code></pre>
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true</code></pre>
 
-        <div class="callout success">
-          <h4>GitOps Self-Healing & Drift Detection</h4>
-          If any pod, secret, or topic job in either namespace is manually tampered with, ArgoCD's continuous background controller (accessible on NodePort <code>30781</code>) identifies the delta and triggers an automatic rolling heal.
-        </div>
-      </div>
+      <h3>Apply to ArgoCD</h3>
+      <pre><code>kubectl apply -f argocd/infra-app.yaml
+kubectl apply -f argocd/workload-app.yaml</code></pre>
     </section>
 
-    <!-- 07. CI/CD PIPELINE -->
-    <section id="ci-cd-pipeline">
-      <h2 class="section-title"><span class="number">07</span> Enterprise CI/CD: Quality Gates, OCI Artifacts & Immutable GitOps</h2>
-      <div class="card">
-        <p>In enterprise engineering, pushing unversioned <code>:latest</code> images or untested Helm templates directly to production is an unacceptable risk. Our upgraded CI/CD pipeline enforces strict quality gates, publishes immutable OCI artifacts to GHCR (our cloud Artifactory), and performs automated GitOps writebacks:</p>
+    <!-- Section 22: CI/CD & GHCR -->
+    <section id="ci-cd-ghcr" class="section-card">
+      <h2>22. Enterprise CI/CD Pipeline & GHCR Integration</h2>
+      <p>Automated software delivery must be immutable, secure, and zero-touch. Our GitHub Actions pipeline validates code quality, executes tests, builds multi-stage containers, pushes to GitHub Container Registry (GHCR) with dynamic Git SHA tags, and triggers GitOps writeback.</p>
 
-        <table>
-          <tr>
-            <th>Pipeline Job</th>
-            <th>Triggers</th>
-            <th>Tooling</th>
-            <th>Enterprise Verification & Artifact Outcome</th>
-          </tr>
-          <tr>
-            <td><strong>1. Quality & Tests</strong></td>
-            <td>Push / PR</td>
-            <td><code>uv</code>, <code>ruff</code>, <code>mypy</code>, <code>pytest</code></td>
-            <td>Enforces code formatting, static type checking (0 errors across 5 modules), and passes all 6 unit tests before any container build begins.</td>
-          </tr>
-          <tr>
-            <td><strong>2. Helm Chart CI</strong></td>
-            <td>Push / PR</td>
-            <td><code>helm lint</code></td>
-            <td>Validates Go template syntax, schema contracts, and value bindings for both <code>helm/ml-infra</code> and <code>helm/ml-app</code>.</td>
-          </tr>
-          <tr>
-            <td><strong>3. Immutable Docker Build</strong></td>
-            <td>Push to <code>main</code></td>
-            <td>Docker Buildx, GHCR</td>
-            <td>Builds hardened container and tags it with deterministic immutable tags: <code>sha-&lt;commit-hash&gt;</code>, <code>v0.1.&lt;build-number&gt;</code>, and <code>latest</code>.</td>
-          </tr>
-          <tr>
-            <td><strong>4. OCI Helm Artifactory</strong></td>
-            <td>Push to <code>main</code></td>
-            <td>Helm 3 OCI, GHCR</td>
-            <td>Packages both charts into versioned tarballs and publishes them to the OCI registry: <code>oci://ghcr.io/.../charts/ml-infra:0.1.&lt;n&gt;</code>.</td>
-          </tr>
-          <tr>
-            <td><strong>5. Automated GitOps Sync</strong></td>
-            <td>Push to <code>main</code></td>
-            <td>Git, ArgoCD</td>
-            <td>CI updates <code>helm/ml-app/values.yaml</code> to pin <code>tag: "sha-&lt;hash&gt;"</code> and commits back with <code>[skip ci]</code>. ArgoCD triggers a zero-downtime rolling update.</td>
-          </tr>
-        </table>
+      <h3>1. Application Pipeline (<code>project-one/.github/workflows/ci.yaml</code>)</h3>
+      <span class="file-path">.github/workflows/ci.yaml</span>
+      <pre><code>name: CI/CD Pipeline
 
-        <h3>The Anti-Pattern vs. Enterprise GitOps Standard</h3>
-        <table>
-          <tr>
-            <th>Engineering Dimension</th>
-            <th>The Mutable Anti-Pattern (Naive Setup) ❌</th>
-            <th>Enterprise Immutable GitOps (Our Pipeline) 🏆</th>
-          </tr>
-          <tr>
-            <td><strong>Container Image Tagging</strong></td>
-            <td><code>ml-serving-capstone:latest</code> (Mutable; impossible to know what code is running).</td>
-            <td><code>ml-serving-capstone:sha-ae36ee4</code> (Strictly 1:1 mapped to Git commit).</td>
-          </tr>
-          <tr>
-            <td><strong>Rollback Reliability</strong></td>
-            <td>Broken. Rolling back to <code>:latest</code> does nothing because the tag name hasn't changed.</td>
-            <td>Instant. Reverting a Git commit rolls Kubernetes back to the previous exact immutable image SHA.</td>
-          </tr>
-          <tr>
-            <td><strong>Helm Chart Storage</strong></td>
-            <td>Only unversioned raw files in Git.</td>
-            <td>Versioned OCI packages in GHCR Artifactory + declarative source in Git.</td>
-          </tr>
-        </table>
-      </div>
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  code-quality-and-test:
+    name: Code Quality, Lint & Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Dependencies
+        working-directory: ml-serving-capstone
+        run: uv sync --frozen
+
+      - name: Run Ruff Linter
+        working-directory: ml-serving-capstone
+        run: uv run ruff check .
+
+      - name: Run Mypy Static Type Analysis
+        working-directory: ml-serving-capstone
+        run: uv run mypy src/
+
+      - name: Run Pytest
+        working-directory: ml-serving-capstone
+        run: uv run pytest
+
+  build-and-publish-image:
+    name: Build & Publish Container Image
+    needs: code-quality-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Compute Dynamic Version Variables
+        id: vars
+        run: |
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          VERSION="0.1.${{ github.run_number }}"
+          echo "short_sha=${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry (GHCR)
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ml-serving-capstone
+          file: ml-serving-capstone/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/ml-serving-capstone:sha-${{ steps.vars.outputs.short_sha }}
+            ghcr.io/${{ github.repository }}/ml-serving-capstone:v${{ steps.vars.outputs.version }}
+            ghcr.io/${{ github.repository }}/ml-serving-capstone:latest
+
+      - name: Trigger GitOps Update (Automated Writeback)
+        if: env.GITOPS_TOKEN != ''
+        env:
+          GITOPS_TOKEN: ${{ secrets.GITOPS_REPO_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git clone https://x-access-token:${GITOPS_TOKEN}@github.com/${{ github.repository_owner }}/project-one-gitops.git gitops-repo
+          cd gitops-repo
+          sed -i "s/tag: .*/tag: \"sha-${{ steps.vars.outputs.short_sha }}\"/" helm/ml-app/values.yaml
+          git add helm/ml-app/values.yaml
+          if ! git diff-index --quiet HEAD; then
+            git commit -m "chore(gitops): bump ml-app image tag to sha-${{ steps.vars.outputs.short_sha }}"
+            git push origin main
+          fi</code></pre>
+
+      <h3>2. GitOps Platform Pipeline (<code>project-one-gitops/.github/workflows/lint.yaml</code>)</h3>
+      <span class="file-path">project-one-gitops/.github/workflows/lint.yaml</span>
+      <pre><code>name: GitOps Chart Quality & Lint
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  helm-lint:
+    name: Lint Helm Charts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: "v3.14.0"
+
+      - name: Lint ml-infra Chart
+        run: helm lint helm/ml-infra
+
+      - name: Lint ml-app Chart
+        run: helm lint helm/ml-app</code></pre>
     </section>
 
-    <!-- 08. SPLUNK OBSERVABILITY -->
-    <section id="splunk-obs">
-      <h2 class="section-title"><span class="number">08</span> Production Observability: Pattern A (Fluent Bit DaemonSet)</h2>
-      <div class="card">
-        <h3>A. The Architectural Decision: Pattern A vs. Pattern B</h3>
-        <p>In Kubernetes, there are two primary approaches to shipping logs to Splunk. In enterprise production, <strong>Pattern A</strong> is strictly preferred:</p>
+    <!-- Section 23: Verification & Port Matrix -->
+    <section id="cluster-runbook" class="section-card">
+      <h2>23. Cluster Runbook, Smoke Tests & Port Matrix</h2>
+      <p>A consolidated reference of all live cluster services, ports, access protocols, and automated smoke-testing commands.</p>
 
-        <table>
+      <h3>Port & Ingress Matrix</h3>
+      <table>
+        <thead>
           <tr>
-            <th>Evaluation Criteria</th>
-            <th>Pattern A (DaemonSet Forwarder - Fluent Bit) 🏆</th>
-            <th>Pattern B (Direct App Telemetry) ❌</th>
-          </tr>
-          <tr>
-            <td><strong>12-Factor Compliance</strong></td>
-            <td><strong>Factor XI Compliant:</strong> App only writes structured JSON to <code>stdout</code>. Zero knowledge of Splunk or tokens.</td>
-            <td><strong>Coupled:</strong> App code imports HTTP clients, manages Splunk tokens, and handles retries.</td>
-          </tr>
-          <tr>
-            <td><strong>Crash & OOM Survivability</strong></td>
-            <td><strong>Survives Crashes:</strong> If Python crashes, segfaults, or is <code>OOMKilled</code>, logs on disk are still shipped to Splunk.</td>
-            <td><strong>Silent Drop:</strong> If process terminates abruptly, pending in-memory telemetry is permanently lost.</td>
-          </tr>
-          <tr>
-            <td><strong>Multi-Service Coverage</strong></td>
-            <td><strong>Cluster-Wide:</strong> Automatically collects logs from Redis, Kafka, and ML API with zero application code.</td>
-            <td><strong>Siloed:</strong> Only captures code manually instrumented. Redis and Kafka remain completely dark.</td>
-          </tr>
-          <tr>
-            <td><strong>Latency Impact</strong></td>
-            <td><strong>Zero:</strong> Writing to stdout buffer is sub-microsecond. Fluent Bit handles batching, disk buffering, and retries.</td>
-            <td><strong>Overhead:</strong> Background HTTP tasks compete for Python event loop cycles during network degradation.</td>
-          </tr>
-        </table>
-
-        <h3>B. How the Log Transport Pipeline Works</h3>
-        <div class="diagram-box">
-+----------------------+      +----------------------+      +----------------------+
-| ML API Replicas x2   |      | Redis Cache Pod      |      | Kafka Broker Pod     |
-| (stdout JSON stream) |      | (stdout server logs) |      | (stdout cluster logs)|
-+----------------------+      +----------------------+      +----------------------+
-           |                             |                             |
-           +-----------------------------+-----------------------------+
-                                         |
-                                         v
-                      +--------------------------------------+
-                      | Kubelet writes to Node HostPath      |
-                      | /var/log/pods/&lt;namespace&gt;_&lt;pod&gt;/*    |
-                      +--------------------------------------+
-                                         |
-                                         v (inotify tail)
-                      +--------------------------------------+
-                      | Fluent Bit (DaemonSet: 1 per node)   |
-                      | - INPUT: tail /var/log/pods/         |
-                      | - FILTER: kubernetes metadata enrich |
-                      | - OUTPUT: HTTP HEC (/raw endpoint)   |
-                      +--------------------------------------+
-                                         |
-                                         | HTTPS POST (Batch JSON)
-                                         v
-                      +--------------------------------------+
-                      | Splunk Enterprise (HEC Port: 8088)   |
-                      | Token: 2a58141a-232e-41ea-...        |
-                      +--------------------------------------+
-        </div>
-
-        <h3>C. Essential Splunk SPL Queries for ML Operations</h3>
-        <pre><code><span class="comment"># 1. Real-time Inference Latency Percentiles (p50, p95, p99)</span>
-index=* "model_inference"
-| spath
-| stats count, avg(latency_ms) as avg_lat, p95(latency_ms) as p95_lat, p99(latency_ms) as p99_lat by model_version
-
-<span class="comment"># 2. Redis Cache Hit vs. Miss Ratio</span>
-index=* "model_inference"
-| spath
-| stats count by cache_hit
-| eval ratio = count / sum(count) * 100
-
-<span class="comment"># 3. Stream all ML Serving API Container Logs</span>
-index=* "ml-serving-capstone"
-
-<span class="comment"># 4. Detect Backpressure or OOMKilled Pod Evictions</span>
-index=* ("OOMKilled" OR "CrashLoopBackOff" OR "Error")
-| table _time, pod_name, namespace, log</code></pre>
-        <h3>D. Prometheus Metrics Instrumentation & Cross-Namespace Scraping</h3>
-        <p>In addition to logs, high-throughput ML systems require real-time metrics. We instrumented FastAPI using <code>prometheus-fastapi-instrumentator</code>:</p>
-        <pre><code><span class="comment"># ml-serving-capstone/src/ml_serving_capstone/main.py</span>
-from prometheus_fastapi_instrumentator import Instrumentator
-
-app = FastAPI(title="ML Serving Capstone API")
-<span class="comment"># Exposes /metrics with standard HTTP latency histograms & QPS counters</span>
-Instrumentator().instrument(app).expose(app)</code></pre>
-
-        <p>In Kubernetes, Prometheus discovers workloads automatically via Pod Annotations without hardcoded IP lists:</p>
-        <pre><code><span class="comment"># helm/ml-app/templates/deployment.yaml</span>
-metadata:
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/path: "/metrics"
-    prometheus.io/port: "8000"</code></pre>
-
-        <h3>E. Pre-Provisioned Grafana Dashboard (NodePort 30300)</h3>
-        <p>Grafana runs in the <code>ml-infra</code> namespace and is exposed via NodePort <code>30300</code> (<code>http://localhost:30300</code>, user: <code>admin</code> / pass: <code>admin</code>). Datasources and dashboards are provisioned declaratively via ConfigMaps:</p>
-        <ul>
-          <li><strong>FastAPI Request Rate:</strong> <code>sum(rate(http_requests_total[1m])) by (status)</code></li>
-          <li><strong>Inference Latency Percentiles:</strong> <code>histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{handler="/predict"}[1m])) by (le))</code></li>
-          <li><strong>System Footprint:</strong> Real-time container memory RSS (<code>process_resident_memory_bytes</code>) and CPU consumption.</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- 09. DECLARATIVE KAFKA & KAFKA UI -->
-    <section id="kafka-platform">
-      <h2 class="section-title"><span class="number">09</span> Declarative Kafka Platform & Kafka UI Dashboard</h2>
-      <div class="card">
-        <h3>A. The Problem with Imperative CLI Topic Creation</h3>
-        <p>In immature setups, engineers run manual <code>kafka-topics.sh --create</code> commands after deployment. This causes severe production failure modes:</p>
-        <ul>
-          <li><strong>Race Conditions:</strong> Producers start before topics exist, triggering <code>UNKNOWN_TOPIC_OR_PARTITION</code> errors.</li>
-          <li><strong>Configuration Drift:</strong> Partition counts and retention policies in dev never match staging or production.</li>
-          <li><strong>Non-Reproducible Clusters:</strong> If the cluster is recreated from scratch, topics are missing.</li>
-        </ul>
-
-        <h3>B. The Kubernetes Job Pattern with Init Containers</h3>
-        <p>We deploy an automated Kubernetes <code>Job</code> (<code>helm/ml-infra/templates/kafka-topics-job.yaml</code>) that runs idempotently during deployment:</p>
-        <ol>
-          <li><strong>Init Container (Wait for Broker):</strong> Polls <code>kafka-service:9092</code> with <code>kafka-broker-api-versions.sh</code> until Kafka completes internal KRaft election.</li>
-          <li><strong>Main Container (Topic Provisioner):</strong> Runs <code>kafka-topics.sh --create --if-not-exists --topic &lt;name&gt; --partitions 3</code> for <code>inference-requests</code> and <code>inference-results</code>.</li>
-        </ol>
-
-        <h3>C. Kafka UI Dashboard (NodePort 30880)</h3>
-        <p>We deploy Provectus Kafka UI (<code>provectuslabs/kafka-ui</code>) in <code>ml-infra</code> exposed on NodePort <code>30880</code> (<code>http://localhost:30880</code>). It provides an instant web UI to inspect topic partitions, consumer group lag, and message contents without SSH access.</p>
-      </div>
-    </section>
-
-    <!-- 10. SECRETS MANAGEMENT & ESO -->
-    <section id="secrets-management">
-      <h2 class="section-title"><span class="number">10</span> Kubernetes Secrets Management & External Secrets Operator (ESO)</h2>
-      <div class="card">
-        <h3>A. Secrets vs. ConfigMaps</h3>
-        <p>Sensitive credentials (Splunk HEC tokens, Redis passwords, Kafka SASL credentials) must never be stored in plain ConfigMaps or committed to Git. We package an opaque Kubernetes <code>Secret</code>:</p>
-        <pre><code>apiVersion: v1
-kind: Secret
-metadata:
-  name: ml-infra-secrets
-  namespace: ml-infra
-type: Opaque
-stringData:
-  splunk-hec-token: "2a58141a-232e-41ea-9b7c-5ee487970abe"</code></pre>
-
-        <h3>B. The Cloud-Native Pattern: External Secrets Operator (ESO)</h3>
-        <p>In production enterprise GitOps, committing Secrets even in base64 to Git is forbidden. The industry standard is <strong>External Secrets Operator (ESO)</strong>:</p>
-        <div class="diagram-box">
-+----------------------------+
-| Cloud Secret Store         |
-| (AWS Secrets Mgr / Vault)  |
-+----------------------------+
-               |
-               v (Authenticated Sync)
-+----------------------------+
-| External Secrets Operator  | &lt;-- Reads 'ExternalSecret' CRD from Git
-| (Controller in k8s)        |
-+----------------------------+
-               |
-               v (Generates inside cluster)
-+----------------------------+
-| Native Kubernetes Secret   | &lt;-- Injected into Pods via envFrom/secretKeyRef
-| (Never committed to Git)   |
-+----------------------------+
-        </div>
-        <p>Developers commit an <code>ExternalSecret</code> manifest to Git referencing the Vault secret path. ESO pulls the token at runtime and mounts it into the application pod.</p>
-      </div>
-    </section>
-
-    <!-- 11. REAL WAR STORIES & BUGS FIXED -->
-    <section id="war-stories">
-      <h2 class="section-title"><span class="number">11</span> Real War Stories: Bugs Hit & How We Fixed Them</h2>
-      <div class="card">
-        <p>These are real bugs encountered during this build—the kind of edge cases you only learn from hands-on production engineering:</p>
-
-        <details open>
-          <summary>Bug 1: The `async def` without `await` Trap</summary>
-          <p><strong>Symptom:</strong> High concurrency latency spikes even though the handler was declared <code>async def</code>.</p>
-          <p><strong>Root Cause:</strong> Declaring a function <code>async def</code> does <em>not</em> make code non-blocking! Using a synchronous client (e.g. standard <code>redis.Redis</code>) without <code>await</code> blocks Python's entire single-threaded event loop for every concurrent user request.</p>
-          <p><strong>The Fix:</strong> Use <code>redis.asyncio</code> and ensure every I/O call is explicitly awaited: <code>await redis_client.get(key)</code>.</p>
-        </details>
-
-        <details>
-          <summary>Bug 2: Calling `async` Function Without `await` Silently No-ops</summary>
-          <p><strong>Symptom:</strong> Cache writes never appeared in Redis, but no exception was thrown.</p>
-          <p><strong>Root Cause:</strong> In Python, calling an <code>async def</code> function without <code>await</code> does not execute the function body; it returns an unexecuted coroutine object. Python emits a warning, but execution continues.</p>
-          <p><strong>The Fix:</strong> Always write <code>await cache_prediction(...)</code> at the call site.</p>
-        </details>
-
-        <details>
-          <summary>Bug 3: Docker Layer Cache Broken by `uv-build`</summary>
-          <p><strong>Symptom:</strong> <code>RUN uv sync --frozen --no-dev --no-install-project</code> failed with <code>cause: failed to open file /app/README.md</code>.</p>
-          <p><strong>Root Cause:</strong> <code>pyproject.toml</code> specified <code>readme = "README.md"</code>. When building the package, the build backend validated the presence of the readme file, which was missing from the layer.</p>
-          <p><strong>The Fix:</strong> Copy <code>README.md</code> alongside <code>pyproject.toml</code> and <code>uv.lock</code> before running <code>uv sync</code>.</p>
-        </details>
-
-        <details>
-          <summary>Bug 4: Kubernetes CRD Annotation 256KB Exceeded</summary>
-          <p><strong>Symptom:</strong> <code>kubectl apply -f install.yaml</code> for ArgoCD failed with <code>metadata.annotations: Too long: must have at most 262144 bytes</code>.</p>
-          <p><strong>Root Cause:</strong> Client-side <code>kubectl apply</code> stores the entire previous manifest inside <code>kubectl.kubernetes.io/last-applied-configuration</code>, exceeding the 256KB annotation limit for massive CRDs.</p>
-          <p><strong>The Fix:</strong> Use Kubernetes Server-Side Apply: <code>microk8s kubectl apply --server-side -f install.yaml</code>.</p>
-        </details>
-
-        <details>
-          <summary>Bug 5: ArgoCD "Remote Repository is Empty" Error</summary>
-          <p><strong>Symptom:</strong> ArgoCD application reported <code>ComparisonError: failed to list refs: remote repository is empty</code>.</p>
-          <p><strong>Root Cause:</strong> The ArgoCD Application was applied before local Git commits were pushed to the remote GitHub repository.</p>
-          <p><strong>The Fix:</strong> Push commits to GitHub first (<code>git push -u origin main</code>), then trigger hard refresh.</p>
-        </details>
-
-        <details>
-          <summary>Bug 6: Fluent Bit SQLite on Read-Only Volume Crash</summary>
-          <p><strong>Symptom:</strong> Fluent Bit pod entered <code>CrashLoopBackOff</code> with <code>[error] [sqldb] cannot open database /var/log/flb_kube.db</code>.</p>
-          <p><strong>Root Cause:</strong> <code>/var/log</code> was mounted into the pod as <code>readOnly: true</code> for security. Fluent Bit tried to write its state tracking database to that read-only path.</p>
-          <p><strong>The Fix:</strong> Point the database to container-writable memory/tmpfs: <code>DB /tmp/flb_kube.db</code>.</p>
-        </details>
-
-        <details>
-          <summary>Bug 7: The Infinite Log Storm Feedback Loop</summary>
-          <p><strong>Symptom:</strong> Fluent Bit log volume spiked exponentially to thousands of log events per second.</p>
-          <p><strong>Root Cause:</strong> Fluent Bit logged a warning to stderr. Because Fluent Bit was deployed in the same cluster, its own log was written to <code>/var/log/pods/</code>, which Fluent Bit read and shipped to Splunk, triggering another log line in an infinite loop.</p>
-          <p><strong>The Fix:</strong> Add an exclusion pattern to the tail input: <code>Exclude_Path /var/log/pods/*_fluent-bit*/*/*.log</code>.</p>
-        </details>
-
-        <details>
-          <summary>Bug 8: Splunk HEC Plugin Parameter Compatibility</summary>
-          <p><strong>Symptom:</strong> Fluent Bit emitted warnings <code>[warn] [record accessor] translation failed, root key=hec_token</code>.</p>
-          <p><strong>Root Cause:</strong> The generic <code>splunk</code> output plugin in Fluent Bit v3 expected token keys embedded in individual log records when not explicitly formatted.</p>
-          <p><strong>The Fix:</strong> Switch to the universal <code>http</code> output plugin targeting <code>URI /services/collector/raw</code> with header <code>Authorization Splunk &lt;token&gt;</code>.</p>
-        </details>
-
-        <details>
-          <summary>Bug 9: Grafana JSON Template Curly Braces Escaping in Helm</summary>
-          <p><strong>Symptom:</strong> <code>helm lint</code> failed with <code>function "status" not defined</code>.</p>
-          <p><strong>Root Cause:</strong> Grafana dashboard JSON contains legend format strings like <code>HTTP {{status}}</code> and <code>{{kubernetes_pod_name}}</code>. The Go template engine in Helm attempted to evaluate these as Helm template functions.</p>
-          <p><strong>The Fix:</strong> Escape double curly braces in Helm templates using string literals: <code>"legendFormat": "HTTP {{ `{{status}}` }}"</code>.</p>
-        </details>
-
-        <details>
-          <summary>Bug 10: ArgoCD Shared Resource Conflict on ClusterRoleBinding</summary>
-          <p><strong>Symptom:</strong> ArgoCD flagged <code>SharedResourceWarning: ClusterRoleBinding/fluent-bit-read is part of applications argocd/ml-infra and ml-serving-capstone</code>.</p>
-          <p><strong>Root Cause:</strong> Cluster-scoped resources (ClusterRoles, ClusterRoleBindings) cannot be managed by two distinct ArgoCD applications with pruning enabled simultaneously.</p>
-          <p><strong>The Fix:</strong> Delete obsolete monolithic application from ArgoCD before rolling out the decoupled infrastructure application.</p>
-        </details>
-      </div>
-    </section>
-
-    <!-- 12. RUNBOOK -->
-    <section id="runbook">
-      <h2 class="section-title"><span class="number">12</span> Production Operations Runbook & Port Contracts</h2>
-      <div class="card">
-        <h3>A. Production Port & Access Contracts</h3>
-        <table>
-          <tr>
-            <th>Service</th>
+            <th>Subsystem</th>
+            <th>Namespace</th>
             <th>Type</th>
-            <th>Port</th>
-            <th>Host Access URL</th>
-            <th>Default Credentials</th>
+            <th>Target Port</th>
+            <th>NodePort / External URL</th>
+            <th>Credentials / Token</th>
           </tr>
+        </thead>
+        <tbody>
           <tr>
-            <td><strong>FastAPI ML Serving</strong></td>
-            <td>Port-Forward / ClusterIP</td>
-            <td><code>8001</code> / <code>80</code></td>
-            <td><a href="http://localhost:8001/docs" target="_blank">http://localhost:8001/docs</a></td>
-            <td>None (Open REST API)</td>
-          </tr>
-          <tr>
-            <td><strong>Kafka UI Dashboard</strong></td>
+            <td><strong>ArgoCD UI</strong></td>
+            <td><code>argocd</code></td>
             <td>NodePort</td>
-            <td><code>30880</code></td>
-            <td><a href="http://localhost:30880" target="_blank">http://localhost:30880</a></td>
-            <td>None</td>
+            <td>8080</td>
+            <td><code>https://localhost:30781</code></td>
+            <td><code>admin</code> / (From Secret)</td>
+          </tr>
+          <tr>
+            <td><strong>Kafka UI</strong></td>
+            <td><code>ml-infra</code></td>
+            <td>NodePort</td>
+            <td>8080</td>
+            <td><code>http://localhost:30880</code></td>
+            <td>None (Anonymous)</td>
           </tr>
           <tr>
             <td><strong>Grafana Dashboards</strong></td>
+            <td><code>ml-infra</code></td>
             <td>NodePort</td>
-            <td><code>30300</code></td>
-            <td><a href="http://localhost:30300" target="_blank">http://localhost:30300</a></td>
+            <td>3000</td>
+            <td><code>http://localhost:30300</code></td>
             <td><code>admin</code> / <code>admin</code></td>
           </tr>
           <tr>
-            <td><strong>ArgoCD GitOps</strong></td>
-            <td>NodePort</td>
-            <td><code>30781</code></td>
-            <td><a href="https://localhost:30781" target="_blank">https://localhost:30781</a></td>
-            <td><code>admin</code> / (initial secret)</td>
-          </tr>
-          <tr>
-            <td><strong>Splunk Enterprise Web</strong></td>
-            <td>Docker Port</td>
-            <td><code>8000</code></td>
-            <td><a href="http://localhost:8000" target="_blank">http://localhost:8000</a></td>
+            <td><strong>Splunk Web UI</strong></td>
+            <td>Host Docker</td>
+            <td>Host Port</td>
+            <td>8000</td>
+            <td><code>http://localhost:8000</code></td>
             <td><code>admin</code> / <code>Changeme123!</code></td>
           </tr>
           <tr>
             <td><strong>Splunk HEC</strong></td>
-            <td>Docker Port</td>
-            <td><code>8088</code></td>
+            <td>Host Docker</td>
+            <td>Host Port</td>
+            <td>8088</td>
             <td><code>https://localhost:8088</code></td>
-            <td>Token Auth</td>
+            <td><code>2a58141a-232e-41ea-9b7c-5ee487970abe</code></td>
           </tr>
-        </table>
+          <tr>
+            <td><strong>Prometheus Server</strong></td>
+            <td><code>ml-infra</code></td>
+            <td>ClusterIP</td>
+            <td>9090</td>
+            <td><code>http://prometheus:9090</code></td>
+            <td>Internal Scrape Only</td>
+          </tr>
+          <tr>
+            <td><strong>ML Serving API</strong></td>
+            <td><code>ml-app</code></td>
+            <td>ClusterIP (pf)</td>
+            <td>8000</td>
+            <td><code>http://localhost:8001</code></td>
+            <td>Anonymous</td>
+          </tr>
+        </tbody>
+      </table>
 
-        <h3>B. Essential CLI Commands</h3>
-        <pre><code><span class="comment"># 1. Inspect Workload Pods (ml-app)</span>
-microk8s kubectl get pods,svc -n ml-app
+      <h3>Comprehensive Cluster Smoke Test Script</h3>
+      <pre><code># 1. Forward ML serving service to host port 8001
+microk8s kubectl port-forward -n ml-app svc/ml-app 8001:80 &
 
-<span class="comment"># 2. Inspect Shared Platform Pods (ml-infra)</span>
-microk8s kubectl get pods,svc -n ml-infra
+# 2. Test Healthz Probe
+curl -s http://localhost:8001/healthz
+# {"status":"healthy"}
 
-<span class="comment"># 3. Stream Application Logs</span>
-microk8s kubectl logs -n ml-app -l app.kubernetes.io/name=ml-app -f
+# 3. Test Readyz Probe
+curl -s http://localhost:8001/readyz
+# {"status":"ready"}
 
-<span class="comment"># 4. Check ArgoCD GitOps Sync Status</span>
-microk8s kubectl get applications -n argocd
+# 4. Test Model Prediction Endpoint
+curl -s -X POST http://localhost:8001/predict \
+  -H "Content-Type: application/json" \
+  -d '{"input_data": [10.0, 20.0, 30.0]}'
+# {"predictions":[20.0, 40.0, 60.0]}
 
-<span class="comment"># 5. Query Prometheus Metrics Directly</span>
-curl -s http://localhost:8001/metrics | grep "http_requests_total"
+# 5. Verify Prometheus Metrics
+curl -s http://localhost:8001/metrics | grep http_requests_total
 
-<span class="comment"># 6. Test Prediction Inference</span>
-curl -X POST http://localhost:8001/predict -H "Content-Type: application/json" -d '{"input_data": [5.1, 3.5, 1.4, 0.2]}'</code></pre>
-      </div>
+# 6. Verify Pod Statuses across Namespaces
+microk8s kubectl get pods -n ml-infra
+microk8s kubectl get pods -n ml-app
+microk8s kubectl get pods -n argocd</code></pre>
     </section>
 
-    <!-- 13. INTERVIEW Q&A -->
-    <section id="interview-qa">
-      <h2 class="section-title"><span class="number">13</span> Senior Engineering Revision Q&A</h2>
-      <div class="card">
-        <details>
-          <summary>Q1: Why is GitOps (Pull model) considered strictly superior to traditional CI/CD (Push model)?</summary>
-          <p><strong>Answer:</strong> In the traditional push model, your CI server possesses permanent administrative cluster credentials. If CI is breached, attackers gain full cluster root access. In the GitOps pull model, the cluster never accepts inbound connections; ArgoCD runs inside the cluster behind firewalls and pulls manifests unidirectionally from Git.</p>
-        </details>
+    <!-- Section 24: War Stories -->
+    <section id="war-stories" class="section-card">
+      <h2>24. Production War Stories: 12 Battle-Tested Bugs & Fixes</h2>
+      <p>Real-world production engineering is defined by diagnosing and resolving edge-case failures. Below are the 12 critical errors resolved during the construction of this platform.</p>
 
-        <details>
-          <summary>Q2: What is the exact difference between a Liveness Probe and a Readiness Probe?</summary>
-          <p><strong>Answer:</strong> A <strong>Liveness Probe</strong> detects whether the process is deadlocked or frozen; if it fails, Kubernetes terminates and restarts the container. A <strong>Readiness Probe</strong> detects whether the container is ready to accept user requests (e.g. model loaded in RAM); if it fails, Kubernetes does NOT kill the pod, but temporarily removes it from Service endpoints.</p>
-        </details>
+      <details open>
+        <summary>War Story 1: ArgoCD CRD Metadata Exceeded 262KB Limit</summary>
+        <div>
+          <p><strong>Symptom:</strong> <code>kubectl apply -f install.yaml</code> failed with <code>CustomResourceDefinition.apiextensions.k8s.io "applications.argoproj.io" is invalid: metadata.annotations: Too long: must have at most 262144 bytes</code>.</p>
+          <p><strong>Root Cause:</strong> Client-side apply calculates a JSON diff and stores the entire previous manifest in the <code>kubectl.kubernetes.io/last-applied-configuration</code> annotation. Large OpenAPI v3 schemas exceed this ETCD limit.</p>
+          <p><strong>Fix:</strong> Install using Kubernetes server-side apply: <code>kubectl apply -n argocd -f ... --server-side</code>.</p>
+        </div>
+      </details>
 
-        <details>
-          <summary>Q3: How does Cross-Namespace DNS resolution work in Kubernetes?</summary>
-          <p><strong>Answer:</strong> Standard intra-namespace DNS only requires the service name (e.g. <code>redis-service</code>), which CoreDNS appends with the pod's namespace. For cross-namespace communication, the fully qualified domain name (FQDN) or namespace-qualified name is required: <code>redis-service.ml-infra.svc.cluster.local</code> or simply <code>redis-service.ml-infra</code>.</p>
-        </details>
+      <details>
+        <summary>War Story 2: Helm Go Template Collision in Grafana Dashboard JSON</summary>
+        <div>
+          <p><strong>Symptom:</strong> <code>helm lint helm/ml-infra</code> failed with <code>parse error at (grafana.yaml:62): function "status" not defined</code>.</p>
+          <p><strong>Root Cause:</strong> Grafana dashboard JSON uses <code>{{status}}</code> for Prometheus legend formatting. Helm's Go template engine intercepted <code>{{status}}</code> as a Helm function call.</p>
+          <p><strong>Fix:</strong> Escape template variables using Go raw string literals: <code>{{ `{{status}}` }}</code> and <code>{{ `{{kubernetes_pod_name}}` }}</code>.</p>
+        </div>
+      </details>
 
-        <details>
-          <summary>Q4: How does Prometheus discover pods without maintaining a static list of IP addresses?</summary>
-          <p><strong>Answer:</strong> Prometheus uses the <strong>Kubernetes API Service Discovery (`kubernetes_sd_configs: [role: pod]`)</strong>. Through a ClusterRole with read access to pods, Prometheus watches the API server and evaluates Pod Annotations. If <code>prometheus.io/scrape: "true"</code> is present, Prometheus dynamically registers the Pod IP and port into its active scrape pool.</p>
-        </details>
+      <details>
+        <summary>War Story 3: Fluent Bit Localhost Inaccessibility to Splunk</summary>
+        <div>
+          <p><strong>Symptom:</strong> Fluent Bit logs reported <code>[error] [output:http:http.0] connection failed to 127.0.0.1:8088</code>.</p>
+          <p><strong>Root Cause:</strong> Inside a Kubernetes container, <code>127.0.0.1</code> routes to the Pod's loopback network interface, not the physical host where Splunk was running.</p>
+          <p><strong>Fix:</strong> Bound Fluent Bit to the host's actual LAN interface IP (<code>192.168.29.122:8088</code>) with <code>tls.verify Off</code> for self-signed certificates.</p>
+        </div>
+      </details>
 
-        <details>
-          <summary>Q5: Why did we use an Init Container in the Kafka Topic Creation Job?</summary>
-          <p><strong>Answer:</strong> When Kubernetes launches a Job concurrently with a StatefulSet/Deployment, the broker pod may be scheduled but still initializing its KRaft metadata log. An Init Container polls the broker port with <code>kafka-broker-api-versions.sh</code> until the cluster reports ready, preventing premature job crashes.</p>
-        </details>
-      </div>
+      <details>
+        <summary>War Story 4: Kafka KRaft Controller Cold-Start Quorum Race</summary>
+        <div>
+          <p><strong>Symptom:</strong> The topic creation Job crashed in a <code>CrashLoopBackOff</code> with <code>LEADER_NOT_AVAILABLE</code> or connection refused.</p>
+          <p><strong>Root Cause:</strong> In KRaft mode, metadata quorum consensus takes 5–10 seconds on first launch. The Job attempted topic creation before the broker opened port 9092.</p>
+          <p><strong>Fix:</strong> Implemented a Kubernetes <code>initContainer</code> that polls <code>kafka-broker-api-versions.sh --bootstrap-server kafka-service:9092</code> until healthy.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>War Story 5: Ruff Linter BLE001 & Import Sorting CI Breakage</summary>
+        <div>
+          <p><strong>Symptom:</strong> GitHub Actions CI failed with <code>BLE001: Do not catch blind exception: Exception</code> in <code>redis_cache.py</code> and <code>I001: Import block is un-sorted</code>.</p>
+          <p><strong>Root Cause:</strong> Ruff default rules flag broad exception catching as an anti-pattern. However, in our fail-open cache design, catching broad exceptions is intentional to protect API availability.</p>
+          <p><strong>Fix:</strong> Added <code>[tool.ruff.lint] ignore = ["BLE001"]</code> in <code>pyproject.toml</code> and ran <code>uv run ruff check --fix .</code>.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>War Story 6: ArgoCD Multi-Application ClusterRoleBinding Conflict</summary>
+        <div>
+          <p><strong>Symptom:</strong> ArgoCD reported <code>SharedResourceWarning: ClusterRoleBinding/fluent-bit-read is part of applications ml-infra and ml-serving-capstone</code>.</p>
+          <p><strong>Root Cause:</strong> Migrating from a monolithic Helm chart to decoupled charts resulted in both applications attempting to manage the same cluster-scoped RBAC resource.</p>
+          <p><strong>Fix:</strong> Deleted the legacy monolithic application from ArgoCD, allowing <code>ml-infra</code> to establish sole ownership.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>War Story 7: Rolling Deployment Port-Forward Socket Severance</summary>
+        <div>
+          <p><strong>Symptom:</strong> Subsequent <code>curl</code> requests to <code>http://localhost:8001</code> exited with code 52 (Empty reply from server).</p>
+          <p><strong>Root Cause:</strong> <code>kubectl port-forward</code> maintains an active TCP tunnel directly to the backing Pod IP. When ArgoCD rolled out a new deployment, the old Pod terminated, dropping the socket.</p>
+          <p><strong>Fix:</strong> Restarted port-forward daemon pointing to <code>svc/ml-app</code> so connections route to healthy replacement replicas.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>War Story 8: Cached <code>:latest</code> Tag Masking Production Code</summary>
+        <div>
+          <p><strong>Symptom:</strong> The Pod was running, but newly added <code>/metrics</code> endpoint returned 404.</p>
+          <p><strong>Root Cause:</strong> Kubernetes pods used <code>imagePullPolicy: IfNotPresent</code> with the <code>:latest</code> tag. The node cached the initial image and never pulled subsequent builds.</p>
+          <p><strong>Fix:</strong> Switched to immutable Git SHA tagging (<code>sha-${SHORT_SHA}</code>) and set <code>imagePullPolicy: Always</code> in Helm values.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>War Story 9: Cross-Namespace DNS Search Domain Latency</summary>
+        <div>
+          <p><strong>Symptom:</strong> Workloads in <code>ml-app</code> failed to connect to Redis when configured as <code>redis-service</code>.</p>
+          <p><strong>Root Cause:</strong> Kubernetes default CoreDNS search paths only append the local namespace (<code>ml-app.svc.cluster.local</code>). Unqualified names fail to resolve across namespaces.</p>
+          <p><strong>Fix:</strong> Configured cross-namespace DNS targets explicitly: <code>redis-service.ml-infra.svc.cluster.local</code>.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>War Story 10: Async Redis Connection Pool Socket Exhaustion</summary>
+        <div>
+          <p><strong>Symptom:</strong> Under high concurrent load, requests hung and threw <code>ConnectionTimeoutError</code>.</p>
+          <p><strong>Root Cause:</strong> Unbounded socket creation without explicit connection pool timeouts exhausted available file descriptors on the node.</p>
+          <p><strong>Fix:</strong> Configured <code>socket_timeout=1.0</code> and <code>socket_connect_timeout=1.0</code> directly on the <code>redis.Redis</code> client singleton.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>War Story 11: Non-Root User Permission Denied in Docker</summary>
+        <div>
+          <p><strong>Symptom:</strong> Container crashed on startup with <code>PermissionError: [Errno 13] Permission denied: '/app/.venv'</code>.</p>
+          <p><strong>Root Cause:</strong> Dependencies were installed as <code>root</code>, but runtime process was switched to <code>USER appuser</code> (UID 1000).</p>
+          <p><strong>Fix:</strong> Ran <code>chown -R appuser:appgroup /app</code> and executed <code>uv sync</code> directly as <code>USER appuser</code>.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>War Story 12: Monorepo Infinite GitOps CI Loop</summary>
+        <div>
+          <p><strong>Symptom:</strong> CI built an image, pushed an updated <code>values.yaml</code> commit to the repository, which triggered a new CI run infinitely.</p>
+          <p><strong>Root Cause:</strong> Co-locating application source and deployment manifests within the same Git repository created a recursive trigger loop.</p>
+          <p><strong>Fix:</strong> Decoupled into a Polyrepo architecture: <code>project-one</code> (App) triggers cross-repo writebacks to <code>project-one-gitops</code> (Platform), while ArgoCD watches only the GitOps repository.</p>
+        </div>
+      </details>
     </section>
 
+    <!-- Section 25: Interview Q&A -->
+    <section id="interview-qa" class="section-card">
+      <h2>25. Senior Engineering Revision Q&A: Architectural Deep-Dive</h2>
+      <p>15 technical questions designed to test deep mastery of Python MLOps, distributed systems, Kubernetes, and GitOps.</p>
+
+      <details open>
+        <summary>Q1: How does the Python GIL affect high-throughput ML serving compared to the JVM?</summary>
+        <div>
+          <p>The Global Interpreter Lock prevents multiple native threads from executing Python bytecodes simultaneously. In Java, thread pools handle concurrent HTTP requests and computations across CPU cores. In Python, I/O operations (FastAPI, Redis, Kafka) release the GIL during async wait states. Furthermore, numerical libraries like NumPy and scikit-learn execute in optimized C/Fortran routines that release the GIL during matrix computations. To scale across multiple CPU cores, we scale out Kubernetes Pod replicas or launch multiple Uvicorn worker processes.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q2: Why use Pydantic v2 over standard Python dataclasses or Marshmallow?</summary>
+        <div>
+          <p>Pydantic v2 is built on <code>pydantic-core</code>, written in Rust. It performs serialization, parsing, and type validation at native machine-code speeds (5x to 50x faster than pure-Python libraries). It also seamlessly generates OpenAPI JSON schemas used by FastAPI to construct interactive Swagger documentation automatically.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q3: What is the exact difference between Kubernetes Liveness and Readiness probes?</summary>
+        <div>
+          <p>A <strong>Liveness Probe</strong> (<code>/healthz</code>) tests whether the container runtime is healthy. If it fails, kubelet terminates and restarts the Pod container. A <strong>Readiness Probe</strong> (<code>/readyz</code>) tests whether the application is prepared to serve user traffic (e.g., model weights are initialized and warm). If it fails, Kubernetes leaves the Pod running but removes its IP from the Endpoints object of the Service, ensuring zero dropped requests during cold starts.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q4: Why is GitOps pull-based reconciliation fundamentally superior to push-based CI deployment?</summary>
+        <div>
+          <p>Push-based CI (e.g., running <code>helm upgrade</code> or <code>kubectl apply</code> inside GitHub Actions) requires storing high-privilege cluster admin credentials inside external CI runners, creating an expanded security attack surface. Furthermore, push-based pipelines cannot detect or revert configuration drift caused by manual in-cluster changes. ArgoCD operates entirely inside the cluster (zero inbound firewall openings), continuously diffs the cluster against Git, and automatically self-heals drifts.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q5: Why did we implement an MD5 hash prefix in the Redis cache key?</summary>
+        <div>
+          <p>Machine learning inference features can be arbitrarily large floating-point arrays. Using raw string arrays as Redis keys leads to excessive memory consumption in Redis and unpredictable key lengths. Hashing the canonical JSON representation into an MD5 digest yields a fixed-length 32-character string. Scoping the key with <code>pred:{MODEL_VERSION}:{hash}</code> guarantees zero cache contamination when new model weights are deployed.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q6: Why is the fail-open caching pattern essential for mission-critical ML microservices?</summary>
+        <div>
+          <p>Redis is an optimization layer, not a source of truth. If Redis suffers a network partition, cluster restart, or socket exhaustion, a fail-closed implementation would crash user requests with HTTP 500. A fail-open pattern catches the network exception, emits a warning log, and falls back to model inference, ensuring 100% API availability at the minor cost of temporary latency increases.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q7: How does KRaft mode in Apache Kafka eliminate ZooKeeper dependencies?</summary>
+        <div>
+          <p>KRaft (Kafka Raft Metadata Mode) uses an internal Raft consensus protocol to manage metadata directly within Kafka brokers. Metadata is stored in a replicated event topic (<code>@metadata</code>), eliminating external synchronization lag, reducing memory overhead, and enabling near-instantaneous controller failover.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q8: Why does the topic provisioning Job require an initContainer?</summary>
+        <div>
+          <p>Kubernetes starts all Pods declared in a Helm chart in parallel unless dependency barriers are enforced. If the topic creation Job executes immediately, Kafka might still be electing a KRaft controller quorum, causing the Job to crash. The init container uses <code>kafka-broker-api-versions.sh</code> to poll port 9092, ensuring the topic creation container runs only when the broker is accepting requests.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q9: Why does ArgoCD require <code>--server-side</code> apply during installation?</summary>
+        <div>
+          <p>Client-side <code>kubectl apply</code> serializes the complete applied configuration into the <code>kubectl.kubernetes.io/last-applied-configuration</code> annotation. ETCD enforces a hard limit of 262,144 bytes on annotations. ArgoCD's OpenAPI v3 validation schemas in its CRDs exceed this limit. Server-side apply stores the schema directly in the API server's field management registry without using annotations.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q10: Why must container images in Kubernetes be tagged with immutable Git SHAs rather than <code>:latest</code>?</summary>
+        <div>
+          <p>The <code>:latest</code> tag is a mutable pointer. When Kubernetes nodes cache <code>:latest</code>, subsequent deployments using <code>imagePullPolicy: IfNotPresent</code> will not pull new image builds, causing pods to run outdated code. Furthermore, using <code>:latest</code> breaks GitOps rollback semantics, since Git cannot determine which binary corresponds to which commit. Immutable tags like <code>sha-c0a5d5d</code> ensure 100% reproducibility and auditability.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q11: Why is multi-stage Docker build essential for security and speed?</summary>
+        <div>
+          <p>In single-stage Docker builds, compilers (gcc, g++), package managers (uv, pip), and build headers remain in the final image, bloating container size and introducing vulnerabilities (CVEs). Multi-stage builds compile artifacts in an ephemeral builder container and copy only the runtime virtual environment into a minimal base image.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q12: How does Prometheus scrape metrics from ephemeral Pods in Kubernetes?</summary>
+        <div>
+          <p>Prometheus uses Kubernetes Service Discovery (<code>kubernetes_sd_configs: [{role: pod}]</code>). It queries the Kubernetes API server for Pods annotated with <code>prometheus.io/scrape: "true"</code>, extracts their IP and port from annotations, and dynamically builds scrape targets.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q13: How does Fluent Bit reliably ship Kubernetes container logs to Splunk?</summary>
+        <div>
+          <p>Fluent Bit runs as a <code>DaemonSet</code> on every Kubernetes node, mounting the host's <code>/var/log/pods</code> directory. The <code>tail</code> input plugin streams container log files, the <code>kubernetes</code> filter queries the API server to enrich logs with Pod names and namespaces, and the <code>http</code> output plugin POSTs structured JSON events to Splunk's HTTP Event Collector (HEC) on port 8088.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q14: What prevents infinite build loops in our Polyrepo CI/CD architecture?</summary>
+        <div>
+          <p>The App repo CI triggers only on changes to <code>ml-serving-capstone/</code>. When it builds a new container image, it performs a writeback to the GitOps repo (<code>project-one-gitops</code>). ArgoCD watches only the GitOps repo. Because the GitOps repo has no triggers back to the App repo, the pipeline terminates cleanly after image deployment.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Q15: How do we achieve zero-downtime rolling updates in Kubernetes?</summary>
+        <div>
+          <p>By defining <code>readinessProbe</code>, <code>livenessProbe</code>, and a rolling update strategy with <code>maxUnavailable: 0</code> and <code>maxSurge: 1</code>. Kubernetes spins up new Pods, waits until their readiness probe returns HTTP 200, updates the Service Endpoints to include the new Pods, and only then issues a <code>SIGTERM</code> to old Pods.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- Footer -->
+    <footer style="margin-top: 60px; padding: 24px 0; border-top: 1px solid var(--card-border); color: var(--text-muted); font-size: 0.9rem; text-align: center;">
+      <p>Mastering Production AI/ML Systems & GitOps &bull; Built with FastAPI, MicroK8s, Helm, ArgoCD, Splunk & Prometheus</p>
+      <p style="margin-top: 4px; font-size: 0.8rem;">Designed for Senior Distributed Systems Engineers.</p>
+    </footer>
   </main>
-
-  <script>
-    const links = document.querySelectorAll('sidebar a');
-    window.addEventListener('scroll', () => {
-      let current = '';
-      document.querySelectorAll('section').forEach(section => {
-        const sectionTop = section.offsetTop;
-        if (pageYOffset >= sectionTop - 120) {
-          current = section.getAttribute('id');
-        }
-      });
-      links.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-          link.classList.add('active');
-        }
-      });
-    });
-  </script>
 </body>
 </html>
