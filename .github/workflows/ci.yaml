@@ -45,7 +45,7 @@ jobs:
         run: uv run pytest
 
   build-and-publish-image:
-    name: Build & Publish Container Image
+    name: Build, Scan & Publish Container Image
     needs: code-quality-and-test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
@@ -82,7 +82,17 @@ jobs:
             ghcr.io/${{ github.repository }}/ml-serving-capstone:v${{ steps.vars.outputs.version }}
             ghcr.io/${{ github.repository }}/ml-serving-capstone:latest
 
-      - name: Trigger GitOps Update (Optional cross-repo writeback)
+      - name: Run Trivy Vulnerability Scanner (Zero-Dollar Security)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ghcr.io/${{ github.repository }}/ml-serving-capstone:sha-${{ steps.vars.outputs.short_sha }}
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Trigger GitOps Update (Automated Writeback)
         if: env.GITOPS_TOKEN != ''
         env:
           GITOPS_TOKEN: ${{ secrets.GITOPS_REPO_TOKEN }}
