@@ -658,11 +658,37 @@
 
     <!-- 06. GITOPS ENGINE -->
     <section id="gitops-engine">
-      <h2 class="section-title"><span class="number">06</span> GitOps Multi-App Architecture with ArgoCD</h2>
+      <h2 class="section-title"><span class="number">06</span> Enterprise Polyrepo Architecture: App Repo vs. GitOps Repo</h2>
       <div class="card">
-        <h3>Decoupled Application-of-Apps Pattern</h3>
-        <p>In GitOps, managing infrastructure and applications under separate ArgoCD <code>Application</code> manifests creates clear release boundaries:</p>
-        
+        <h3>A. The Decoupled Polyrepo Pattern</h3>
+        <p>In enterprise engineering, combining application source code with cluster deployment manifests in a single repository is an anti-pattern. We cleanly split the platform into two independent repositories:</p>
+
+        <div class="diagram-box">
++-------------------------------------------------------------+
+| REPO 1: Application Repo (project-one)                      |
+| * Python FastAPI Serving App (ml-serving-capstone/)         |
+| * Unit Tests (pytest), Linter (ruff), Type Checker (mypy)   |
+| * Dockerfile & Build Pipeline (.github/workflows/ci.yaml)   |
+| * Pushes immutable images: ghcr.io/...:sha-&lt;commit-hash&gt;     |
++-------------------------------------------------------------+
+                              |
+                              v (Image Build & Publish)
+               +------------------------------+
+               | GitHub Container Registry    |
+               | (ghcr.io) OCI Artifactory    |
+               +------------------------------+
+                              ^
+                              | (Pulls exact pinned SHA)
++-------------------------------------------------------------+
+| REPO 2: GitOps Platform Repo (project-one-gitops)           |
+| * ArgoCD Applications (argocd/infra-app.yaml, workload-app) |
+| * Helm Charts: helm/ml-infra and helm/ml-app                |
+| * Dedicated Chart CI (.github/workflows/lint.yaml)          |
+| * ArgoCD continuously reconciles cluster state from here!   |
++-------------------------------------------------------------+
+        </div>
+
+        <h3>B. Live ArgoCD Application Manifests</h3>
         <pre><code><span class="comment"># argocd/infra-app.yaml (Deploys shared platform into ml-infra)</span>
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -671,7 +697,7 @@ metadata:
   namespace: argocd
 spec:
   source:
-    repoURL: 'https://github.com/mastershantash/project-one.git'
+    repoURL: 'https://github.com/mastershantash/project-one-gitops.git'
     path: helm/ml-infra
     targetRevision: main
   destination:
@@ -688,7 +714,7 @@ metadata:
   namespace: argocd
 spec:
   source:
-    repoURL: 'https://github.com/mastershantash/project-one.git'
+    repoURL: 'https://github.com/mastershantash/project-one-gitops.git'
     path: helm/ml-app
     targetRevision: main
   destination:
