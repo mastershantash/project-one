@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: write
+  contents: read
   packages: write
 
 jobs:
@@ -44,34 +44,14 @@ jobs:
         working-directory: ml-serving-capstone
         run: uv run pytest
 
-  helm-lint:
-    name: Lint Helm Charts
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Set up Helm
-        uses: azure/setup-helm@v4
-        with:
-          version: "v3.14.0"
-
-      - name: Lint ml-infra Chart
-        run: helm lint helm/ml-infra
-
-      - name: Lint ml-app Chart
-        run: helm lint helm/ml-app
-
-  publish-artifacts-and-gitops-sync:
-    name: Publish Artifacts & Trigger GitOps
-    needs: [code-quality-and-test, helm-lint]
+  build-and-publish-image:
+    name: Build & Publish Container Image
+    needs: code-quality-and-test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Compute Dynamic Version Variables
         id: vars
@@ -102,33 +82,18 @@ jobs:
             ghcr.io/${{ github.repository }}/ml-serving-capstone:v${{ steps.vars.outputs.version }}
             ghcr.io/${{ github.repository }}/ml-serving-capstone:latest
 
-      - name: Set up Helm
-        uses: azure/setup-helm@v4
-        with:
-          version: "v3.14.0"
-
-      - name: Log in Helm to GHCR OCI Registry
+      - name: Trigger GitOps Update (Optional cross-repo writeback)
+        if: env.GITOPS_TOKEN != ''
+        env:
+          GITOPS_TOKEN: ${{ secrets.GITOPS_REPO_TOKEN }}
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io --username ${{ github.actor }} --password-stdin
-
-      - name: Package & Push OCI Helm Charts to GHCR
-        run: |
-          mkdir -p .dist
-          # Package ml-infra chart
-          helm package helm/ml-infra --version ${{ steps.vars.outputs.version }} --app-version ${{ steps.vars.outputs.version }} -d .dist
-          helm push .dist/ml-infra-${{ steps.vars.outputs.version }}.tgz oci://ghcr.io/${{ github.repository }}/charts
-
-          # Package ml-app chart
-          helm package helm/ml-app --version ${{ steps.vars.outputs.version }} --app-version ${{ steps.vars.outputs.version }} -d .dist
-          helm push .dist/ml-app-${{ steps.vars.outputs.version }}.tgz oci://ghcr.io/${{ github.repository }}/charts
-
-      - name: Update GitOps Workload Manifest (Pin to Immutable SHA)
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git clone https://x-access-token:${GITOPS_TOKEN}@github.com/${{ github.repository_owner }}/project-one-gitops.git gitops-repo
+          cd gitops-repo
           sed -i "s/tag: .*/tag: \"sha-${{ steps.vars.outputs.short_sha }}\"/" helm/ml-app/values.yaml
           git add helm/ml-app/values.yaml
           if ! git diff-index --quiet HEAD; then
-            git commit -m "chore(gitops): bump ml-app image tag to sha-${{ steps.vars.outputs.short_sha }} [skip ci]"
+            git commit -m "chore(gitops): bump ml-app image tag to sha-${{ steps.vars.outputs.short_sha }}"
             git push origin main
           fi
