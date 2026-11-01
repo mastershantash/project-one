@@ -286,17 +286,19 @@
   <sidebar>
     <h2>Curriculum Sitemap</h2>
     <a href="#java-bridge">00. Java ↔ Python Rosetta Stone</a>
-    <a href="#topology">01. End-to-End System Topology</a>
+    <a href="#topology">01. Dual-Namespace Platform Topology</a>
     <a href="#app-tier">02. Core ML App & Dual-Path Design</a>
     <a href="#caching">03. Caching & Resilience Pattern</a>
     <a href="#k8s-runtime">04. Kubernetes Runtime Architecture</a>
-    <a href="#helm-deepdive">05. Helm Packaging & Templates</a>
-    <a href="#gitops-engine">06. GitOps with ArgoCD Engine</a>
+    <a href="#helm-deepdive">05. Multi-Chart Packaging (ml-infra & ml-app)</a>
+    <a href="#gitops-engine">06. GitOps Multi-App Architecture</a>
     <a href="#ci-cd-pipeline">07. Automated CI/CD Pipeline</a>
-    <a href="#splunk-obs">08. Splunk Observability & HEC</a>
-    <a href="#war-stories">09. Real War Stories & Bugs Fixed</a>
-    <a href="#runbook">10. Operations Cheat Sheet</a>
-    <a href="#interview-qa">11. Senior Revision Q&A</a>
+    <a href="#splunk-obs">08. Full Observability (Splunk, Prom, Grafana)</a>
+    <a href="#kafka-platform">09. Declarative Kafka & Kafka UI</a>
+    <a href="#secrets-management">10. Kubernetes Secrets & ESO Architecture</a>
+    <a href="#war-stories">11. Real War Stories & Bugs Fixed</a>
+    <a href="#runbook">12. Operations Runbook & Port Contracts</a>
+    <a href="#interview-qa">13. Senior Revision Q&A</a>
   </sidebar>
 
   <main>
@@ -304,13 +306,15 @@
       <div class="badge-container">
         <span class="badge badge-java">Java to Python Fast-Track</span>
         <span class="badge badge-ml">ML Serving Core</span>
-        <span class="badge badge-k8s">Kubernetes v1.30</span>
-        <span class="badge badge-helm">Helm 3</span>
+        <span class="badge badge-k8s">Dual Namespaces</span>
+        <span class="badge badge-helm">Helm Multi-Chart</span>
         <span class="badge badge-gitops">ArgoCD GitOps</span>
         <span class="badge badge-splunk">Splunk HEC</span>
+        <span class="badge badge-ml">Kafka UI (30880)</span>
+        <span class="badge badge-java">Grafana (30300)</span>
       </div>
       <h1>Production AI/ML Apps & GitOps Architecture</h1>
-      <p>A complete engineering guide tailored for senior distributed systems & Java backend engineers mastering Python AI/ML serving, cloud-native Kubernetes, and automated GitOps CI/CD.</p>
+      <p>A complete engineering guide tailored for senior distributed systems & Java backend engineers mastering Python AI/ML serving, cloud-native Kubernetes platform engineering, and automated GitOps CI/CD.</p>
     </header>
 
     <!-- 00. JAVA TO PYTHON ROSETTA STONE -->
@@ -385,72 +389,119 @@
 
     <!-- 01. TOPOLOGY -->
     <section id="topology">
-      <h2 class="section-title"><span class="number">01</span> End-to-End System Topology</h2>
+      <h2 class="section-title"><span class="number">01</span> Dual-Namespace Platform Topology: ml-infra & ml-app</h2>
       <div class="card">
-        <p>The system is architected as a complete decoupled cloud-native MLOps platform. Workloads are reconciled declaratively via GitOps, with zero inbound firewall ports required for continuous deployment.</p>
+        <p>In enterprise distributed systems, monolithic Kubernetes namespaces lead to resource contention, permission bloat, and upgrade lock-in. We structure the cluster into a decoupled <strong>Dual-Namespace Architecture</strong> separating shared platform infrastructure from containerized workloads:</p>
 
-        <!-- SVG Architecture Diagram -->
-        <svg class="diagram-svg" viewBox="0 0 950 480" xmlns="http://www.w3.org/2000/svg">
-          <rect x="20" y="20" width="220" height="440" rx="10" fill="#090d16" stroke="#1f2937" stroke-width="2"/>
-          <text x="35" y="50" fill="#38bdf8" font-weight="700" font-size="14">DEVELOPER & GIT LAYER</text>
+        <!-- SVG Architecture Diagram (Dual-Namespace) -->
+        <svg class="diagram-svg" viewBox="0 0 960 520" xmlns="http://www.w3.org/2000/svg">
+          <!-- CI/CD Layer -->
+          <rect x="20" y="20" width="220" height="480" rx="10" fill="#090d16" stroke="#1f2937" stroke-width="2"/>
+          <text x="35" y="48" fill="#38bdf8" font-weight="700" font-size="13">GITOPS & CI/CD LAYER</text>
           
-          <rect x="40" y="80" width="180" height="60" rx="6" fill="#1e293b" stroke="#334155"/>
-          <text x="55" y="115" fill="#f8fafc" font-size="13">Developer (git push)</text>
+          <rect x="35" y="65" width="190" height="50" rx="6" fill="#1e293b" stroke="#334155"/>
+          <text x="50" y="95" fill="#f8fafc" font-size="12">git push origin main</text>
           
-          <rect x="40" y="160" width="180" height="80" rx="6" fill="#1e293b" stroke="#334155"/>
-          <text x="55" y="195" fill="#f8fafc" font-size="13">GitHub Repository</text>
-          <text x="55" y="215" fill="#94a3b8" font-size="11">App + Helm + GitOps</text>
+          <rect x="35" y="125" width="190" height="70" rx="6" fill="#1e293b" stroke="#334155"/>
+          <text x="50" y="150" fill="#f8fafc" font-size="12">GitHub Repo (project-one)</text>
+          <text x="50" y="170" fill="#94a3b8" font-size="10">helm/ml-infra + helm/ml-app</text>
 
-          <rect x="40" y="260" width="180" height="90" rx="6" fill="#1e293b" stroke="#334155"/>
-          <text x="55" y="295" fill="#f8fafc" font-size="13">GitHub Actions CI</text>
-          <text x="55" y="315" fill="#94a3b8" font-size="11">pytest -> uv build</text>
-          <text x="55" y="335" fill="#38bdf8" font-size="11">Push to GHCR (ghcr.io)</text>
+          <rect x="35" y="205" width="190" height="85" rx="6" fill="#1e293b" stroke="#334155"/>
+          <text x="50" y="230" fill="#f8fafc" font-size="12">GitHub Actions CI</text>
+          <text x="50" y="250" fill="#94a3b8" font-size="10">pytest (6/6) -> uv build</text>
+          <text x="50" y="270" fill="#38bdf8" font-size="10">Push GHCR (:latest, :v0.1.0)</text>
 
-          <rect x="270" y="20" width="660" height="440" rx="10" fill="#090d16" stroke="#0284c7" stroke-width="2"/>
-          <text x="290" y="50" fill="#38bdf8" font-weight="700" font-size="14">KUBERNETES CLUSTER (MicroK8s v1.30)</text>
+          <rect x="35" y="300" width="190" height="185" rx="6" fill="#1e293b" stroke="#0284c7"/>
+          <text x="50" y="325" fill="#38bdf8" font-weight="700" font-size="12">ArgoCD Controller (30781)</text>
+          <text x="50" y="350" fill="#a855f7" font-size="11">• App: ml-infra (Synced)</text>
+          <text x="50" y="370" fill="#22c55e" font-size="11">• App: ml-app (Synced)</text>
+          <text x="50" y="395" fill="#94a3b8" font-size="10">Self-Healing GitOps Loop</text>
+          <text x="50" y="415" fill="#94a3b8" font-size="10">Zero inbound firewall holes</text>
 
-          <rect x="290" y="70" width="280" height="70" rx="8" fill="#1e293b" stroke="#38bdf8"/>
-          <text x="310" y="100" fill="#f8fafc" font-weight="700" font-size="13">ArgoCD GitOps Controller</text>
-          <text x="310" y="122" fill="#38bdf8" font-size="11">Reconciles cluster state every 3m (Self-Heal)</text>
+          <!-- K8s Cluster Outer Boundary -->
+          <rect x="260" y="20" width="680" height="480" rx="10" fill="#090d16" stroke="#0284c7" stroke-width="2"/>
+          <text x="280" y="48" fill="#38bdf8" font-weight="700" font-size="14">KUBERNETES CLUSTER (MicroK8s v1.30)</text>
 
-          <rect x="290" y="160" width="620" height="280" rx="8" fill="#0f172a" stroke="#334155"/>
-          <text x="310" y="185" fill="#a855f7" font-weight="700" font-size="13">NAMESPACE: ml-serving</text>
+          <!-- WORKLOAD NAMESPACE: ml-app -->
+          <rect x="280" y="65" width="640" height="175" rx="8" fill="#0f172a" stroke="#22c55e" stroke-width="1.5"/>
+          <text x="300" y="90" fill="#22c55e" font-weight="700" font-size="13">WORKLOAD NAMESPACE: ml-app</text>
 
-          <rect x="310" y="205" width="130" height="50" rx="6" fill="#1e293b" stroke="#38bdf8"/>
-          <text x="320" y="235" fill="#fff" font-size="12">Service (Port 80)</text>
+          <rect x="300" y="105" width="140" height="45" rx="6" fill="#1e293b" stroke="#38bdf8"/>
+          <text x="312" y="132" fill="#fff" font-size="11">Service: ml-app (80)</text>
 
-          <rect x="470" y="200" width="170" height="60" rx="6" fill="#1e293b" stroke="#22c55e"/>
-          <text x="480" y="225" fill="#fff" font-size="12">API Pod 1 (FastAPI)</text>
-          <text x="480" y="245" fill="#94a3b8" font-size="11">Non-root UID 1000</text>
+          <rect x="460" y="105" width="210" height="60" rx="6" fill="#1e293b" stroke="#22c55e"/>
+          <text x="470" y="128" fill="#fff" font-size="11">Pod 1: ml-app-56474b4fcf (1000)</text>
+          <text x="470" y="148" fill="#38bdf8" font-size="10">/metrics :8000 (Prometheus)</text>
 
-          <rect x="470" y="270" width="170" height="60" rx="6" fill="#1e293b" stroke="#22c55e"/>
-          <text x="480" y="295" fill="#fff" font-size="12">API Pod 2 (FastAPI)</text>
-          <text x="480" y="315" fill="#94a3b8" font-size="11">Non-root UID 1000</text>
+          <rect x="690" y="105" width="210" height="60" rx="6" fill="#1e293b" stroke="#22c55e"/>
+          <text x="700" y="128" fill="#fff" font-size="11">Pod 2: ml-app-56474b4fcf (1000)</text>
+          <text x="700" y="148" fill="#38bdf8" font-size="10">/metrics :8000 (Prometheus)</text>
 
-          <rect x="670" y="200" width="220" height="60" rx="6" fill="#1e293b" stroke="#f59e0b"/>
-          <text x="685" y="225" fill="#fff" font-size="12">Redis (redis-service:6379)</text>
-          <text x="685" y="245" fill="#f59e0b" font-size="11">Sub-millisecond LRU Cache</text>
+          <rect x="300" y="175" width="600" height="50" rx="6" fill="#1e293b" stroke="#f59e0b"/>
+          <text x="315" y="198" fill="#f59e0b" font-weight="600" font-size="11">Cross-Namespace Routing (CoreDNS):</text>
+          <text x="315" y="215" fill="#f8fafc" font-size="10">REDIS_HOST="redis-service.ml-infra" | KAFKA_BOOTSTRAP_SERVERS="kafka-service.ml-infra:9092"</text>
 
-          <rect x="670" y="270" width="220" height="60" rx="6" fill="#1e293b" stroke="#a855f7"/>
-          <text x="685" y="295" fill="#fff" font-size="12">Kafka (kafka-service:9092)</text>
-          <text x="685" y="315" fill="#a855f7" font-size="11">Apache Kafka KRaft Mode</text>
+          <!-- PLATFORM NAMESPACE: ml-infra -->
+          <rect x="280" y="255" width="640" height="230" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="1.5"/>
+          <text x="300" y="280" fill="#a855f7" font-weight="700" font-size="13">SHARED PLATFORM NAMESPACE: ml-infra (Reused across all ML apps)</text>
 
-          <rect x="470" y="350" width="420" height="70" rx="6" fill="#1e293b" stroke="#0ea5e9"/>
-          <text x="485" y="375" fill="#fff" font-size="12">Async Streaming Worker (kafka_worker.py)</text>
-          <text x="485" y="398" fill="#94a3b8" font-size="11">Consumes 'inference-requests' -> Produces to 'inference-results'</text>
+          <rect x="300" y="295" width="180" height="55" rx="6" fill="#1e293b" stroke="#f59e0b"/>
+          <text x="310" y="318" fill="#fff" font-size="11">Redis (redis-service:6379)</text>
+          <text x="310" y="338" fill="#94a3b8" font-size="10">Sub-ms Prediction Cache</text>
 
-          <!-- Connecting Arrows -->
-          <path d="M 130 140 L 130 160" stroke="#38bdf8" stroke-width="2"/>
-          <path d="M 130 240 L 130 260" stroke="#38bdf8" stroke-width="2"/>
-          <path d="M 220 200 L 290 105" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4"/>
-          <path d="M 440 140 L 440 230" stroke="#38bdf8" stroke-width="2"/>
-          <path d="M 440 230 L 470 230" stroke="#38bdf8" stroke-width="2"/>
-          <path d="M 440 230 L 440 300 L 470 300" stroke="#38bdf8" stroke-width="2"/>
-          <path d="M 640 230 L 670 230" stroke="#22c55e" stroke-width="2"/>
-          <path d="M 640 300 L 670 300" stroke="#a855f7" stroke-width="2"/>
+          <rect x="500" y="295" width="190" height="55" rx="6" fill="#1e293b" stroke="#a855f7"/>
+          <text x="510" y="318" fill="#fff" font-size="11">Kafka (kafka-service:9092)</text>
+          <text x="510" y="338" fill="#94a3b8" font-size="10">KRaft Consensus Broker</text>
+
+          <rect x="710" y="295" width="190" height="55" rx="6" fill="#1e293b" stroke="#38bdf8"/>
+          <text x="720" y="318" fill="#fff" font-size="11">Kafka UI (NodePort: 30880)</text>
+          <text x="720" y="338" fill="#38bdf8" font-size="10">Web Management Console</text>
+
+          <rect x="300" y="360" width="180" height="55" rx="6" fill="#1e293b" stroke="#ef4444"/>
+          <text x="310" y="383" fill="#fff" font-size="11">Topic Creator (Job)</text>
+          <text x="310" y="403" fill="#94a3b8" font-size="10">Declarative 3-partition init</text>
+
+          <rect x="500" y="360" width="190" height="55" rx="6" fill="#1e293b" stroke="#22c55e"/>
+          <text x="510" y="383" fill="#fff" font-size="11">Prometheus (:9090)</text>
+          <text x="510" y="403" fill="#94a3b8" font-size="10">Auto-scrapes ml-app pods</text>
+
+          <rect x="710" y="360" width="190" height="55" rx="6" fill="#1e293b" stroke="#f59e0b"/>
+          <text x="720" y="383" fill="#fff" font-size="11">Grafana (NodePort: 30300)</text>
+          <text x="720" y="403" fill="#f59e0b" font-size="10">Pre-provisioned MLOps Dash</text>
+
+          <rect x="300" y="425" width="600" height="45" rx="6" fill="#1e293b" stroke="#0ea5e9"/>
+          <text x="315" y="445" fill="#fff" font-size="11">Fluent Bit DaemonSet (Pattern A) + Kubernetes Secrets (ml-infra-secrets)</text>
+          <text x="315" y="460" fill="#94a3b8" font-size="10">Tails /var/log/pods/ across all namespaces -> Ships structured JSON to Splunk HEC (8088)</text>
         </svg>
 
-        <p>The cluster is partitioned cleanly: infrastructure services like <strong>ArgoCD</strong> live in the <code>argocd</code> administrative namespace, while application workloads, caches, and streaming brokers are isolated in the <code>ml-serving</code> workload namespace.</p>
+        <h3>Why Cross-Namespace Platform Separation Matters</h3>
+        <table>
+          <tr>
+            <th>Architecture Pattern</th>
+            <th>Single Monolithic Namespace (Anti-Pattern) ❌</th>
+            <th>Dual-Namespace Architecture (Enterprise Pattern) 🏆</th>
+          </tr>
+          <tr>
+            <td><strong>Lifecycle Decoupling</strong></td>
+            <td>Redis/Kafka redeployed or restarted whenever app code changes. Risk of data drop.</td>
+            <td>Platform runs permanently in <code>ml-infra</code>. App workloads in <code>ml-app</code> deploy 10x/day with zero platform disruption.</td>
+          </tr>
+          <tr>
+            <td><strong>Platform Reuse</strong></td>
+            <td>Every new ML service (Fraud, Recommendations) must deploy its own Redis & Kafka instances. Massive RAM wastage.</td>
+            <td>New workloads (e.g. <code>fraud-detection</code> in <code>ml-fraud</code>) simply point DNS to <code>redis-service.ml-infra:6379</code>.</td>
+          </tr>
+          <tr>
+            <td><strong>Security & RBAC</strong></td>
+            <td>App developers require broad permissions on the namespace, risking accidental broker deletion.</td>
+            <td>App developers only have access to <code>ml-app</code>. Platform engineers manage <code>ml-infra</code> and secrets.</td>
+          </tr>
+          <tr>
+            <td><strong>CoreDNS Resolution</strong></td>
+            <td>Flat naming (<code>redis-service:6379</code>) only works locally.</td>
+            <td>Standardized DNS format: <code>&lt;service-name&gt;.&lt;namespace&gt;.svc.cluster.local</code> (or <code>&lt;service&gt;.&lt;namespace&gt;</code>).</td>
+          </tr>
+        </table>
       </div>
     </section>
 
@@ -576,37 +627,79 @@
 
     <!-- 05. HELM DEEP DIVE -->
     <section id="helm-deepdive">
-      <h2 class="section-title"><span class="number">05</span> Helm Packaging & Templating Mastery</h2>
+      <h2 class="section-title"><span class="number">05</span> Multi-Chart Helm Packaging: ml-infra & ml-app</h2>
       <div class="card">
-        <h3>Chart Structure</h3>
-        <pre><code>helm/ml-serving-capstone/
-├── Chart.yaml                  # Metadata, semantic version (SemVer), API version
-├── values.yaml                 # Base configuration contract
-└── templates/
-    ├── _helpers.tpl            # Reusable Go template functions & labels
-    ├── deployment.yaml         # Workload specification (replicas, probes, cgroups)
-    ├── service.yaml            # Virtual IP & port router
-    ├── configmap.yaml          # Externalized environment variables
-    ├── redis.yaml              # In-cluster Redis deployment & service
-    ├── kafka.yaml              # In-cluster KRaft Kafka broker & service
-    └── hpa.yaml                # Horizontal Pod Autoscaler rule</code></pre>
+        <p>Instead of a single monolithic Helm chart that mixes databases, brokers, dashboards, and APIs into one rigid template, we maintain two decoupled Helm charts with dedicated versioning:</p>
+        
+        <pre><code>helm/
+├── ml-infra/                       # Shared Platform Infrastructure Chart
+│   ├── Chart.yaml                  # Version 0.1.0 (Infra platform release)
+│   ├── values.yaml                 # Config for Redis, Kafka, Topics, UI, Prom, Grafana, Secrets
+│   └── templates/
+│       ├── redis.yaml              # Redis Deployment + ClusterIP (6379)
+│       ├── kafka.yaml              # Apache Kafka KRaft Broker + ClusterIP (9092)
+│       ├── kafka-topics-job.yaml   # Idempotent topic provisioning Job (3 partitions)
+│       ├── kafka-ui.yaml           # Provectus Kafka UI (NodePort 30880)
+│       ├── prometheus.yaml         # Prometheus RBAC, ConfigMap, Deployment & Service (9090)
+│       ├── grafana.yaml            # Grafana Deployment, NodePort (30300) & Provisioned MLOps Dashboard
+│       ├── fluent-bit.yaml         # Cluster-wide log forwarder DaemonSet
+│       └── secrets.yaml            # Opaque Kubernetes Secret (Splunk token)
+└── ml-app/                         # Workload Serving Chart (Continuous Deployment)
+    ├── Chart.yaml                  # Version 0.1.0
+    ├── values.yaml                 # Replica count, image tag, CPU/RAM limits, cross-namespace DNS
+    └── templates/
+        ├── _helpers.tpl            # Reusable labels and naming helpers
+        ├── deployment.yaml         # App pods with Prometheus scrape annotations & securityContext
+        ├── service.yaml            # ClusterIP service (port 80 -> containerPort 8000)
+        ├── configmap.yaml          # Externalized env vars (REDIS_HOST, KAFKA_BOOTSTRAP_SERVERS)
+        └── hpa.yaml                # HorizontalPodAutoscaler definition</code></pre>
       </div>
     </section>
 
     <!-- 06. GITOPS ENGINE -->
     <section id="gitops-engine">
-      <h2 class="section-title"><span class="number">06</span> GitOps with ArgoCD Engine</h2>
+      <h2 class="section-title"><span class="number">06</span> GitOps Multi-App Architecture with ArgoCD</h2>
       <div class="card">
-        <h3>Continuous Reconciliation Loop</h3>
-        <ol>
-          <li><strong>Target State (Git):</strong> Reads the Helm templates and <code>values.yaml</code> in GitHub.</li>
-          <li><strong>Live State (Cluster):</strong> Queries the Kubernetes API server for active Deployments and Services.</li>
-          <li><strong>Reconciliation Loop:</strong> Automatically triggers rolling update or repairs drift.</li>
-        </ol>
+        <h3>Decoupled Application-of-Apps Pattern</h3>
+        <p>In GitOps, managing infrastructure and applications under separate ArgoCD <code>Application</code> manifests creates clear release boundaries:</p>
+        
+        <pre><code><span class="comment"># argocd/infra-app.yaml (Deploys shared platform into ml-infra)</span>
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ml-infra
+  namespace: argocd
+spec:
+  source:
+    repoURL: 'https://github.com/mastershantash/project-one.git'
+    path: helm/ml-infra
+    targetRevision: main
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: ml-infra
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+---
+<span class="comment"># argocd/workload-app.yaml (Deploys ML serving workload into ml-app)</span>
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ml-app
+  namespace: argocd
+spec:
+  source:
+    repoURL: 'https://github.com/mastershantash/project-one.git'
+    path: helm/ml-app
+    targetRevision: main
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: ml-app
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }</code></pre>
 
         <div class="callout success">
-          <h4>Self-Healing in Action</h4>
-          If a cluster operator manually modifies or deletes a pod or deployment via <code>kubectl</code>, ArgoCD flags the drift and instantly recreates the resource to match the Git repository.
+          <h4>GitOps Self-Healing & Drift Detection</h4>
+          If any pod, secret, or topic job in either namespace is manually tampered with, ArgoCD's continuous background controller (accessible on NodePort <code>30781</code>) identifies the delta and triggers an automatic rolling heal.
         </div>
       </div>
     </section>
@@ -734,12 +827,99 @@ index=* "ml-serving-capstone"
 <span class="comment"># 4. Detect Backpressure or OOMKilled Pod Evictions</span>
 index=* ("OOMKilled" OR "CrashLoopBackOff" OR "Error")
 | table _time, pod_name, namespace, log</code></pre>
+        <h3>D. Prometheus Metrics Instrumentation & Cross-Namespace Scraping</h3>
+        <p>In addition to logs, high-throughput ML systems require real-time metrics. We instrumented FastAPI using <code>prometheus-fastapi-instrumentator</code>:</p>
+        <pre><code><span class="comment"># ml-serving-capstone/src/ml_serving_capstone/main.py</span>
+from prometheus_fastapi_instrumentator import Instrumentator
+
+app = FastAPI(title="ML Serving Capstone API")
+<span class="comment"># Exposes /metrics with standard HTTP latency histograms & QPS counters</span>
+Instrumentator().instrument(app).expose(app)</code></pre>
+
+        <p>In Kubernetes, Prometheus discovers workloads automatically via Pod Annotations without hardcoded IP lists:</p>
+        <pre><code><span class="comment"># helm/ml-app/templates/deployment.yaml</span>
+metadata:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "8000"</code></pre>
+
+        <h3>E. Pre-Provisioned Grafana Dashboard (NodePort 30300)</h3>
+        <p>Grafana runs in the <code>ml-infra</code> namespace and is exposed via NodePort <code>30300</code> (<code>http://localhost:30300</code>, user: <code>admin</code> / pass: <code>admin</code>). Datasources and dashboards are provisioned declaratively via ConfigMaps:</p>
+        <ul>
+          <li><strong>FastAPI Request Rate:</strong> <code>sum(rate(http_requests_total[1m])) by (status)</code></li>
+          <li><strong>Inference Latency Percentiles:</strong> <code>histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{handler="/predict"}[1m])) by (le))</code></li>
+          <li><strong>System Footprint:</strong> Real-time container memory RSS (<code>process_resident_memory_bytes</code>) and CPU consumption.</li>
+        </ul>
       </div>
     </section>
 
-    <!-- 09. REAL WAR STORIES & BUGS FIXED -->
+    <!-- 09. DECLARATIVE KAFKA & KAFKA UI -->
+    <section id="kafka-platform">
+      <h2 class="section-title"><span class="number">09</span> Declarative Kafka Platform & Kafka UI Dashboard</h2>
+      <div class="card">
+        <h3>A. The Problem with Imperative CLI Topic Creation</h3>
+        <p>In immature setups, engineers run manual <code>kafka-topics.sh --create</code> commands after deployment. This causes severe production failure modes:</p>
+        <ul>
+          <li><strong>Race Conditions:</strong> Producers start before topics exist, triggering <code>UNKNOWN_TOPIC_OR_PARTITION</code> errors.</li>
+          <li><strong>Configuration Drift:</strong> Partition counts and retention policies in dev never match staging or production.</li>
+          <li><strong>Non-Reproducible Clusters:</strong> If the cluster is recreated from scratch, topics are missing.</li>
+        </ul>
+
+        <h3>B. The Kubernetes Job Pattern with Init Containers</h3>
+        <p>We deploy an automated Kubernetes <code>Job</code> (<code>helm/ml-infra/templates/kafka-topics-job.yaml</code>) that runs idempotently during deployment:</p>
+        <ol>
+          <li><strong>Init Container (Wait for Broker):</strong> Polls <code>kafka-service:9092</code> with <code>kafka-broker-api-versions.sh</code> until Kafka completes internal KRaft election.</li>
+          <li><strong>Main Container (Topic Provisioner):</strong> Runs <code>kafka-topics.sh --create --if-not-exists --topic &lt;name&gt; --partitions 3</code> for <code>inference-requests</code> and <code>inference-results</code>.</li>
+        </ol>
+
+        <h3>C. Kafka UI Dashboard (NodePort 30880)</h3>
+        <p>We deploy Provectus Kafka UI (<code>provectuslabs/kafka-ui</code>) in <code>ml-infra</code> exposed on NodePort <code>30880</code> (<code>http://localhost:30880</code>). It provides an instant web UI to inspect topic partitions, consumer group lag, and message contents without SSH access.</p>
+      </div>
+    </section>
+
+    <!-- 10. SECRETS MANAGEMENT & ESO -->
+    <section id="secrets-management">
+      <h2 class="section-title"><span class="number">10</span> Kubernetes Secrets Management & External Secrets Operator (ESO)</h2>
+      <div class="card">
+        <h3>A. Secrets vs. ConfigMaps</h3>
+        <p>Sensitive credentials (Splunk HEC tokens, Redis passwords, Kafka SASL credentials) must never be stored in plain ConfigMaps or committed to Git. We package an opaque Kubernetes <code>Secret</code>:</p>
+        <pre><code>apiVersion: v1
+kind: Secret
+metadata:
+  name: ml-infra-secrets
+  namespace: ml-infra
+type: Opaque
+stringData:
+  splunk-hec-token: "2a58141a-232e-41ea-9b7c-5ee487970abe"</code></pre>
+
+        <h3>B. The Cloud-Native Pattern: External Secrets Operator (ESO)</h3>
+        <p>In production enterprise GitOps, committing Secrets even in base64 to Git is forbidden. The industry standard is <strong>External Secrets Operator (ESO)</strong>:</p>
+        <div class="diagram-box">
++----------------------------+
+| Cloud Secret Store         |
+| (AWS Secrets Mgr / Vault)  |
++----------------------------+
+               |
+               v (Authenticated Sync)
++----------------------------+
+| External Secrets Operator  | &lt;-- Reads 'ExternalSecret' CRD from Git
+| (Controller in k8s)        |
++----------------------------+
+               |
+               v (Generates inside cluster)
++----------------------------+
+| Native Kubernetes Secret   | &lt;-- Injected into Pods via envFrom/secretKeyRef
+| (Never committed to Git)   |
++----------------------------+
+        </div>
+        <p>Developers commit an <code>ExternalSecret</code> manifest to Git referencing the Vault secret path. ESO pulls the token at runtime and mounts it into the application pod.</p>
+      </div>
+    </section>
+
+    <!-- 11. REAL WAR STORIES & BUGS FIXED -->
     <section id="war-stories">
-      <h2 class="section-title"><span class="number">09</span> Real War Stories: Bugs Hit & How We Fixed Them</h2>
+      <h2 class="section-title"><span class="number">11</span> Real War Stories: Bugs Hit & How We Fixed Them</h2>
       <div class="card">
         <p>These are real bugs encountered during this build—the kind of edge cases you only learn from hands-on production engineering:</p>
 
@@ -775,7 +955,7 @@ index=* ("OOMKilled" OR "CrashLoopBackOff" OR "Error")
           <summary>Bug 5: ArgoCD "Remote Repository is Empty" Error</summary>
           <p><strong>Symptom:</strong> ArgoCD application reported <code>ComparisonError: failed to list refs: remote repository is empty</code>.</p>
           <p><strong>Root Cause:</strong> The ArgoCD Application was applied before local Git commits were pushed to the remote GitHub repository.</p>
-          <p><strong>The Fix:</strong> Push commits to GitHub first (`git push -u origin main`), then trigger hard refresh: <code>microk8s kubectl annotate app ml-serving-capstone -n argocd argocd.argoproj.io/refresh=hard --overwrite</code>.</p>
+          <p><strong>The Fix:</strong> Push commits to GitHub first (<code>git push -u origin main</code>), then trigger hard refresh.</p>
         </details>
 
         <details>
@@ -788,8 +968,8 @@ index=* ("OOMKilled" OR "CrashLoopBackOff" OR "Error")
         <details>
           <summary>Bug 7: The Infinite Log Storm Feedback Loop</summary>
           <p><strong>Symptom:</strong> Fluent Bit log volume spiked exponentially to thousands of log events per second.</p>
-          <p><strong>Root Cause:</strong> Fluent Bit logged a warning to stderr. Because Fluent Bit was deployed in <code>ml-serving</code>, its own log was written to <code>/var/log/pods/</code>, which Fluent Bit read and shipped to Splunk, triggering another log line in an infinite loop.</p>
-          <p><strong>The Fix:</strong> Add an exclusion pattern to the tail input: <code>Exclude_Path /var/log/pods/ml-serving_fluent-bit*/*/*.log</code>.</p>
+          <p><strong>Root Cause:</strong> Fluent Bit logged a warning to stderr. Because Fluent Bit was deployed in the same cluster, its own log was written to <code>/var/log/pods/</code>, which Fluent Bit read and shipped to Splunk, triggering another log line in an infinite loop.</p>
+          <p><strong>The Fix:</strong> Add an exclusion pattern to the tail input: <code>Exclude_Path /var/log/pods/*_fluent-bit*/*/*.log</code>.</p>
         </details>
 
         <details>
@@ -798,33 +978,104 @@ index=* ("OOMKilled" OR "CrashLoopBackOff" OR "Error")
           <p><strong>Root Cause:</strong> The generic <code>splunk</code> output plugin in Fluent Bit v3 expected token keys embedded in individual log records when not explicitly formatted.</p>
           <p><strong>The Fix:</strong> Switch to the universal <code>http</code> output plugin targeting <code>URI /services/collector/raw</code> with header <code>Authorization Splunk &lt;token&gt;</code>.</p>
         </details>
+
+        <details>
+          <summary>Bug 9: Grafana JSON Template Curly Braces Escaping in Helm</summary>
+          <p><strong>Symptom:</strong> <code>helm lint</code> failed with <code>function "status" not defined</code>.</p>
+          <p><strong>Root Cause:</strong> Grafana dashboard JSON contains legend format strings like <code>HTTP {{status}}</code> and <code>{{kubernetes_pod_name}}</code>. The Go template engine in Helm attempted to evaluate these as Helm template functions.</p>
+          <p><strong>The Fix:</strong> Escape double curly braces in Helm templates using string literals: <code>"legendFormat": "HTTP {{ `{{status}}` }}"</code>.</p>
+        </details>
+
+        <details>
+          <summary>Bug 10: ArgoCD Shared Resource Conflict on ClusterRoleBinding</summary>
+          <p><strong>Symptom:</strong> ArgoCD flagged <code>SharedResourceWarning: ClusterRoleBinding/fluent-bit-read is part of applications argocd/ml-infra and ml-serving-capstone</code>.</p>
+          <p><strong>Root Cause:</strong> Cluster-scoped resources (ClusterRoles, ClusterRoleBindings) cannot be managed by two distinct ArgoCD applications with pruning enabled simultaneously.</p>
+          <p><strong>The Fix:</strong> Delete obsolete monolithic application from ArgoCD before rolling out the decoupled infrastructure application.</p>
+        </details>
       </div>
     </section>
 
-    <!-- 10. RUNBOOK -->
+    <!-- 12. RUNBOOK -->
     <section id="runbook">
-      <h2 class="section-title"><span class="number">10</span> Production Operations Runbook & Cheat Sheet</h2>
+      <h2 class="section-title"><span class="number">12</span> Production Operations Runbook & Port Contracts</h2>
       <div class="card">
-        <pre><code># Check all workloads in ml-serving namespace
-microk8s kubectl get pods,svc,endpoints -n ml-serving
+        <h3>A. Production Port & Access Contracts</h3>
+        <table>
+          <tr>
+            <th>Service</th>
+            <th>Type</th>
+            <th>Port</th>
+            <th>Host Access URL</th>
+            <th>Default Credentials</th>
+          </tr>
+          <tr>
+            <td><strong>FastAPI ML Serving</strong></td>
+            <td>Port-Forward / ClusterIP</td>
+            <td><code>8001</code> / <code>80</code></td>
+            <td><a href="http://localhost:8001/docs" target="_blank">http://localhost:8001/docs</a></td>
+            <td>None (Open REST API)</td>
+          </tr>
+          <tr>
+            <td><strong>Kafka UI Dashboard</strong></td>
+            <td>NodePort</td>
+            <td><code>30880</code></td>
+            <td><a href="http://localhost:30880" target="_blank">http://localhost:30880</a></td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td><strong>Grafana Dashboards</strong></td>
+            <td>NodePort</td>
+            <td><code>30300</code></td>
+            <td><a href="http://localhost:30300" target="_blank">http://localhost:30300</a></td>
+            <td><code>admin</code> / <code>admin</code></td>
+          </tr>
+          <tr>
+            <td><strong>ArgoCD GitOps</strong></td>
+            <td>NodePort</td>
+            <td><code>30781</code></td>
+            <td><a href="https://localhost:30781" target="_blank">https://localhost:30781</a></td>
+            <td><code>admin</code> / (initial secret)</td>
+          </tr>
+          <tr>
+            <td><strong>Splunk Enterprise Web</strong></td>
+            <td>Docker Port</td>
+            <td><code>8000</code></td>
+            <td><a href="http://localhost:8000" target="_blank">http://localhost:8000</a></td>
+            <td><code>admin</code> / <code>Changeme123!</code></td>
+          </tr>
+          <tr>
+            <td><strong>Splunk HEC</strong></td>
+            <td>Docker Port</td>
+            <td><code>8088</code></td>
+            <td><code>https://localhost:8088</code></td>
+            <td>Token Auth</td>
+          </tr>
+        </table>
 
-# Stream logs across all API replicas
-microk8s kubectl logs -n ml-serving -l app.kubernetes.io/name=ml-serving-capstone -f
+        <h3>B. Essential CLI Commands</h3>
+        <pre><code><span class="comment"># 1. Inspect Workload Pods (ml-app)</span>
+microk8s kubectl get pods,svc -n ml-app
 
-# Verify ArgoCD controller status
-microk8s kubectl get pods -n argocd
+<span class="comment"># 2. Inspect Shared Platform Pods (ml-infra)</span>
+microk8s kubectl get pods,svc -n ml-infra
 
-# Trigger immediate GitOps sync via CLI
-microk8s kubectl annotate app ml-serving-capstone -n argocd argocd.argoproj.io/refresh=hard --overwrite
+<span class="comment"># 3. Stream Application Logs</span>
+microk8s kubectl logs -n ml-app -l app.kubernetes.io/name=ml-app -f
 
-# Port forward API to host for testing
-microk8s kubectl port-forward -n ml-serving svc/ml-serving-capstone 8001:80 --address 0.0.0.0</code></pre>
+<span class="comment"># 4. Check ArgoCD GitOps Sync Status</span>
+microk8s kubectl get applications -n argocd
+
+<span class="comment"># 5. Query Prometheus Metrics Directly</span>
+curl -s http://localhost:8001/metrics | grep "http_requests_total"
+
+<span class="comment"># 6. Test Prediction Inference</span>
+curl -X POST http://localhost:8001/predict -H "Content-Type: application/json" -d '{"input_data": [5.1, 3.5, 1.4, 0.2]}'</code></pre>
       </div>
     </section>
 
-    <!-- 11. INTERVIEW Q&A -->
+    <!-- 13. INTERVIEW Q&A -->
     <section id="interview-qa">
-      <h2 class="section-title"><span class="number">11</span> Senior Revision Q&A</h2>
+      <h2 class="section-title"><span class="number">13</span> Senior Engineering Revision Q&A</h2>
       <div class="card">
         <details>
           <summary>Q1: Why is GitOps (Pull model) considered strictly superior to traditional CI/CD (Push model)?</summary>
@@ -837,8 +1088,18 @@ microk8s kubectl port-forward -n ml-serving svc/ml-serving-capstone 8001:80 --ad
         </details>
 
         <details>
-          <summary>Q3: Why did we use Apache Kafka in KRaft mode instead of with ZooKeeper?</summary>
-          <p><strong>Answer:</strong> KRaft integrates consensus directly into Kafka brokers. It eliminates separate ZooKeeper JVM processes, reduces memory usage, prevents metadata synchronization discrepancies, and accelerates cluster recovery from minutes to seconds.</p>
+          <summary>Q3: How does Cross-Namespace DNS resolution work in Kubernetes?</summary>
+          <p><strong>Answer:</strong> Standard intra-namespace DNS only requires the service name (e.g. <code>redis-service</code>), which CoreDNS appends with the pod's namespace. For cross-namespace communication, the fully qualified domain name (FQDN) or namespace-qualified name is required: <code>redis-service.ml-infra.svc.cluster.local</code> or simply <code>redis-service.ml-infra</code>.</p>
+        </details>
+
+        <details>
+          <summary>Q4: How does Prometheus discover pods without maintaining a static list of IP addresses?</summary>
+          <p><strong>Answer:</strong> Prometheus uses the <strong>Kubernetes API Service Discovery (`kubernetes_sd_configs: [role: pod]`)</strong>. Through a ClusterRole with read access to pods, Prometheus watches the API server and evaluates Pod Annotations. If <code>prometheus.io/scrape: "true"</code> is present, Prometheus dynamically registers the Pod IP and port into its active scrape pool.</p>
+        </details>
+
+        <details>
+          <summary>Q5: Why did we use an Init Container in the Kafka Topic Creation Job?</summary>
+          <p><strong>Answer:</strong> When Kubernetes launches a Job concurrently with a StatefulSet/Deployment, the broker pod may be scheduled but still initializing its KRaft metadata log. An Init Container polls the broker port with <code>kafka-broker-api-versions.sh</code> until the cluster reports ready, preventing premature job crashes.</p>
         </details>
       </div>
     </section>
