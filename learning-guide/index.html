@@ -13,7 +13,7 @@
       --card-border: #1f2937;
       --card-hover: #1e293b;
       --text: #f3f4f6;
-      --text-muted: #9ca3af;
+      --text-muted: #cbd5e1; /* Increased contrast for crisp readability */
       --accent: #38bdf8;
       --accent-glow: rgba(56, 189, 248, 0.15);
       --purple: #c084fc;
@@ -42,7 +42,7 @@
       top: 0;
       z-index: 100;
       height: 52px;
-      background: rgba(6, 9, 17, 0.9);
+      background: rgba(6, 9, 17, 0.95);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--card-border);
@@ -108,26 +108,28 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Sidebar Drawer */
+    /* Sidebar Drawer - Normal Block Flow so flex never squashes items */
     aside.sidebar {
       width: var(--sidebar-width);
       min-width: var(--sidebar-width);
       max-width: var(--sidebar-width);
       height: calc(100vh - 52px);
+      max-height: calc(100vh - 52px);
       position: sticky;
       top: 52px;
+      align-self: flex-start;
       background: var(--sidebar-bg);
       border-right: 1px solid var(--card-border);
-      padding: 20px 14px 120px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+      padding: 16px 10px 100px 10px;
+      display: block; /* Normal block flow prevents flex-shrink vertical text truncation */
       overflow-y: auto;
       overflow-x: hidden;
       flex-shrink: 0;
-      font-size: 0.86rem;
+      font-size: 0.88rem;
       transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 90;
+      scrollbar-width: thin;
+      scrollbar-color: #4b5563 var(--sidebar-bg);
     }
 
     /* Collapsed State */
@@ -137,32 +139,37 @@
 
     /* Scrollbar */
     aside.sidebar::-webkit-scrollbar {
-      width: 6px;
+      width: 7px;
     }
     aside.sidebar::-webkit-scrollbar-track {
       background: var(--sidebar-bg);
     }
     aside.sidebar::-webkit-scrollbar-thumb {
-      background: #2d3748;
-      border-radius: 3px;
+      background: #4b5563;
+      border-radius: 4px;
     }
     aside.sidebar::-webkit-scrollbar-thumb:hover {
       background: var(--accent);
     }
 
     aside.sidebar h2 {
-      font-size: 0.85rem;
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: var(--text-muted);
+      color: #94a3b8;
+      margin-top: 4px;
       margin-bottom: 8px;
       padding-left: 8px;
+      line-height: 1.4;
     }
     aside.sidebar .part-divider {
-      margin-top: 14px;
-      margin-bottom: 4px;
-      padding: 6px 10px;
-      background: rgba(56, 189, 248, 0.1);
+      display: block;
+      margin-top: 16px;
+      margin-bottom: 6px;
+      padding: 7px 10px;
+      background: rgba(56, 189, 248, 0.12);
       border-left: 3px solid var(--accent);
       border-radius: 4px;
       font-size: 0.74rem;
@@ -170,44 +177,61 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: var(--accent);
+      line-height: 1.4;
     }
     aside.sidebar .part-divider.part2 {
-      background: rgba(192, 132, 252, 0.1);
+      background: rgba(192, 132, 252, 0.12);
       border-left-color: var(--purple);
       color: var(--purple);
     }
     aside.sidebar .part-divider.part3 {
-      background: rgba(74, 222, 128, 0.1);
+      background: rgba(74, 222, 128, 0.12);
       border-left-color: var(--green);
       color: var(--green);
     }
+
+    /* Sidebar Links - Explicit line-height, high contrast & proper vertical padding */
     aside.sidebar a {
-      color: var(--text-muted);
-      text-decoration: none;
-      padding: 6px 10px;
-      border-radius: 6px;
-      transition: all 0.2s ease;
       display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      color: #e2e8f0; /* Ultra-crisp slate-200 for maximum readability */
+      text-decoration: none;
+      padding: 8px 12px;
+      margin-bottom: 3px;
+      border-radius: 6px;
+      font-size: 0.86rem;
+      font-weight: 500;
+      line-height: 1.4; /* Explicit line-height guarantees no vertical character truncation */
+      white-space: normal; /* Wraps cleanly - never chops off titles with ... */
+      word-break: break-word;
+      transition: all 0.15s ease;
+      border-left: 3px solid transparent;
     }
     aside.sidebar a:hover {
-      color: #fff;
+      color: #ffffff;
       background: var(--card-hover);
       padding-left: 14px;
     }
     aside.sidebar a.active {
-      color: var(--accent);
+      color: #38bdf8;
       background: var(--accent-glow);
       font-weight: 600;
+      border-left-color: #38bdf8;
     }
     aside.sidebar a.part2:hover {
-      color: #fff;
+      color: #ffffff;
     }
     aside.sidebar a.part2.active {
       color: var(--purple);
       background: var(--purple-glow);
+      border-left-color: var(--purple);
+    }
+    aside.sidebar a.part3:hover {
+      color: #ffffff;
+    }
+    aside.sidebar a.part3.active {
+      color: var(--green);
+      background: var(--green-glow);
+      border-left-color: var(--green);
     }
 
     /* Backdrop for Mobile */
@@ -539,12 +563,12 @@
       <a href="#argocd-apps" class="part2">21. Multi-App GitOps Manifests</a>
 
       <div class="part-divider part3">Part III: Production & SRE</div>
-      <a href="#ci-cd-ghcr" class="part2">22. Enterprise CI/CD & GHCR</a>
-      <a href="#zero-dollar-plan" class="part2">23. The Zero-Dollar Production Stack</a>
-      <a href="#hard-limits" class="part2">24. What Cannot Be Done For Free</a>
-      <a href="#cluster-runbook" class="part2">25. Cluster Runbook & Port Matrix</a>
-      <a href="#war-stories" class="part2">26. Real War Stories (12 Bugs Fixed)</a>
-      <a href="#interview-qa" class="part2">27. Senior Engineering Revision Q&A</a>
+      <a href="#ci-cd-ghcr" class="part3">22. Enterprise CI/CD & GHCR</a>
+      <a href="#zero-dollar-plan" class="part3">23. The Zero-Dollar Production Stack</a>
+      <a href="#hard-limits" class="part3">24. What Cannot Be Done For Free</a>
+      <a href="#cluster-runbook" class="part3">25. Cluster Runbook & Port Matrix</a>
+      <a href="#war-stories" class="part3">26. Real War Stories (12 Bugs Fixed)</a>
+      <a href="#interview-qa" class="part3">27. Senior Engineering Revision Q&A</a>
     </aside>
 
     <!-- Backdrop for Mobile -->
@@ -2773,6 +2797,7 @@ microk8s kubectl get pods -n argocd</code></pre>
       // Active Section ScrollSpy
       const sections = document.querySelectorAll('section[id]');
       const navLinks = sidebar.querySelectorAll('a[href^="#"]');
+      let lastActiveSectionId = '';
 
       window.addEventListener('scroll', () => {
         let currentSectionId = '';
@@ -2786,18 +2811,13 @@ microk8s kubectl get pods -n argocd</code></pre>
           }
         });
 
-        if (currentSectionId) {
+        if (currentSectionId && currentSectionId !== lastActiveSectionId) {
+          lastActiveSectionId = currentSectionId;
           navLinks.forEach(link => {
             const matches = link.getAttribute('href') === '#' + currentSectionId;
             link.classList.toggle('active', matches);
             if (matches) {
-              // Ensure active link is visible in scrollable sidebar
-              const sidebarTop = sidebar.scrollTop;
-              const sidebarHeight = sidebar.clientHeight;
-              const linkTop = link.offsetTop - sidebar.offsetTop;
-              if (linkTop < sidebarTop || linkTop > sidebarTop + sidebarHeight - 40) {
-                link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-              }
+              link.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
             }
           });
         }
