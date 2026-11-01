@@ -5,6 +5,7 @@ import time
 import numpy as np
 from fastapi import FastAPI
 from pydantic import BaseModel
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from .model import get_model, predict
 from .redis_cache import MODEL_VERSION, cache_prediction, get_cached_prediction
@@ -30,6 +31,9 @@ class PredictResponse(BaseModel):
 
 
 app = FastAPI(title="ML Serving Capstone API", version="0.1.0")
+
+# Expose /metrics endpoint for Prometheus scraping
+Instrumentator().instrument(app).expose(app)
 
 
 @app.get("/healthz")

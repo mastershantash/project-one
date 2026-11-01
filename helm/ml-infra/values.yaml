@@ -1,0 +1,47 @@
+# Shared Infrastructure Values
+
+redis:
+  enabled: true
+  image: redis:7-alpine
+
+kafka:
+  enabled: true
+  image: apache/kafka:latest
+
+kafkaUi:
+  enabled: true
+  image: provectuslabs/kafka-ui:latest
+  service:
+    type: NodePort
+    nodePort: 30880
+
+topics:
+  enabled: true
+  list:
+    - name: inference-requests
+      partitions: 3
+    - name: inference-results
+      partitions: 3
+
+fluentBit:
+  enabled: true
+  splunkHost: "192.168.29.122"
+  splunkPort: 8088
+
+prometheus:
+  enabled: true
+  image: prom/prometheus:v2.48.0
+  service:
+    type: ClusterIP
+    port: 9090
+
+grafana:
+  enabled: true
+  image: grafana/grafana:10.2.0
+  adminPassword: "admin"
+  service:
+    type: NodePort
+    nodePort: 30300
+
+secrets:
+  splunkToken: "2a58141a-232e-41ea-9b7c-5ee487970abe"

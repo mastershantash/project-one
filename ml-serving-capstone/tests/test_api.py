@@ -23,3 +23,9 @@ def test_predict_endpoint():
     data = response.json()
     assert "predictions" in data
     assert len(data["predictions"]) == 3
+
+
+def test_metrics_endpoint():
+    response = client.get("/metrics")
+    assert response.status_code == 200
+    assert "http_requests_total" in response.text or "http_request_duration_seconds" in response.text

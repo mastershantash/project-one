@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ml-serving-capstone
+  name: ml-infra
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,13 +10,39 @@ spec:
   source:
     repoURL: 'https://github.com/mastershantash/project-one.git'
     targetRevision: main
-    path: ml-serving-capstone/helm/ml-serving-capstone
+    path: helm/ml-infra
     helm:
       valueFiles:
         - values.yaml
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: ml-serving
+    namespace: ml-infra
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ml-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/mastershantash/project-one.git'
+    targetRevision: main
+    path: helm/ml-app
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: ml-app
   syncPolicy:
     automated:
       prune: true

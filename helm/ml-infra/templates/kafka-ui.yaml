@@ -1,0 +1,55 @@
+{{- if and .Values.kafka.enabled .Values.kafkaUi.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-ui
+  labels:
+    app: kafka-ui
+    app.kubernetes.io/part-of: ml-infra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-ui
+  template:
+    metadata:
+      labels:
+        app: kafka-ui
+        app.kubernetes.io/part-of: ml-infra
+    spec:
+      containers:
+        - name: kafka-ui
+          image: {{ .Values.kafkaUi.image }}
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: KAFKA_CLUSTERS_0_NAME
+              value: "ml-cluster"
+            - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+              value: "kafka-service:9092"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-ui-service
+  labels:
+    app: kafka-ui
+    app.kubernetes.io/part-of: ml-infra
+spec:
+  type: {{ .Values.kafkaUi.service.type }}
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: {{ .Values.kafkaUi.service.nodePort }}
+      name: http
+  selector:
+    app: kafka-ui
+{{- end }}

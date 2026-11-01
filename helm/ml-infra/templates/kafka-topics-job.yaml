@@ -1,0 +1,48 @@
+{{- if and .Values.kafka.enabled .Values.topics.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-kafka-topics
+  labels:
+    app.kubernetes.io/part-of: ml-infra
+spec:
+  ttlSecondsAfterFinished: 120
+  backoffLimit: 6
+  template:
+    metadata:
+      labels:
+        app: kafka-topic-creator
+    spec:
+      restartPolicy: OnFailure
+      initContainers:
+        - name: wait-for-kafka
+          image: apache/kafka:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              echo "Waiting for Kafka broker to become ready..."
+              until /opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server kafka-service:9092; do
+                sleep 2
+              done
+              echo "Kafka broker is ready!"
+      containers:
+        - name: topic-creator
+          image: apache/kafka:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              {{- range .Values.topics.list }}
+              echo "Ensuring topic '{{ .name }}' exists with {{ .partitions }} partitions..."
+              /opt/kafka/bin/kafka-topics.sh \
+                --bootstrap-server kafka-service:9092 \
+                --create \
+                --if-not-exists \
+                --topic {{ .name }} \
+                --partitions {{ .partitions }} \
+                --replication-factor 1
+              {{- end }}
+              echo "Listing all topics:"
+              /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka-service:9092 --list
+{{- end }}

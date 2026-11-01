@@ -1,0 +1,196 @@
+{{- if .Values.grafana.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  labels:
+    app: grafana
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus:9090
+        isDefault: true
+        editable: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards-provider
+  labels:
+    app: grafana
+data:
+  dashboards.yaml: |
+    apiVersion: 1
+    providers:
+      - name: 'default'
+        orgId: 1
+        folder: 'MLOps'
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 10
+        options:
+          path: /var/lib/grafana/dashboards
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-ml-dashboard
+  labels:
+    app: grafana
+data:
+  ml-service-dashboard.json: |
+    {
+      "annotations": { "list": [] },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": null,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "title": "FastAPI HTTP Request Rate (req/s)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+          "targets": [
+            {
+              "expr": "sum(rate(http_requests_total[1m])) by (status)",
+              "legendFormat": "HTTP {{ `{{status}}` }}"
+            }
+          ]
+        },
+        {
+          "title": "Inference Latency (p95 & p99)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{handler=\"/predict\"}[1m])) by (le))",
+              "legendFormat": "p95 Latency (s)"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{handler=\"/predict\"}[1m])) by (le))",
+              "legendFormat": "p99 Latency (s)"
+            }
+          ]
+        },
+        {
+          "title": "Total Prediction Requests",
+          "type": "stat",
+          "gridPos": { "h": 6, "w": 6, "x": 0, "y": 8 },
+          "targets": [
+            {
+              "expr": "sum(http_requests_total{handler=\"/predict\"}) or vector(0)",
+              "legendFormat": "Predictions"
+            }
+          ]
+        },
+        {
+          "title": "Pod Memory Usage (RSS)",
+          "type": "timeseries",
+          "gridPos": { "h": 6, "w": 9, "x": 6, "y": 8 },
+          "targets": [
+            {
+              "expr": "sum(process_resident_memory_bytes) by (kubernetes_pod_name)",
+              "legendFormat": "{{ `{{kubernetes_pod_name}}` }}"
+            }
+          ]
+        },
+        {
+          "title": "Pod CPU Seconds Total",
+          "type": "timeseries",
+          "gridPos": { "h": 6, "w": 9, "x": 15, "y": 8 },
+          "targets": [
+            {
+              "expr": "sum(rate(process_cpu_seconds_total[1m])) by (kubernetes_pod_name)",
+              "legendFormat": "{{ `{{kubernetes_pod_name}}` }}"
+            }
+          ]
+        }
+      ],
+      "refresh": "5s",
+      "schemaVersion": 38,
+      "style": "dark",
+      "tags": ["mlops", "fastapi"],
+      "time": { "from": "now-15m", "to": "now" },
+      "timepicker": {},
+      "timezone": "",
+      "title": "ML Serving Service Metrics",
+      "version": 1
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: {{ .Values.grafana.image }}
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              value: "admin"
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: {{ .Values.grafana.adminPassword | quote }}
+            - name: GF_USERS_ALLOW_SIGN_UP
+              value: "false"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+            - name: grafana-datasources
+              mountPath: /etc/grafana/provisioning/datasources
+            - name: grafana-dashboards-provider
+              mountPath: /etc/grafana/provisioning/dashboards
+            - name: grafana-dashboards
+              mountPath: /var/lib/grafana/dashboards
+      volumes:
+        - name: grafana-datasources
+          configMap:
+            name: grafana-datasources
+        - name: grafana-dashboards-provider
+          configMap:
+            name: grafana-dashboards-provider
+        - name: grafana-dashboards
+          configMap:
+            name: grafana-ml-dashboard
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  labels:
+    app: grafana
+spec:
+  type: {{ .Values.grafana.service.type }}
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: {{ .Values.grafana.service.nodePort }}
+      protocol: TCP
+      name: http
+  selector:
+    app: grafana
+{{- end }}
