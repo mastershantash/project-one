@@ -706,38 +706,70 @@ spec:
 
     <!-- 07. CI/CD PIPELINE -->
     <section id="ci-cd-pipeline">
-      <h2 class="section-title"><span class="number">07</span> Automated CI/CD Pipeline (GitHub Actions)</h2>
+      <h2 class="section-title"><span class="number">07</span> Enterprise CI/CD: Quality Gates, OCI Artifacts & Immutable GitOps</h2>
       <div class="card">
+        <p>In enterprise engineering, pushing unversioned <code>:latest</code> images or untested Helm templates directly to production is an unacceptable risk. Our upgraded CI/CD pipeline enforces strict quality gates, publishes immutable OCI artifacts to GHCR (our cloud Artifactory), and performs automated GitOps writebacks:</p>
+
         <table>
           <tr>
-            <th>Stage</th>
-            <th>Trigger</th>
-            <th>Tools</th>
-            <th>Outcome</th>
+            <th>Pipeline Job</th>
+            <th>Triggers</th>
+            <th>Tooling</th>
+            <th>Enterprise Verification & Artifact Outcome</th>
           </tr>
           <tr>
-            <td><strong>1. Test & Validate</strong></td>
+            <td><strong>1. Quality & Tests</strong></td>
             <td>Push / PR</td>
-            <td><code>uv</code>, <code>pytest</code></td>
-            <td>Runs all 5 unit tests verifying model mathematics and API contracts.</td>
+            <td><code>uv</code>, <code>ruff</code>, <code>mypy</code>, <code>pytest</code></td>
+            <td>Enforces code formatting, static type checking (0 errors across 5 modules), and passes all 6 unit tests before any container build begins.</td>
           </tr>
           <tr>
-            <td><strong>2. Container Build</strong></td>
+            <td><strong>2. Helm Chart CI</strong></td>
+            <td>Push / PR</td>
+            <td><code>helm lint</code></td>
+            <td>Validates Go template syntax, schema contracts, and value bindings for both <code>helm/ml-infra</code> and <code>helm/ml-app</code>.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Immutable Docker Build</strong></td>
             <td>Push to <code>main</code></td>
-            <td>Docker Buildx, OCI layers</td>
-            <td>Builds hardened image using non-root UID 1000 and layer caching.</td>
+            <td>Docker Buildx, GHCR</td>
+            <td>Builds hardened container and tags it with deterministic immutable tags: <code>sha-&lt;commit-hash&gt;</code>, <code>v0.1.&lt;build-number&gt;</code>, and <code>latest</code>.</td>
           </tr>
           <tr>
-            <td><strong>3. Registry Publish</strong></td>
+            <td><strong>4. OCI Helm Artifactory</strong></td>
             <td>Push to <code>main</code></td>
-            <td>GitHub Packages (GHCR)</td>
-            <td>Pushes immutable image tag to <code>ghcr.io/mastershantash/project-one/...</code></td>
+            <td>Helm 3 OCI, GHCR</td>
+            <td>Packages both charts into versioned tarballs and publishes them to the OCI registry: <code>oci://ghcr.io/.../charts/ml-infra:0.1.&lt;n&gt;</code>.</td>
           </tr>
           <tr>
-            <td><strong>4. GitOps Rollout</strong></td>
-            <td>Automated</td>
-            <td>ArgoCD</td>
-            <td>ArgoCD detects new image reference and executes rolling pod update.</td>
+            <td><strong>5. Automated GitOps Sync</strong></td>
+            <td>Push to <code>main</code></td>
+            <td>Git, ArgoCD</td>
+            <td>CI updates <code>helm/ml-app/values.yaml</code> to pin <code>tag: "sha-&lt;hash&gt;"</code> and commits back with <code>[skip ci]</code>. ArgoCD triggers a zero-downtime rolling update.</td>
+          </tr>
+        </table>
+
+        <h3>The Anti-Pattern vs. Enterprise GitOps Standard</h3>
+        <table>
+          <tr>
+            <th>Engineering Dimension</th>
+            <th>The Mutable Anti-Pattern (Naive Setup) ❌</th>
+            <th>Enterprise Immutable GitOps (Our Pipeline) 🏆</th>
+          </tr>
+          <tr>
+            <td><strong>Container Image Tagging</strong></td>
+            <td><code>ml-serving-capstone:latest</code> (Mutable; impossible to know what code is running).</td>
+            <td><code>ml-serving-capstone:sha-ae36ee4</code> (Strictly 1:1 mapped to Git commit).</td>
+          </tr>
+          <tr>
+            <td><strong>Rollback Reliability</strong></td>
+            <td>Broken. Rolling back to <code>:latest</code> does nothing because the tag name hasn't changed.</td>
+            <td>Instant. Reverting a Git commit rolls Kubernetes back to the previous exact immutable image SHA.</td>
+          </tr>
+          <tr>
+            <td><strong>Helm Chart Storage</strong></td>
+            <td>Only unversioned raw files in Git.</td>
+            <td>Versioned OCI packages in GHCR Artifactory + declarative source in Git.</td>
           </tr>
         </table>
       </div>

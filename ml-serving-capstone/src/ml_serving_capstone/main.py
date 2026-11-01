@@ -4,8 +4,8 @@ import time
 
 import numpy as np
 from fastapi import FastAPI
-from pydantic import BaseModel
 from prometheus_fastapi_instrumentator import Instrumentator
+from pydantic import BaseModel
 
 from .model import get_model, predict
 from .redis_cache import MODEL_VERSION, cache_prediction, get_cached_prediction
